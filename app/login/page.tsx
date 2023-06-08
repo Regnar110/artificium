@@ -8,6 +8,7 @@ import apple from '../../public/buttons/login_buttons/apple.svg'
 import TextField from '@mui/material/TextField'
 import { createTheme, ThemeProvider, withStyles  } from '@mui/material/styles';
 import { yellow } from '@mui/material/colors'
+import Checkbox from '@mui/material/Checkbox'
 export default function Home() {
   const styles = {
     root: {
@@ -60,7 +61,13 @@ export default function Home() {
                 <TextField InputLabelProps={{ style: {color:"#9B9C9E"}}} sx={{input: {color:"#fff", background:"#363A3D", borderRadius:"10px"}}} color="primary" id="outlined-basic" label="Password" variant="outlined" />              
               </ThemeProvider>
             </div>
-            <div>CHECKBOXES</div>
+            <div className='flex justify-between items-center'>
+              <div className='remember_me_checkbox flex gap-x-2 text-white font-plus_jakarta_sans items-center'>
+                <Checkbox size='medium' aria-label='remember_me' sx={{color:"#363A3D", '&.Mui-checked': {color:"#B6F09C"}}} defaultChecked />
+                <span className='text-[16px]'>Remember me</span>
+              </div>
+              <span className='font-plus_jakarta_sans text-[16px] font-bold text-transparent bg-clip-text gradient_dayblue_blue_green500'>Forgot password?</span>
+            </div>
             <Button
               className='bg-[#B6F09C] font-plus_jakarta_sans text-[#0C1132] font-bold'
               sx={{
