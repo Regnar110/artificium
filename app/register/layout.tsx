@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Artificium Log in',
-  description: 'Log in to artificium',
+  title: 'Artificium Register',
+  description: 'Register to artificium',
 }
 
 export default function RootLayout({ // tutaj mamy przykład jak umieszczać server component w client component. Jest to jedyny sposób - tj. przekazanie SC jako props do CC

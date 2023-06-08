@@ -1,10 +1,11 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import artificium_logo from '../../../public/logo/artificium_logo.png'
 
 interface Props {
     position:"absolute" | "relative",
-    positionCordinates:string;
+    positionCordinates?:string;
 }
 
 const ArtificiumAbsoluteLogo = ({position, positionCordinates}:Props) => {
