@@ -7,14 +7,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox'
 const LoginForm = () => {
 
-    const styles = {
-        root: {
-          background:"black"
-        },
-        input: {
-          color:"#fff"
-        }
-      }
       const theme = createTheme({
         palette: {
           primary: {
@@ -27,8 +19,8 @@ const LoginForm = () => {
     <form className='login_form flex flex-col gap-y-10'>
         <div className='login_text_fields flex flex-col gap-y-5'>
         <ThemeProvider theme={theme}>
-            <TextField InputLabelProps={{ style: {color:"#9B9C9E"}}} sx={{input: {color:"#fff", background:"#363A3D", borderRadius:"10px"}}} color="primary" id="outlined-basic" label="E-mail" variant="outlined" />
-            <TextField InputLabelProps={{ style: {color:"#9B9C9E"}}} sx={{input: {color:"#fff", background:"#363A3D", borderRadius:"10px"}}} color="primary" id="outlined-basic" label="Password" variant="outlined" />              
+            <TextField InputLabelProps={{ style: {color:"#9B9C9E"}}} sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} color="primary" id="outlined-basic" label="E-mail" variant="outlined" />
+            <TextField InputLabelProps={{ style: {color:"#9B9C9E"}}} sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} color="primary" id="outlined-basic" label="Password" variant="outlined" />              
         </ThemeProvider>
         </div>
         <div className='flex justify-between items-center'>
