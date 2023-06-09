@@ -5,6 +5,12 @@
 @tailwind utilities;
 
 
+* {
+    box-sizing:border-box;
+    width:100%;
+    margin: 0px;
+    padding:0px
+}
 .gradient_dayblue_blue_green500 {
     background: rgb(77,98,229);
     background: linear-gradient(40deg, rgba(77,98,229,1) 0%, rgba(135,221,238,1) 20%, rgba(182,240,156,1) 200%);
