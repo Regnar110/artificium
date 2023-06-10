@@ -1,18 +1,23 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import login_image from '../../../../public/login_assets/login_illustration.png'
+import MediaQuery from 'react-responsive'
 const LoginIllustration = () => {
-  return (
-    <div className='login_illustration relative w-full justify-self-end float-right h-fit'>
-        <Image
-        className='float-right object-contain w-fit' 
-        src={login_image}
-        alt='login_image'
-        />
-    </div>
-  )
+  const [mounted, setMounted] = useState<boolean>(false)
+
+  useEffect(() => {
+      setMounted(true);
+  },[])
+  return mounted ? 
+    <MediaQuery minWidth={1024}>
+        <div className='login_illustration w-full col-span-2'>
+            <Image priority={true} className='float-right h-[100vh]' src={login_image} alt='register_image'/>
+        </div>
+    </MediaQuery>
+  :
+  null
 }
 
 export default LoginIllustration

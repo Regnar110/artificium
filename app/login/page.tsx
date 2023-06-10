@@ -14,7 +14,7 @@ export default function Login() {
   return (
     <LoginPageWrapper>
       <LoginSection>
-        <ArtificiumAbsoluteLogo position='absolute' positionCordinates='top-5 left-5'/>
+        <ArtificiumAbsoluteLogo position='relative' positionCordinates='top-5 left-5'/>
         <LoginFunctionalityBlock>
           <LoginHeaders/>
           <LoginButtonsWrapper>

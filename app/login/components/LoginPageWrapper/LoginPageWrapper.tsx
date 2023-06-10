@@ -4,7 +4,7 @@ interface Props {
 }
 const LoginPageWrapper = ({children}:Props) => {
   return (
-    <main className='login_page bg-[#131619] grid grid-cols-2 w-full'>
+    <main className='login_page box-border bg-[#131619] min-h-[100vh] grid grid-cols-5 w-full'>
       {children.map(el => el)}
     </main>
   )

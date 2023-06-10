@@ -4,7 +4,7 @@ interface Props {
 }
 const LoginSection = ({children}:Props) => {
   return (
-    <div className='login_section relative flex flex-col justify-center items-center  w-full'>
+    <div className='login_section relative col-span-5 lg:col-span-3 flex flex-col items-center w-full'>
       {children.map(el=>el)}
     </div>
   )

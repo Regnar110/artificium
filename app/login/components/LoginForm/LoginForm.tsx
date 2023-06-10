@@ -23,12 +23,12 @@ const LoginForm = () => {
             <TextField InputLabelProps={{ style: {color:"#9B9C9E"}}} sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} color="primary" id="outlined-basic" label="Password" variant="outlined" />              
         </ThemeProvider>
         </div>
-        <div className='flex justify-between items-center'>
-        <div className='remember_me_checkbox flex gap-x-2 text-white font-plus_jakarta_sans items-center'>
-            <Checkbox size='medium' aria-label='remember_me' sx={{color:"#363A3D", '&.Mui-checked': {color:"#B6F09C"}}} defaultChecked />
-            <span className='text-[16px]'>Remember me</span>
-        </div>
-        <span className='font-plus_jakarta_sans text-[16px] font-bold text-transparent bg-clip-text gradient_dayblue_blue_green500'>Forgot password?</span>
+        <div className='flex flex-col sm:flex-row w-full justify-between items-start sm:items-center'>
+          <div className='remember_me_checkbox w-fit flex gap-x-2 text-white font-plus_jakarta_sans items-center'>
+              <Checkbox size='medium' aria-label='remember_me' sx={{color:"#363A3D", '&.Mui-checked': {color:"#B6F09C"}}} defaultChecked />
+              <span className='text-[16px] whitespace-nowrap'>Remember me</span>
+          </div>
+          <span className='font-plus_jakarta_sans w-fit text-[16px] font-bold text-transparent bg-clip-text gradient_dayblue_blue_green500'>Forgot password?</span>
         </div>
         <Button
         className='bg-[#B6F09C] font-plus_jakarta_sans text-[#0C1132] font-bold'

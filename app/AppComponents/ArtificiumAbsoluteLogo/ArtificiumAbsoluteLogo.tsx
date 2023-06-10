@@ -10,7 +10,7 @@ interface Props {
 
 const ArtificiumAbsoluteLogo = ({position, positionCordinates}:Props) => {
   return (
-    <div className={`artifictium_logo w-full h-[100px] ${position} ${positionCordinates}`}>
+    <div className={`artifictium_logo box-border w-fit self-start h-[100px] ${position} ${positionCordinates}`}>
         <Image className='w-fit' src={artificium_logo} alt="artificium_logo"/>
     </div>
   )
