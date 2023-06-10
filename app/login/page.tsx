@@ -9,6 +9,7 @@ import SpaceBreaker from './components/LoginButtonsWrapper/SpaceBreaker'
 import LoginForm from './components/LoginForm/LoginForm'
 import SignUpRedirect from './components/SignUpRedirect/SignUpRedirect'
 import LoginIllustration from './components/LoginIllustration/LoginIllustration'
+import RegisterFooter from '../register/components/RegisterFooter/RegisterFooter'
 
 export default function Login() {
   return (
@@ -24,6 +25,7 @@ export default function Login() {
           <LoginForm/>
           <SignUpRedirect/>
         </LoginFunctionalityBlock>
+        <RegisterFooter/>
       </LoginSection>
       <LoginIllustration/>
     </LoginPageWrapper>

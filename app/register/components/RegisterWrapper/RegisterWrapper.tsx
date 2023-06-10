@@ -4,7 +4,7 @@ interface Props {
 }
 const RegisterWrapper = ({children}:Props) => {
   return (
-    <div className='register_wrapper w-full h-fit flex flex-col col-span-5 lg:col-span-3'>
+    <div className='register_wrapper relative w-full h-full flex flex-col col-span-5 lg:col-span-3'>
       {children.map(el=>el)}
     </div>
   )

@@ -5,7 +5,7 @@ interface Props {
 }
 const LoginFunctionalityBlock = ({children}:Props) => {
   return (
-    <div className='login_functionality_block  grid grid-row-6 row-span-2 justify-self-center place-content-center gap-10'>
+    <div className='login_functionality_block  grid grid-row-6 row-span-2 justify-self-center place-content-center gap-10 my-10'>
       {children.map(el=>el)}
     </div>
   )

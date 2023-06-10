@@ -17,8 +17,8 @@ const Register = () => {
                 <RegisterHeaders/>
                 <RegisterForm/>               
                 <SignInRedirect/>
-                <RegisterFooter/>
             </RegisterFunctionalityBlock>
+            <RegisterFooter/>
         </RegisterWrapper>
         <RegisterIllustration/>
     </RegisterPageWrapper>
