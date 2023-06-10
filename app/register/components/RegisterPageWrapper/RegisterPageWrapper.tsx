@@ -10,7 +10,7 @@ const RegisterPageWrapper = ({children}:Props) => {
     setDOMStatus(true)
   },[])
   return DOMStatus?
-    <main className='bg-[#131619] grid box-border grid-cols-5'>
+    <main className='bg-[#131619] grid box-border grid-cols-5 min-h-[100vh]'>
       {children.map(el=>el)}
     </main>
   :
