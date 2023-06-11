@@ -1,16 +1,19 @@
 'use client'
-import React from 'react'
+import React, {useRef} from 'react'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useForm } from "react-hook-form";
-
 const RegisterForm = () => {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+        delete data.register_password_repeat
+        console.log(data)
+        console.log(errors)
+    }
 
 
     const theme = createTheme({
@@ -31,12 +34,13 @@ const RegisterForm = () => {
                         ...register(
                             "mail",
                             {
-                                required:true,
-                                pattern:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+                                required:"This field is required",
+                                pattern: {value:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/, message:"Wrong email format"},
                             }
                         )
-                     
                     }
+                    error={errors.mail?.message ? true : false}
+                    helperText={errors.mail?.message ? errors.mail.message as string:""}
                     type='email'
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
@@ -50,7 +54,17 @@ const RegisterForm = () => {
                 <span className='text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium'>First name</span>
                 <TextField 
                     type='text'
-                    {...register("first_name")}
+                    {...register(
+                        "first_name",
+                        {
+                            required:"This field is required",
+                            minLength: { value:2, message:"This name is too short"},
+                            maxLength:{ value:20, message:"This name is too long"}
+                        }
+                        )
+                    }
+                    error={errors.first_name?.message ? true:false}
+                    helperText={errors.first_name?.message ? errors.first_name.message as string:""}
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
@@ -63,7 +77,16 @@ const RegisterForm = () => {
                 <span className='text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium'>Password</span>
                 <TextField 
                     type='password'
-                    {...register("password")}
+                    {...register(
+                        "register_password",
+                        {
+                            required: "This field is required",
+                            pattern: {value:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, message:"Wrong password format. At least 8 charaters, one big, one small, number and special character"},
+                        }
+                        )
+                    }
+                    error={errors.register_password?.message ? true:false}
+                    helperText={errors.register_password?.message ? errors.register_password.message as string:""}
                     InputLabelProps={{ style: {color:"#9B9C9E"}}}
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
@@ -76,7 +99,20 @@ const RegisterForm = () => {
                 <span className='text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium'>Repeat password</span>
                 <TextField 
                     type='password'
-                    {...register("password_repeat")}
+                    {...register(
+                        "register_password_repeat",
+                        {
+                            required:"This field is required",
+                            validate: (val:string) => {
+                                if(watch("register_password") !== val) {
+                                    return "Password not match"
+                                }
+                            }
+                        }
+                        )
+                    }
+                    error={errors.register_password_repeat?.message ? true : false} 
+                    helperText={`${errors.register_password_repeat?.message ? errors.register_password_repeat.message:""}`} 
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
@@ -87,7 +123,21 @@ const RegisterForm = () => {
             </div>
         </ThemeProvider>
         <div className='terms_conditions_checkbox flex gap-x-2 text-white font-plus_jakarta_sans items-center col-span-2'>
-            <Checkbox className='w-fit' size='medium' aria-label='terms_conditions' sx={{color:"#363A3D", '&.Mui-checked': {color:"#B6F09C"}}} defaultChecked />
+            <Checkbox 
+                {...register(
+                    "register_terms",
+                    {
+                        required:"You need to accept terms and agreements"
+                    }
+                    )
+                }
+                required={true}
+                className='w-fit' 
+                size='medium' 
+                aria-label='terms_conditions' 
+                sx={{color:"#363A3D", '&.Mui-checked': {color:"#B6F09C"}}} 
+                defaultChecked={false}
+            />
             <span className='text-[16px] w-fit'>I agree with <span className='font-plus_jakarta_sans text-[16px] font-bold text-transparent bg-clip-text gradient_dayblue_blue_green500'>Terms and conditions</span></span>
         </div>
         <Button
