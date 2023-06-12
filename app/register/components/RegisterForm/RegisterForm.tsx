@@ -1,5 +1,5 @@
 'use client'
-import React, {useRef} from 'react'
+import React from 'react'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField'
@@ -12,7 +12,6 @@ const RegisterForm = () => {
     const onSubmit = data => {
         delete data.register_password_repeat
         console.log(data)
-        console.log(errors)
     }
 
 
