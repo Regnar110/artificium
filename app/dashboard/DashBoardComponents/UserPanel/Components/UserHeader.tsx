@@ -4,7 +4,7 @@ import dummy_avatar from '../../../../../public/Dashboard/UserPanel/UserHeader/A
 import header_dropdown from '../../../../../public/Dashboard/UserPanel/UserHeader/header_dropdown.svg'
 const UserHeader = () => {
   return (
-    <div id='user_panel_header' className='user_header w-full font-plus_jakarta_sans flex justify-between items-center py-8 border-b-[1px] border-[#131619]'>
+    <div id='user_panel_header' className='user_header w-full font-plus_jakarta_sans flex justify-between items-center pb-8 border-b-[1px] border-[#131619]'>
         <div className='avatar relative flex rounded-full w-full gap-x-3 justify-center items-center'>
             <div className='avatar_image relative w-[50px]'>
                 <Image src={dummy_avatar} className='object-contain' alt='user_avatar'/>                
