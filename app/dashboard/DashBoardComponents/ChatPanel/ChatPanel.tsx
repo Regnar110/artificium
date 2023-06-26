@@ -17,8 +17,8 @@ const ChatPanel = () => {
     }
   })
   return (
-    <section className='w-full flex flex-col h-full rounded-lg mt-5'>
-      <div id='chat_window' className='flex flex-col gap-5  overflow-scroll overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-green-500 scrollbar-track-gray-100'>
+    <section className='relative h-[100%] w-full place-self-end overflow-hidden rounded-lg mt-5'>
+      <div id='chat_window' className='flex flex-col h-[100%] gap-5 overflow-scroll overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-green-500 scrollbar-track-gray-100'>
         <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
           <div className='chat_avatar relative w-[50px] flex items-start'>
             <Image src={user_avatar} alt='message'/>
@@ -30,6 +30,21 @@ const ChatPanel = () => {
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
+
+            </p>
+          </div>
+          <div className='chat_avatar relative w-[20px] flex justify-center items-start'>
+            <Image src={copy_message} alt='message'/>
+          </div>
+        </div>
+        <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
+          <div className='chat_avatar relative w-[50px] flex items-start'>
+            <Image src={user_avatar} alt='message'/>
+          </div>
+          <div className='nick_and_message'>
+            <h1 className='nick text-[16px]'>Mateusz Wrycza</h1>
+            <p className='message text-[#9B9C9E] text-[14px] font-medium'>
+2
 
             </p>
           </div>
@@ -102,93 +117,6 @@ const ChatPanel = () => {
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-
-            </p>
-          </div>
-          <div className='chat_avatar relative w-[20px] flex justify-center items-start'>
-            <Image src={copy_message} alt='message'/>
-          </div>
-        </div>
-        <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
-          <div className='chat_avatar relative w-[50px] flex items-start'>
-            <Image src={user_avatar} alt='message'/>
-          </div>
-          <div className='nick_and_message'>
-            <h1 className='nick text-[16px]'>Mateusz Wrycza</h1>
-            <p className='message text-[#9B9C9E] text-[14px] font-medium'>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-
-            </p>
-          </div>
-          <div className='chat_avatar relative w-[20px] flex justify-center items-start'>
-            <Image src={copy_message} alt='message'/>
-          </div>
-        </div>
-        <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
-          <div className='chat_avatar relative w-[50px] flex items-start'>
-            <Image src={user_avatar} alt='message'/>
-          </div>
-          <div className='nick_and_message'>
-            <h1 className='nick text-[16px]'>Mateusz Wrycza</h1>
-            <p className='message text-[#9B9C9E] text-[14px] font-medium'>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-
-            </p>
-          </div>
-          <div className='chat_avatar relative w-[20px] flex justify-center items-start'>
-            <Image src={copy_message} alt='message'/>
-          </div>
-        </div>
-        <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
-          <div className='chat_avatar relative w-[50px] flex items-start'>
-            <Image src={user_avatar} alt='message'/>
-          </div>
-          <div className='nick_and_message'>
-            <h1 className='nick text-[16px]'>Mateusz Wrycza</h1>
-            <p className='message text-[#9B9C9E] text-[14px] font-medium'>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-
-            </p>
-          </div>
-          <div className='chat_avatar relative w-[20px] flex justify-center items-start'>
-            <Image src={copy_message} alt='message'/>
-          </div>
-        </div>
-        <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
-          <div className='chat_avatar relative w-[50px] flex items-start'>
-            <Image src={user_avatar} alt='message'/>
-          </div>
-          <div className='nick_and_message'>
-            <h1 className='nick text-[16px]'>Mateusz Wrycza</h1>
-            <p className='message text-[#9B9C9E] text-[14px] font-medium'>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur ullam, iure, esse dolore quas eum quidem aliquam cumque
-
-            </p>
-          </div>
-          <div className='chat_avatar relative w-[20px] flex justify-center items-start'>
-            <Image src={copy_message} alt='message'/>
-          </div>
-        </div>
-        <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
-          <div className='chat_avatar relative w-[50px] flex items-start'>
-            <Image src={user_avatar} alt='message'/>
-          </div>
-          <div className='nick_and_message'>
-            <h1 className='nick text-[16px]'>Mateusz Wrycza</h1>
-            <p className='message text-[#9B9C9E] text-[14px] font-medium'>
-asdasd
 
             </p>
           </div>

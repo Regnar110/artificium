@@ -17,7 +17,7 @@ import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
 
 const Dashboard = () => {
   return (
-    <main className='dashboard box-border text-black bg-[#131619] w-full p-5 flex gap-3 min-h-full'>
+    <main className='dashboard box-border text-black bg-[#131619] w-full p-5 flex gap-3 min-h-screen'>
       <UserPanel/>        
       <UserBoardWrapper>
         <BoardHeader>
