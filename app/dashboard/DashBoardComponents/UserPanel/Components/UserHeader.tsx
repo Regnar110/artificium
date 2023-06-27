@@ -11,8 +11,8 @@ const UserHeader = () => {
             </div>
 
             <div className='user_nick w-full flex flex-col'>
-                <span className='nick text-white text-[16px]'>Mateteusz Wrycza</span>
-                <span className='account_status text-[#B6F09C] text-[12px]'>Free account</span>   
+                <span className='nick text-white text-[14px] xl:text-[16px]'>Mateteusz Wrycza</span>
+                <span className='account_status text-[#B6F09C] text-[10px] xl:text-[12px]'>Free account</span>   
             </div>
         </div>
         <div className='header_dropdown_icon relative w-[15px]'>

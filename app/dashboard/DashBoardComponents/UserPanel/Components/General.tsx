@@ -16,7 +16,7 @@ const General = () => {
       })
   return (
     <div className='user_general  border-b-[1px] border-[#131619] flex flex-col pb-8 gap-y-4'>
-      <h1 className='text-[16px] text-[#686B6E] font-semibold'>General</h1>
+      <h1 className='text-[14px] xl:text-[16px] text-[#686B6E] font-semibold'>General</h1>
       <div className='user_panel_options flex flex-col gap-y-5'>
         <div className='search_option'>
         <Box className="gap-4 relative" sx={{ display: 'flex', alignItems: 'center', justifyContent:"center" }}>
@@ -36,7 +36,7 @@ const General = () => {
         </div>
         <div className='billing_redirection flex gap-4'>
             <Image src={card} alt='billing' className='w-[25px]'/>
-            <span className='text-[16px] text-white'>Billing</span>
+            <span className='text-[14px] xl:text-[16px] text-white '>Billing</span>
         </div>
       </div>
     </div>

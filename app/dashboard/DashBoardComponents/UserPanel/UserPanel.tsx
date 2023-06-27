@@ -5,7 +5,7 @@ import Groups from './Components/Groups'
 
 const UserPanel = () => {
   return (
-    <div className='bg-[#0D0F10] h-full min-w-[200px] w-[300px] flex flex-col rounded-lg py-8 px-6 min-h-[100vh]'>
+    <div className='bg-[#0D0F10] h-screen min-w-[200px] w-[300px] flex flex-col rounded-lg py-8 px-6 min-h-[681px]'>
       <UserHeader/>
       <General/>
       <Groups/>
