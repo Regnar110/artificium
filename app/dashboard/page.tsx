@@ -20,11 +20,7 @@ const Dashboard = () => {
       <UserBoardWrapper>
         <BoardHeader>
           <HeaderWithAvatars/>
-          <ChatingWindowsWrapper>
-            <ChattingWindow window_slug='artificium' window_icon={artificium_icon} window_name='Artificium'/>
-            <ChattingWindow window_slug='chat' window_icon={chat} window_name='Chat'/>
-            <ChattingWindow window_slug='library' window_icon={library} window_name='Library'/>
-          </ChatingWindowsWrapper>
+          <ChatingWindowsWrapper/>
         </BoardHeader>
         <ChatPanel/>
       </UserBoardWrapper>
