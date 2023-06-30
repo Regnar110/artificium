@@ -5,7 +5,7 @@ interface ChatWindowProps {
     window_slug:"artificium" | "chat" | "library";
     window_icon:StaticImageData
     window_name:string;
-    onClick?: (targetId: "artificium" | "chat" | "library") => void
+    onClick: (targetId: "artificium" | "chat" | "library") => void
     isClicked:boolean
 }
 const ChattingWindow = ({window_slug, window_icon, window_name, onClick, isClicked}:ChatWindowProps) => {
