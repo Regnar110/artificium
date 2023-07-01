@@ -12,9 +12,9 @@ const BoardAvatars = () => {
             <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"OFFLINE"}}/>
             <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"OFFLINE"}}/>
 
-            {/* <div className='hidden_users_count cursor-pointer bg-[#1A1D21] text-[#686B6E] min-w-[36px] h-[36px] flex justify-center items-center rounded-full'>
+            <div className='hidden_users_count cursor-pointer bg-[#1A1D21] text-[#686B6E] w-[40px] h-[40px] flex justify-center items-center rounded-full'>
                 +4
-            </div>                 */}
+            </div>                
         </div>
         <div className='share_head_button relative font-plus_jakarta_sans flex items-center justify-center gap-x-3 cursor-pointer'>
             <Image className='w-auto' width={60} height={60} src={share} alt='share_icon'/>

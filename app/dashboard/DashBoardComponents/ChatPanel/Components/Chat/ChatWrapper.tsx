@@ -4,7 +4,7 @@ import ChatSendForm from './ChatSendForm/ChatSendForm'
 
 const ChatWrapper = () => {
   return (
-    <div className='chat flex flex-col h-full gap-y-5'>
+    <div className='chat relative flex flex-col h-full gap-y-5'>
         <ChatWindow/>
         <ChatSendForm/>
     </div>
