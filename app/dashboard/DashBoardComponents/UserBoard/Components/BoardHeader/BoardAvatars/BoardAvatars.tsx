@@ -1,19 +1,20 @@
 import React from 'react'
 import Image from 'next/image'
-import UserAvatarWithStatus from '../../UserAvatarWithStatus/UserAvatarWithStatus'
+import UserAvatarWithStatus from '../../../../../../AppComponents/UserAvatarWithStatus/UserAvatarWithStatus'
 import user_avatar from '../../../../../../../public/Dashboard/UserBoard/user_avatar.png'
 import share from '../../../../../../../public/Dashboard/UserBoard/share.svg'
 import edit from '../../../../../../../public/Dashboard/UserBoard/edit.svg'
 const BoardAvatars = () => {
   return (
-    <div className='avatar_functionalities flex gap-6'>
-        <div className='users_avatars_status_container flex flex-row min-w-fit'>
-            <UserAvatarWithStatus user_avatar={user_avatar}/>
-            <UserAvatarWithStatus user_avatar={user_avatar}/>
-            <UserAvatarWithStatus user_avatar={user_avatar}/>
-            <div className='hidden_users_count cursor-pointer bg-[#1A1D21] text-[#686B6E] min-w-[36px] h-[36px] flex justify-center items-center rounded-full'>
+    <div className='avatar_functionalities flex gap-6 w-fit'>
+        <div className='users_avatars_status_container flex'>
+            <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"ONLINE"}}/>
+            <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"OFFLINE"}}/>
+            <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"OFFLINE"}}/>
+
+            {/* <div className='hidden_users_count cursor-pointer bg-[#1A1D21] text-[#686B6E] min-w-[36px] h-[36px] flex justify-center items-center rounded-full'>
                 +4
-            </div>                
+            </div>                 */}
         </div>
         <div className='share_head_button relative font-plus_jakarta_sans flex items-center justify-center gap-x-3 cursor-pointer'>
             <Image className='w-auto' width={60} height={60} src={share} alt='share_icon'/>

@@ -4,9 +4,8 @@ import settings_icon from '../../../../../../public/Dashboard/UserPanel/Settings
 const BottomSettings = () => {
   return (
     <div className='user_panel_settings text-white flex w-full justify-between'>
-      <div className='get_premium'></div>
-      <div className='relative settings w-[20px] h-[20px] flex'>
-        <span>Settings</span>
+      <div className='get_premium text-[14px] text-[#B6F09C] cursor-pointer'>GET PREMIUM</div>
+      <div className='relative settings w-[20px] h-[20px] flex cursor-pointer'>
         <Image fill style={{objectFit:"contain"}} src={settings_icon} alt='settings'/>
       </div>
     </div>
