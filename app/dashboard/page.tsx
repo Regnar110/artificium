@@ -5,7 +5,6 @@ import ChatingWindowsWrapper from './DashBoardComponents/UserBoard/Components/Ch
 import BoardHeader from './DashBoardComponents/UserBoard/Components/BoardHeader/BoardHeader'
 import HeaderWithAvatars from './DashBoardComponents/UserBoard/Components/BoardHeader/HeaderWithAvatars/HeaderWithAvatars'
 import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
-import artificium_icon from '../../public/Dashboard/UserBoard/artificium_icon.svg'
 
 const Dashboard = () => {
   return (

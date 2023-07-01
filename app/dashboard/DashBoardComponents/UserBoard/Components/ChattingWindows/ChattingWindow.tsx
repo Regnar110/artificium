@@ -10,7 +10,7 @@ interface ChatWindowProps {
 }
 const ChattingWindow = ({window_slug, window_icon, window_name, onClick, isClicked}:ChatWindowProps) => {
   return (
-    <div onClick={() => onClick(window_slug)} id={window_slug} className='artificium_chat cursor-pointer w-fit flex flex-col justify-center items-end gap-x-5'>
+    <div onClick={() => onClick(window_slug)} id={window_slug} className='artificium_chat cursor-pointer w-fit min-h-[116px] flex flex-col justify-start items-end gap-x-5'>
         <div className='flex gap-3 w-fit pt-6 pb-3'>
         <Image className='w-[25px]' src={window_icon} alt='artificium_icon'/>
         <span className={`font-bold ${isClicked? "text-white" : "text-[#9B9C9E]"} transition-all`}>{window_name}</span>                

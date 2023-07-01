@@ -7,7 +7,7 @@ interface Props {
 
 const UserBoardWrapper = ({children}:Props) => {
   return (
-    <section className='text-white relative w-full h-screen grid min-h-[681px] place-items-center grid-auto-rows-auto'>
+    <section className='text-white relative w-full h-screen  min-h-[681px] place-items-center flex flex-col'>
       {children.map(el=>el)}
     </section>
   )
