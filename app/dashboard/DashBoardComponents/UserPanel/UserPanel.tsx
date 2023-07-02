@@ -6,7 +6,7 @@ import BottomSettings from './Components/BottomSettings/BottomSettings'
 
 const UserPanel = () => {
   return (
-    <div className='bg-[#0D0F10] h-screen min-w-[280px] w-[280px] flex flex-col justify-between rounded-lg py-8 px-6 min-h-[681px]'>
+    <div className='bg-[#0D0F10] h-screen min-w-[280px] w-[280px] flex flex-col gap-y-5 justify-between rounded-lg py-8 px-6 min-h-[681px]'>
       <div className='flex-wrapper flex flex-col'>
         <UserHeader/>
         <General/>

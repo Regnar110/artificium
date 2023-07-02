@@ -10,7 +10,6 @@ const UserHeader = () => {
         <div className='header_dropdown_icon relative w-[15px]'>
             <Image src={header_dropdown} alt='dropdown'/>
         </div>
-      
     </div>
   )
 }
