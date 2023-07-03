@@ -9,9 +9,23 @@ import { useForm } from "react-hook-form";
 const RegisterForm = () => {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = data => {
+    const onSubmit = async data => {
         delete data.register_password_repeat
-        console.log(data)
+        const response = await fetch("http://localhost:3001/register",
+            {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, *cors, same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: "follow", // manual, *follow, error
+                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
+            }
+        )
     }
 
 
@@ -50,25 +64,25 @@ const RegisterForm = () => {
                 />                        
             </div>
             <div className='register_input flex flex-col gap-y-4'>
-                <span className='text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium'>First name</span>
+                <span className='text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium'>Nickname</span>
                 <TextField 
                     type='text'
                     {...register(
-                        "first_name",
+                        "nickname",
                         {
                             required:"This field is required",
-                            minLength: { value:2, message:"This name is too short"},
-                            maxLength:{ value:20, message:"This name is too long"}
+                            minLength: { value:2, message:"This nickname is too short"},
+                            maxLength:{ value:20, message:"This nickname is too long"}
                         }
                         )
                     }
-                    error={errors.first_name?.message ? true:false}
-                    helperText={errors.first_name?.message ? errors.first_name.message as string:""}
+                    error={errors.nickname?.message ? true:false}
+                    helperText={errors.nickname?.message ? errors.nickname.message as string:""}
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
                     id="outlined-basic" 
-                    label="First name" 
+                    label="Nickname" 
                     variant="outlined" 
                 />
             </div>
