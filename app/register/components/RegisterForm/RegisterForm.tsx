@@ -26,6 +26,8 @@ const RegisterForm = () => {
                 body: JSON.stringify(data), // body data type must match "Content-Type" header
             }
         )
+        const parsedResponse = await response.json()
+        console.log(parsedResponse)
     }
 
 
@@ -45,7 +47,7 @@ const RegisterForm = () => {
                 <TextField 
                     {
                         ...register(
-                            "mail",
+                            "email",
                             {
                                 required:"This field is required",
                                 pattern: {value:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/, message:"Wrong email format"},
