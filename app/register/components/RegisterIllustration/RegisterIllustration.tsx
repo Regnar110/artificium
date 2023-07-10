@@ -11,8 +11,8 @@ const RegisterIllustration = () => {
     },[])
   return mounted ?
     <MediaQuery minWidth={1024}>
-        <div className='register_ilustration w-full col-span-2'>
-            <Image priority={true} className='float-right h-[100vh]' src={register_image_small} alt='register_image'/>
+        <div className='register_ilustration relative w-full flex justify-end items-end col-span-2 h-[100%]'>
+            <Image priority={true} fill={true} style={{objectFit:"cover"}} src={register_image_small} alt='register_image'/>
         </div>
     </MediaQuery>
   :
