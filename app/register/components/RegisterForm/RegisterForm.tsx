@@ -1,16 +1,20 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useForm } from "react-hook-form";
+import PulseLoader from 'react-spinners/PulseLoader';
 const RegisterForm = () => {
-
+    const [registerResponse, setRegisterResponse ] = useState()
+    const [responseLoading, setResponseLoading] = useState(false)
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async data => {
+        setResponseLoading(true)
         delete data.register_password_repeat
+        console.log(registerResponse)
         const response = await fetch("http://localhost:3001/register",
             {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -27,7 +31,8 @@ const RegisterForm = () => {
             }
         )
         const parsedResponse = await response.json()
-        console.log(parsedResponse)
+        setRegisterResponse(parsedResponse)
+        setResponseLoading(false)
     }
 
 
@@ -137,6 +142,11 @@ const RegisterForm = () => {
                 />                            
             </div>
         </ThemeProvider>
+        <div className='text-[#d32f2f] font-plus_jakarta_sans'>
+            {
+                registerResponse && registerResponse.status === 500 ? registerResponse.client_message : ""
+            }
+        </div>
         <div className='terms_conditions_checkbox flex gap-x-2 text-white font-plus_jakarta_sans items-center col-span-2'>
             <Checkbox 
                 {...register(
@@ -157,7 +167,7 @@ const RegisterForm = () => {
         </div>
         <Button
         type='submit'
-        className='w-full col-span-2 bg-[#B6F09C] '
+        className='w-full col-span-2 bg-[#B6F09C] min-h-[36.5px] flex justify-center items-center'
         sx={{
             backgroundColor:"#B6F09C",
             fontFamily:"Plus Jakarta Sans",
@@ -168,7 +178,9 @@ const RegisterForm = () => {
             },
         }}
         >
-            Create free account
+            {
+                responseLoading ? <PulseLoader className='w-fit' size={10} color="#131619" /> : "Create free account"
+            }
         </Button>
     </form>                
   )
