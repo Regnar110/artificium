@@ -7,31 +7,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useForm } from "react-hook-form";
 import PulseLoader from 'react-spinners/PulseLoader';
+import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 const RegisterForm = () => {
-    const [registerResponse, setRegisterResponse ] = useState()
-    const [responseLoading, setResponseLoading] = useState(false)
+    const [registerResponse, setRegisterResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
+    const [responseLoading, setResponseLoading] = useState<boolean>(false)
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = async data => {
+    const onSubmit = async (data:RegisterFormData) => {
+        console.log(data)
         setResponseLoading(true)
         delete data.register_password_repeat
-        console.log(registerResponse)
-        const response = await fetch("http://localhost:3001/register",
-            {
-                method: "POST", // *GET, POST, PUT, DELETE, etc.
-                mode: "cors", // no-cors, *cors, same-origin
-                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: "same-origin", // include, *same-origin, omit
-                headers: {
-                "Content-Type": "application/json",
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: "follow", // manual, *follow, error
-                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                body: JSON.stringify(data), // body data type must match "Content-Type" header
-            }
-        )
-        const parsedResponse = await response.json()
-        setRegisterResponse(parsedResponse)
+        const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('register', data)
+        console.log(userAccessResponse)
+        setRegisterResponse(userAccessResponse)
         setResponseLoading(false)
     }
 
@@ -45,7 +32,7 @@ const RegisterForm = () => {
       })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}  className='register_form flex flex-col md:grid md:grid-cols-2 gap-5 h-fit md:row-span-2 w-full'>
+    <form onSubmit={handleSubmit(onSubmit as any)}  className='register_form flex flex-col md:grid md:grid-cols-2 gap-5 h-fit md:row-span-2 w-full'>
         <ThemeProvider theme={theme}>
             <div className='register_input flex flex-col gap-y-4'>
                 <span className='text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium'>E-mail</span>
