@@ -46,7 +46,7 @@ const RegisterForm = () => {
                             }
                         )
                     }
-                    error={errors.mail?.message ? true : false}
+                    error={errors.email?.message ? true : false}
                     helperText={errors.mail?.message ? errors.mail.message as string:""}
                     type='email'
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
