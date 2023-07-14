@@ -18,7 +18,7 @@ interface ClientBoundedProviderProps {
 interface RegisterFormData {
     email: string, 
     nickname: string, 
-    register_password: string, 
+    register_password?: string, 
     register_password_repeat?: string, 
     register_terms: boolean
 }
