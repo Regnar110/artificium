@@ -12,8 +12,8 @@ const LoginIllustration = () => {
   },[])
   return mounted ? 
     <MediaQuery minWidth={1024}>
-        <div className='login_illustration relative h-[100%] w-full col-span-2'>
-            <Image priority={true} fill={true} style={{objectFit:"contain"}} className='min-h-[100%] float-right' src={login_image} alt='register_image'/>
+        <div className='login_illustration relative h-screen w-full col-span-2'>
+            <Image priority={true} fill={true} style={{objectFit:"cover"}} className='min-h-[100%] float-right' src={login_image} alt='register_image'/>
         </div>
     </MediaQuery>
   :

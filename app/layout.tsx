@@ -2,6 +2,8 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { ClientBoundedProvider } from '@/redux/provider/ClientBoundedProvider'
+import { SessionProvider } from "next-auth/react"
+import { Session } from 'next-auth'
 
 //LAYOUT jet plikiem, który zawiera wspólne dla wszystkich stron aplikacji elementy tj. nawigacja lub stopka
 
@@ -14,16 +16,19 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  session
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  session:Session
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClientBoundedProvider>
-          {children}          
-        </ClientBoundedProvider>
-
+        <SessionProvider session={session}>
+          <ClientBoundedProvider>
+            {children}          
+          </ClientBoundedProvider>          
+        </SessionProvider>
       </body>
     </html>
   )
