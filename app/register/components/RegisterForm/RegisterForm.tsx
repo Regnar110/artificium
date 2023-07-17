@@ -14,6 +14,7 @@ const RegisterForm = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async (data:RegisterFormData) => {
         console.log(data)
+        data.provider = "artificium" // użytkownik zarejestrowany przez formularz artificium - bez zewnętrznego providera
         setResponseLoading(true)
         delete data.register_password_repeat
         const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('register', data)

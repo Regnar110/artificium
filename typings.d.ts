@@ -21,6 +21,7 @@ interface RegisterFormData {
     register_password?: string, 
     register_password_repeat?: string, 
     register_terms: boolean
+    provider: "artificium" | "google"
 }
 
 interface UserAccesSuccessResponse {

@@ -1,9 +1,9 @@
 export const userAccessRequest = async <ReturnType, BodyType>(endpoint:string, requestBody?:BodyType):Promise<ReturnType> => {
-    console.log(requestBody)
+    console.log(endpoint)
     const response = await fetch(`http://localhost:3001/${endpoint}`,
         {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
-            mode: "no-cors", // no-cors, *cors, same-origin
+            mode: "cors", // no-cors, *cors, same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
             credentials: "same-origin", // include, *same-origin, omit
             headers: {
