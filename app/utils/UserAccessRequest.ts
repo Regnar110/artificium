@@ -1,5 +1,4 @@
 export const userAccessRequest = async <ReturnType, BodyType>(endpoint:string, requestBody?:BodyType):Promise<ReturnType> => {
-    console.log(endpoint)
     const response = await fetch(`http://localhost:3001/${endpoint}`,
         {
             method: "POST", // *GET, POST, PUT, DELETE, etc.

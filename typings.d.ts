@@ -20,8 +20,12 @@ interface RegisterFormData {
     nickname: string, 
     register_password?: string, 
     register_password_repeat?: string, 
-    register_terms: boolean
     provider: "artificium" | "google"
+}
+
+interface ProviderLoginData {
+    email:string
+    provider:string
 }
 
 interface UserAccesSuccessResponse {

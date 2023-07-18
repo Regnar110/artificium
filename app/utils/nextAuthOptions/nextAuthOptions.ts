@@ -20,21 +20,28 @@ export const nextAuthOptions:NextAuthOptions = {
           }),
     ],
     callbacks: {
-        async signIn({ user, account, profile }) { // logika sing in tutaj!
-            // PO zalogowaniu się użytkownika w providerze będziemy sprawdzać czy taki użytkownik istnieje już w bazie.
-            // Jeżeli nie istnieje to wtedy będziemy go do tej bazy wpychać oraz kolekcjonować od niego pozostałe wymagane do rejstracji dane
-            user.nickname = "SDadssd"
-            let isAllowedToSignIn:boolean = false
-            console.log(user, account, profile)
-            const authenticatedUserData:RegisterFormData = {
-                email:user.email as string,
-                nickname: user.name as string,
-                register_terms: true
-                
-            }
-            const response = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", authenticatedUserData)
-            console.log(response)
+        async signIn({ user, account, profile }) {
+            const userData = { // tworzmy obiekt użytkownika na wypadek gdy jest on nowym użytkownikiem. Obiekt ten posłuży w razie co do rejestracji w bazie
+              ...user,
+              nickname: (profile!.name as string).replace(/\s/g, ''),
+              provider:account?.provider,
+            } as RegisterFormData
+            console.log(user.email)
+            //usuwamy właściwiości obiektu, które nie są zgodne z typem obiektu RegisterFormData
+            delete userData.image
+            delete userData.id
+            delete userData.name
+            console.log(userData)
+            //logowanie - najpierw sprawdzimy czy konto z tym mailem istnieje już w bazie i czy provider się zgadza
+            const response = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
+            // tutaj powinniśmy otrzymać UserAccessSuccessResponse  w którym body jest obiektem użytkownika. Body przy udanym logowaniu powinno zawsze być obiektem użytkownika z bazy
+            //mongo.
+            user = response.body
             return true
         },
+        async session({session, token, user}) {
+          console.log(token)
+          return session
+        }
     }
 }

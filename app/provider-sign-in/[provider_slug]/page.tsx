@@ -4,7 +4,6 @@ import { useEffect } from "react";
 
 const SignInPage = ({params}:{ params: { provider_slug:string}}) => {
     const { data: session, status } = useSession();
-    console.log(params.provider_slug)
     useEffect(() => {
         if (!(status === "loading") && !session) void signIn(params.provider_slug);
         if (session) window.close();
