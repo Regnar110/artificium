@@ -19,7 +19,8 @@ const LoginForm = () => {
       const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('login', data)
       setLoginResponse(userAccessResponse)
       setResponseLoading(false)
-      userAccessResponse.status === 200 && router.push("/dashboard")
+      console.log(userAccessResponse.body)
+      userAccessResponse.status === 500 || userAccessResponse.status === 510 ? null : router.push("/dashboard")
     }
 
       const theme = createTheme({

@@ -39,3 +39,13 @@ interface UserAccessErrorResponse {
     client_message:string;
     status: 500 | 510
 }
+
+interface AuthenticatedUser {
+    _id: string,
+    email: string,
+    nickname: string,
+    provider: string,
+    avatar_id: string,
+    user_friends_ids: string[],
+    user_groups_ids: string[]
+}
