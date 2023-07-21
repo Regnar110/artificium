@@ -1,5 +1,4 @@
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit"
-import router from "next/router";
 import { Dispatch } from "react"
 import { injectUser } from "@/redux/slices/userSession/userSessionSlice";
 
