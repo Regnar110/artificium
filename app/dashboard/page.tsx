@@ -5,20 +5,20 @@ import ChatingWindowsWrapper from './DashBoardComponents/UserBoard/Components/Ch
 import BoardHeader from './DashBoardComponents/UserBoard/Components/BoardHeader/BoardHeader'
 import HeaderWithAvatars from './DashBoardComponents/UserBoard/Components/BoardHeader/HeaderWithAvatars/HeaderWithAvatars'
 import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
+import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/DashboardPageWrapper'
 
 const Dashboard = () => {
   return (
-    <main className='dashboard box-border text-black bg-[#131619] w-full  flex justify-center items-center p-5 gap-3 min-h-[screen]'>
-      <UserPanel/>        
-      <UserBoardWrapper>
-        <BoardHeader>
-          <HeaderWithAvatars/>
-          <ChatingWindowsWrapper/>
-        </BoardHeader>
-        <ChatPanel/>
-      </UserBoardWrapper>
-        
-    </main>
+    <DashboardPageWrapper>
+        <UserPanel/>        
+        <UserBoardWrapper>
+          <BoardHeader>
+            <HeaderWithAvatars/>
+            <ChatingWindowsWrapper/>
+          </BoardHeader>
+          <ChatPanel/>
+        </UserBoardWrapper>      
+    </DashboardPageWrapper>
   )
 }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,8 +9,19 @@ import { useForm } from "react-hook-form";
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { useRouter } from 'next/navigation';
+import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks';
+import { isUserAuthenticated, showUserObject } from '@/redux/slices/userSession/userSessionSlice';
 const LoginForm = () => {
     const router = useRouter()
+    const dispatch = useAppDispatch()
+    
+    const isAuth = useAppSelector(state => isUserAuthenticated(state))
+    const userObject = useAppSelector(state => showUserObject(state))
+    useEffect(() => {
+      // isAuth === true ? router.push("/dashboard") : null
+      console.log(userObject)
+    },[isAuth])
     const [ loginResponse, setLoginResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const [ responseLoading, setResponseLoading ] = useState<boolean>(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -20,7 +31,7 @@ const LoginForm = () => {
       setLoginResponse(userAccessResponse)
       setResponseLoading(false)
       console.log(userAccessResponse.body)
-      userAccessResponse.status === 500 || userAccessResponse.status === 510 ? null : router.push("/dashboard")
+      userAccessResponse.status === 510 || userAccessResponse.status === 500 ? null : AuthUserStoreInjection({ user: userAccessRequest.body, dispatch})
     }
 
       const theme = createTheme({

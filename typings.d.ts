@@ -44,7 +44,7 @@ interface AuthenticatedUser {
     _id: string,
     email: string,
     nickname: string,
-    provider: string,
+    provider: "artificium" | "google",
     avatar_id: string,
     user_friends_ids: string[],
     user_groups_ids: string[]
