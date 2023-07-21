@@ -8,20 +8,10 @@ import Checkbox from '@mui/material/Checkbox'
 import { useForm } from "react-hook-form";
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 import PulseLoader from 'react-spinners/PulseLoader';
-import { useRouter } from 'next/navigation';
 import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks';
-import { isUserAuthenticated, showUserObject } from '@/redux/slices/userSession/userSessionSlice';
+import { useAppDispatch } from '@/redux/hooks/typedHooks';
 const LoginForm = () => {
-    const router = useRouter()
     const dispatch = useAppDispatch()
-    
-    const isAuth = useAppSelector(state => isUserAuthenticated(state))
-    const userObject = useAppSelector(state => showUserObject(state))
-    useEffect(() => {
-      // isAuth === true ? router.push("/dashboard") : null
-      console.log(userObject)
-    },[isAuth])
     const [ loginResponse, setLoginResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const [ responseLoading, setResponseLoading ] = useState<boolean>(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();

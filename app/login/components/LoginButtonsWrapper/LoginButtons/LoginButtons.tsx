@@ -9,19 +9,14 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import { NextAuthProviderLoginPopUpCenter } from '@/app/utils/NextAuthProviderLoginPopUpCenter/NextAuthProviderLoginPopUpCenter'
 import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
-import { isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
-import { useRouter } from 'next/navigation'
-
 const LoginButtons = () => {
   const {data:session} = useSession()
   const dispatch = useAppDispatch()
-  const router = useRouter()
-  const isAuth = useAppSelector((state) => isUserAuthenticated(state))
+
   useEffect(() => {
     if(session) {
       const user = session.user as UserAccesSuccessResponse | UserAccessErrorResponse
       user.status === 510 || user.status === 500 ? signOut() : AuthUserStoreInjection({ user: user.body, dispatch})
-      // isAuth === true ? router.push("/dashboard") : null
     }
 
   },[session])
