@@ -53,7 +53,7 @@ const RegisterForm = () => {
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
-                    id="outlined-basic" 
+                    id="outlined-basic_email" 
                     label="E-mail" 
                     variant="outlined" 
                 />                        
@@ -76,7 +76,7 @@ const RegisterForm = () => {
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
-                    id="outlined-basic" 
+                    id="outlined-basic_nickname" 
                     label="Nickname" 
                     variant="outlined" 
                 />
@@ -98,7 +98,7 @@ const RegisterForm = () => {
                     InputLabelProps={{ style: {color:"#9B9C9E"}}}
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
-                    id="outlined-basic" 
+                    id="outlined-basic_password" 
                     label="Password" 
                     variant="outlined" 
                 />
@@ -124,7 +124,7 @@ const RegisterForm = () => {
                     InputLabelProps={{ style: {color:"#9B9C9E"}}} 
                     sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
                     color="primary" 
-                    id="outlined-basic" 
+                    id="outlined-basic_password_repeat" 
                     label="Repeat password" 
                     variant="outlined" 
                 />                            

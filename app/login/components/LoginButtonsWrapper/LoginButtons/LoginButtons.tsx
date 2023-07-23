@@ -8,7 +8,7 @@ import apple from '../../../../../public/buttons/login_buttons/apple.svg'
 import { useSession, signIn, signOut } from "next-auth/react"
 import { NextAuthProviderLoginPopUpCenter } from '@/app/utils/NextAuthProviderLoginPopUpCenter/NextAuthProviderLoginPopUpCenter'
 import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
+import { useAppDispatch } from '@/redux/hooks/typedHooks'
 const LoginButtons = () => {
   const {data:session} = useSession()
   const dispatch = useAppDispatch()

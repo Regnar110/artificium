@@ -1,18 +1,19 @@
 'use client'
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { Dispatch } from "react";
-import { AuthUserStoreInjection } from "../AuthUserStoreInjection/AuthUserStoreInjection";
 import { signOut } from "next-auth/react";
+import { signOutUser } from "@/redux/slices/userSession/userSessionSlice";
 
 interface Props {
-    userProvider:string
+    userProvider:Providers
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
 }
-export const authUserSignOut = ({userProvider, dispatch}:Props) => {
+export const authUserSignOut = async ({userProvider, dispatch}:Props) => {
+    console.log(userProvider)
     if(userProvider === 'artificium') {
-        AuthUserStoreInjection({user:{}, dispatch})
+        dispatch(signOutUser())
     } else if(userProvider === 'google') {
-        AuthUserStoreInjection({user:{}, dispatch})
-        signOut()
+        await signOut()
+        dispatch(signOutUser())
     }
 }

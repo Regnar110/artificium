@@ -13,7 +13,7 @@ const LoginIllustration = () => {
   return mounted ? 
     <MediaQuery minWidth={1024}>
         <div className='login_illustration relative h-screen w-full col-span-2'>
-            <Image priority={true} fill={true} style={{objectFit:"cover"}} className='min-h-[100%] float-right' src={login_image} alt='register_image'/>
+            <Image priority={true} fill={true} sizes='(min-width: 1024px) 100%' style={{objectFit:"cover"}} className='min-h-[100%] float-right' src={login_image} alt='register_image'/>
         </div>
     </MediaQuery>
   :

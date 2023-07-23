@@ -15,13 +15,14 @@ const LoginForm = () => {
     const [ loginResponse, setLoginResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const [ responseLoading, setResponseLoading ] = useState<boolean>(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+
     const onSubmit = async (data:RegisterFormData) => {
       setResponseLoading(true)
       const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('login', data)
       setLoginResponse(userAccessResponse)
       setResponseLoading(false)
-      console.log(userAccessResponse.body)
-      userAccessResponse.status === 510 || userAccessResponse.status === 500 ? null : AuthUserStoreInjection({ user: userAccessRequest.body, dispatch})
+      userAccessResponse.status === 510 || userAccessResponse.status === 500 ? null : AuthUserStoreInjection({ user: userAccessResponse.body, dispatch})
     }
 
       const theme = createTheme({
@@ -52,7 +53,7 @@ const LoginForm = () => {
               InputLabelProps={{ style: {color:"#9B9C9E"}}} 
               sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
               color="primary" 
-              id="outlined-basic" 
+              id="outlined-basic_email" 
               label="E-mail"
               variant="outlined" 
             />
@@ -69,7 +70,7 @@ const LoginForm = () => {
               InputLabelProps={{ style: {color:"#9B9C9E"}}} 
               sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
               color="primary" 
-              id="outlined-basic" 
+              id="outlined-basic_password" 
               label="Password" 
               variant="outlined" 
             />              

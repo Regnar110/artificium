@@ -49,3 +49,5 @@ interface AuthenticatedUser {
     user_friends_ids: string[],
     user_groups_ids: string[]
 }
+
+type Providers = "artificium" | "google"
