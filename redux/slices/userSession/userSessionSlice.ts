@@ -1,6 +1,7 @@
 import { RootState } from "@/redux/store/store";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { Root } from "postcss";
 
 
 const initialState: Partial<AuthenticatedUser>  = {}
@@ -9,7 +10,7 @@ export const userSessionSlice = createSlice({
     name: 'userSession',
     initialState,
     reducers: {
-        injectUser: (state, action:PayloadAction<AuthenticatedUser>) => {
+        injectUser: (state, action:PayloadAction<Partial<AuthenticatedUser>>) => {
             state = Object.assign(state, action.payload)
         },
         signOutUser: () => initialState
@@ -27,6 +28,6 @@ export const isUserAuthenticated = (state:RootState):boolean => {
     return state.userSession._id ? true : false
 }
 
-export const showUserObject = (state:RootState):Partial<AuthenticatedUser> => {
-    return state.userSession
+export const getUserProvider = (state:RootState):"artificium"|"google" => {
+    return state.userSession.provider!
 }
