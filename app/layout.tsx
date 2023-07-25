@@ -4,6 +4,8 @@ import { Inter } from 'next/font/google'
 import { ClientBoundedProvider } from '@/redux/provider/ClientBoundedProvider'
 import { Session } from 'next-auth'
 import NextAuthSessionProvider from './utils/NextAuthSessionProvider/NextAuthSessionProvider'
+import { Suspense } from 'react'
+import PageLoader from './AppComponents/PageLoader/PageLoader'
 
 //LAYOUT jet plikiem, który zawiera wspólne dla wszystkich stron aplikacji elementy tj. nawigacja lub stopka
 
@@ -25,7 +27,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextAuthSessionProvider>
           <ClientBoundedProvider>
+            <Suspense fallback={<PageLoader/>}>
             {children}          
+            </Suspense>
           </ClientBoundedProvider>          
         </NextAuthSessionProvider>
       </body>

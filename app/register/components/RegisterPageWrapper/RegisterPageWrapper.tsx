@@ -10,22 +10,18 @@ interface Props {
 const RegisterPageWrapper = ({children}:Props) => {
   const router = useRouter()
   const userSession = useAppSelector(state => isUserAuthenticated(state))
-  const [DOMStatus, setDOMStatus] = useState<boolean>(false)
   useEffect(() => {
     if(userSession === true) {
-      setDOMStatus(false)
       router.push("/dashboard")
-    } else {
-      setDOMStatus(true)
     }
   },[userSession])
     
-  return DOMStatus?
+  return userSession === false?
     <main className='bg-[#131619] grid box-border grid-cols-5 min-h-[100vh]'>
       {children.map(el=>el)}
     </main>
-  :
-  <PageLoader/>
+    :
+    <PageLoader/>
 }
 
 export default RegisterPageWrapper

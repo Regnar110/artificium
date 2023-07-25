@@ -1,10 +1,21 @@
 'use client'
-import React from "react"
+import React, { useEffect } from "react"
 import Image from 'next/image'
 import mainlogo from '../public/home/mainlogo.svg'
-import { Button } from "@mui/material"
-const Home = () => {
-  return (
+import { useRouter } from "next/navigation"
+import { useAppSelector } from "@/redux/hooks/typedHooks"
+import { isUserAuthenticated } from "@/redux/slices/userSession/userSessionSlice"
+import PageLoader from "./AppComponents/PageLoader/PageLoader"
+const Home = async () => { // ASYNC FOR SUSPENSE LOADING
+
+  const router = useRouter()
+  const userSession = useAppSelector(state => isUserAuthenticated(state))
+  useEffect(() => {
+    if(userSession === true) {
+      router.push("/dashboard")
+    }
+  },[userSession])
+  return userSession === false ?
     <main className="bg-[url(https://i.imgur.com/2oNt9eg.jpeg?2)] bg-cover bg-top md:bg-fixed flex flex-col items-center">
       <section className="home_landing flex flex-col items-center">
         <div className="relative w-[270px] md:w-[300px] lg:w-[400px] home_logo mt-14 mb-40">
@@ -15,7 +26,7 @@ const Home = () => {
             <span className="text-white">Empowering your</span>
             <span className='text-transparent bg-clip-text gradient_dayblue_blue_green500'>digital journey</span>          
           </div>
-          <button className="bg-[#111737de] w-fit px-8 py-6 rounded-full flex"><span className="text-[10px] md:text-[15px] lg:text-[20px] text-transparent bg-clip-text gradient_dayblue_blue_green500 font-extrabold">GET STARTED</span></button>
+          <button onClick={()=> router.push('/login')} className="bg-[#111737de] w-fit px-8 py-6 rounded-full flex"><span className="text-[10px] md:text-[15px] lg:text-[20px] text-transparent bg-clip-text gradient_dayblue_blue_green500 font-extrabold">GET STARTED</span></button>
         </section>        
       </section>
       <section className="home-description bg-black bg-opacity-70 backdrop-blur-xl rounded drop-shadow-lg  flex flex-col gap-24">
@@ -51,7 +62,8 @@ const Home = () => {
         </div>
       </section>
     </main>
-  )
+  :
+  <PageLoader/>
 }
 
 export default Home

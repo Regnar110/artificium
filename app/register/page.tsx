@@ -8,7 +8,7 @@ import RegisterForm from './components/RegisterForm/RegisterForm'
 import SignInRedirect from './components/SignInRedirect/SignInRedirect'
 import RegisterFooter from './components/RegisterFooter/RegisterFooter'
 import RegisterIllustration from './components/RegisterIllustration/RegisterIllustration'
-const Register = () => {
+const Register = async () => {
   return(
     <RegisterPageWrapper>
         <RegisterWrapper>

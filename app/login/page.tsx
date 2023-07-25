@@ -11,7 +11,7 @@ import SignUpRedirect from './components/SignUpRedirect/SignUpRedirect'
 import LoginIllustration from './components/LoginIllustration/LoginIllustration'
 import RegisterFooter from '../register/components/RegisterFooter/RegisterFooter'
 
-export default function Login() {
+export default async function Login() {
   return (
     <LoginPageWrapper>
       <LoginSection>
