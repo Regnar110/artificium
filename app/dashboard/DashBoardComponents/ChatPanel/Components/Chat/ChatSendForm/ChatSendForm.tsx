@@ -5,7 +5,12 @@ import { ThemeProvider, createTheme } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import chat_send from '../../../../../../../public/chatpanel/chat_send.svg'
 import microphone from '../../../../../../../public/chatpanel/microphone.svg'
-const ChatSendForm = () => {
+
+interface SendFormProps {
+  chatSendMessage: (e:React.FormEvent<HTMLButtonElement>, message: string) => void;
+}
+
+const ChatSendForm = ({chatSendMessage}:SendFormProps) => {
 
     const theme = createTheme({
         palette: {
@@ -31,7 +36,7 @@ const ChatSendForm = () => {
           <TextField onChange={(e) => setSendInputValue(e.target.value)} color='primary' sx={{input:{ height:"60px", padding:"0px" ,color:"white", background:"#0D0F10", '&::placeholder':{color:"#363A3D"}}}} placeholder='type something here' variant="filled" />          
         </ThemeProvider>
         
-        <button onClick={(e) => sendMessageClientHandler( {e, message_text:sendInputValue, user_data:{user_nickname:"TestTest"}})} className='send_button bg-[#1A1D21] w-[50px] h-[50px] rounded-lg p-4'>
+        <button onClick={(e) => chatSendMessage(e, sendInputValue)} className='send_button bg-[#1A1D21] w-[50px] h-[50px] rounded-lg p-4'>
             <Image src={chat_send} alt='send message'/>
         </button>
     </form>
