@@ -4,14 +4,17 @@ import chat from '../../../../../../public/Dashboard/UserBoard/chat.svg'
 import library from '../../../../../../public/Dashboard/UserBoard/library.svg'
 import React, {useEffect, useState} from 'react'
 import ChattingWindow from './ChattingWindow'
-import { renderFN } from '@/app/actions'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
+import { getChat, selectWindow } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 
 type ClickedWindowTypes = "artificium" | "chat" | "library"
 const ChatingWindowsWrapper = () => {
-    renderFN("dddd")
+    const dispatch = useAppDispatch()
+    const chatChosen = useAppSelector(getChat)
+    console.log(chatChosen)
     const [ windowClicked, setWindowClicked ] = useState<ClickedWindowTypes>("artificium")
     const onWindowClick = (targetId:ClickedWindowTypes) => {
-        console.log(targetId)
+        dispatch(selectWindow(targetId))
         setWindowClicked(targetId)
     }
 

@@ -51,3 +51,11 @@ interface AuthenticatedUser {
 }
 
 type Providers = "artificium" | "google"
+
+
+//CHATTING WINDOWS
+
+interface ChattingWindowsType {
+    windowType:"artificium" | "chat" | "library",
+    selectedGroup:string
+}

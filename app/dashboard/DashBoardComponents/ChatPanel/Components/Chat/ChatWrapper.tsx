@@ -7,9 +7,7 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 
 const ChatWrapper = () => {
   let ioInstance:Socket<DefaultEventsMap, DefaultEventsMap> = io("http://localhost:3001/")
-  const handleIoSocketDisconnect = async () => {
-    const response = await fetch
-  }
+  ioInstance.on("chat_response", (...args) => console.log(args))
   useEffect(() => {
     // ioInstance = io('http://localhost:3001/')
     // ioInstance.on('messageReceived', (message) => {
@@ -22,9 +20,11 @@ const ChatWrapper = () => {
   },[])
 
   const chatSendMessage = (e:React.FormEvent<HTMLButtonElement>, message:string) => {
+    e.preventDefault()
     console.log(message)
     ioInstance.emit("chat", message)
   }
+
   return (
     <div className='chat relative flex flex-col h-full gap-y-5'>
         <ChatWindow/>
