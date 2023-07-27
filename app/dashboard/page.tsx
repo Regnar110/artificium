@@ -10,27 +10,39 @@ import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/Das
 import EmptyBoardWaterMark from './DashBoardComponents/EmptyBoardWaterMark/EmptyBoardWaterMark'
 import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const Dashboard = () => {
+  let settings = {
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  }
   const chat = useAppSelector(getChat)
   return (
     <DashboardPageWrapper>
-        <UserPanel/>        
-        <UserBoardWrapper>
-          {
-            chat.selectedGroup.length > 0 ?
-            <>
-              <BoardHeader>
-                <HeaderWithAvatars/>
-                <ChatingWindowsWrapper/>
-              </BoardHeader>
-              <ChatPanel/>
-            </>
-              :
-              <EmptyBoardWaterMark/>
-          }
+      <Slider className=''  {...settings}>
+          <UserPanel/>        
+          <UserBoardWrapper>
+            {
+              chat.selectedGroup.length > 0 ?
+              <>
+                <BoardHeader>
+                  <HeaderWithAvatars/>
+                  <ChatingWindowsWrapper/>
+                </BoardHeader>
+                <ChatPanel/>
+              </>
+                :
+                <EmptyBoardWaterMark/>
+            } 
+            <div></div>
+            </UserBoardWrapper>       
+          </Slider>
           <div></div>
-        </UserBoardWrapper>      
+          <div></div>
+              
     </DashboardPageWrapper>
   )
 }

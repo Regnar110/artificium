@@ -35,3 +35,28 @@ export default chattingWindowsSlice.reducer
 export const getChat = (state:RootState) => {
     return state.chattingWindows
 }
+
+
+// Chatting windows będą zawierać :
+
+// {
+//     windowsType:string
+//     selectedGroup: {
+//         groupId:string
+//         groupName:string
+//         groupDescription: string
+//         groupUsersIds:[]
+//         groupAdminId:string
+//         groupRecentMessages:[
+//             {
+//                 nickname:string
+//                 avatar_id:string
+//                 message:string
+//             }
+//             ...
+//         ]
+//     }
+// }
+// Będzie to całościowy stan po implementacji funkcjonalnosci.
+// Dane te będą ściągane z API po tym jak  użytkownik kliknie na daną grupę.
+// Recent Messages będą tablicą ostatnich 30 wiadomośći w czacie. Najstarsze będą usuwane
