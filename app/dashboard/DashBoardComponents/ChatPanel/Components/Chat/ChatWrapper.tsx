@@ -4,8 +4,10 @@ import ChatWindow from './ChatWindow/ChatWindow'
 import ChatSendForm from './ChatSendForm/ChatSendForm'
 import { Socket, io } from 'socket.io-client'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
-
-const ChatWrapper = () => {
+interface ChatWrapperProps {
+  friendsVisibility:boolean
+}
+const ChatWrapper = ({friendsVisibility}:ChatWrapperProps) => {
   let ioInstance:Socket<DefaultEventsMap, DefaultEventsMap> = io("http://localhost:3001/")
   ioInstance.on("chat_response", (...args) => console.log(args))
   useEffect(() => {
@@ -26,7 +28,7 @@ const ChatWrapper = () => {
   }
 
   return (
-    <div className='chat relative flex flex-col h-full gap-y-5'>
+    <div className={`${friendsVisibility === true ? "w-[0px] md:w-full": "w-full"} chat relative flex flex-col h-full gap-y-5 overflow-hidden`}>
         <ChatWindow/>
         <ChatSendForm chatSendMessage={chatSendMessage}/>
     </div>

@@ -23,7 +23,7 @@ const DashboardPageWrapper = ({children}:Props) => {
       
     },[userSession])
   return DOMStatus ?
-    <main className='dashboard box-border text-black bg-[#131619] w-full  flex justify-center items-center p-5 gap-3 min-h-[screen]'>
+    <main className='dashboard box-border text-black bg-[#131619] w-full flex justify-center items-center gap-3 min-h-[screen] overflow-hidden'>
       {children.map(el => el)}
     </main>
   :

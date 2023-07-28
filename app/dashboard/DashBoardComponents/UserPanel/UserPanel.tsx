@@ -26,9 +26,9 @@ const UserPanel = () => {
   // }
 
   return (
-    <div className={`bg-[#0D0F10] min-w-[280px] w-[280px] relative h-screen flex flex-col gap-y-5 justify-between rounded-lg py-8 px-6 min-h-[681px]`}>
+    <div className={`bg-[#0D0F10] min-w-[280px] w-full md:w-[280px] relative h-screen flex flex-col gap-y-5 justify-between rounded-lg py-8 px-6 min-h-[681px] overflow-scroll overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-[#0D0F10]  `}>
       <div className='flex-wrapper flex flex-col'>
-        <button className='text-white text-[12px]' onClick={() => handleAppLogOut()}>Log out</button>
+        {/* <button className='text-white text-[12px]' onClick={() => handleAppLogOut()}>Log out</button> */}
         <UserHeader/>
         <General/>
         <Groups/>        

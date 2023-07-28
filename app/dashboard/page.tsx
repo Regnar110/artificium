@@ -10,19 +10,23 @@ import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/Das
 import EmptyBoardWaterMark from './DashBoardComponents/EmptyBoardWaterMark/EmptyBoardWaterMark'
 import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import MediaQuery from 'react-responsive'
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 const Dashboard = () => {
   let settings = {
     speed: 500,
+    Infinity:false,
     slidesToShow: 1,
     slidesToScroll: 1
   }
   const chat = useAppSelector(getChat)
   return (
     <DashboardPageWrapper>
-      <Slider className=''  {...settings}>
+      <MediaQuery minWidth={768}>
           <UserPanel/>        
           <UserBoardWrapper>
             {
@@ -38,10 +42,30 @@ const Dashboard = () => {
                 <EmptyBoardWaterMark/>
             } 
             <div></div>
-            </UserBoardWrapper>       
-          </Slider>
-          <div></div>
-          <div></div>
+            </UserBoardWrapper>   
+      </MediaQuery>
+      <MediaQuery maxWidth={767}>
+        <Slider className=''  {...settings}>
+            <UserPanel/>        
+            <UserBoardWrapper>
+              {
+                chat.selectedGroup.length > 0 ?
+                <>
+                  <BoardHeader>
+                    <HeaderWithAvatars/>
+                    <ChatingWindowsWrapper/>
+                  </BoardHeader>
+                  <ChatPanel/>
+                </>
+                  :
+                  <EmptyBoardWaterMark/>
+              } 
+              <div></div>
+              </UserBoardWrapper>   
+        </Slider>
+      </MediaQuery>
+          <div className='hidden'></div>
+          <div className='hidden'></div>
               
     </DashboardPageWrapper>
   )
