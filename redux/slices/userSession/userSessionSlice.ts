@@ -31,3 +31,7 @@ export const isUserAuthenticated = (state:RootState):boolean => {
 export const getUserProvider = (state:RootState):"artificium"|"google" => {
     return state.userSession.provider!
 }
+
+export const getUserId = (state:RootState):string => {
+    return state.userSession._id!
+}
