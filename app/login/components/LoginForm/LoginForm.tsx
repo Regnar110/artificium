@@ -10,6 +10,7 @@ import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection';
 import { useAppDispatch } from '@/redux/hooks/typedHooks';
+import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 const LoginForm = () => {
     const dispatch = useAppDispatch()
     const [ loginResponse, setLoginResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
@@ -88,19 +89,7 @@ const LoginForm = () => {
           </div>
           <span className='font-plus_jakarta_sans w-fit text-[16px] font-bold text-transparent bg-clip-text gradient_dayblue_blue_green500'>Forgot password?</span>
         </div>
-        <Button
-        type='submit'
-        className='bg-[#B6F09C] font-plus_jakarta_sans text-[#0C1132] font-bold min-h-[36.5px]'
-        sx={{
-            ':hover': {
-            bgcolor: '#9bf074', // theme.palette.primary.main
-            },
-        }}
-        >
-          {
-            responseLoading ? <PulseLoader className='w-fit' size={10} color="#131619" /> : "Log In"
-          }
-        </Button>
+        <SubmitButton text='Log in' isLoading={responseLoading}/>
     </form>
   )
 }

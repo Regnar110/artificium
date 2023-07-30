@@ -8,6 +8,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import PulseLoader from 'react-spinners/PulseLoader';
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
+import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 const RegisterForm = () => {
     const [registerResponse, setRegisterResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const [responseLoading, setResponseLoading] = useState<boolean>(false)
@@ -153,23 +154,7 @@ const RegisterForm = () => {
             />
             <span className='text-[16px] w-fit'>I agree with <span className='font-plus_jakarta_sans text-[16px] font-bold text-transparent bg-clip-text gradient_dayblue_blue_green500'>Terms and conditions</span></span>
         </div>
-        <Button
-        type='submit'
-        className='w-full col-span-2 bg-[#B6F09C] min-h-[36.5px] flex justify-center items-center'
-        sx={{
-            backgroundColor:"#B6F09C",
-            fontFamily:"Plus Jakarta Sans",
-            fontWeight:"700",
-            color:"#0C1132",
-            ':hover': {
-            bgcolor: '#9bf074', // theme.palette.primary.main
-            },
-        }}
-        >
-            {
-                responseLoading ? <PulseLoader className='w-fit' size={10} color="#131619" /> : "Create free account"
-            }
-        </Button>
+\       <SubmitButton text='Register' isLoading={responseLoading}/>
     </form>                
   )
 }
