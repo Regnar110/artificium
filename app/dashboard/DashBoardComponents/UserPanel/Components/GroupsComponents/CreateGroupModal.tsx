@@ -10,14 +10,16 @@ import Modal from 'react-modal';
 import main_logo from '../../../../../../public/home/mainlogo.svg'
 import { useForm } from 'react-hook-form';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
+import toast from 'react-hot-toast';
 
 interface ModalProps {
     modalIsOpen:boolean;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setModalStatus: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const CreateGroupModal = ({modalIsOpen, setIsOpen}:ModalProps) => {
+const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
     const [responseStatus, responseLoading] = useState<boolean>(false)
+    const [ createGroupResponse, setCreateGroupResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const authUserId = useAppSelector(getUserId)
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async (data:{group_name:string, group_description:string}) => {
@@ -29,7 +31,10 @@ const CreateGroupModal = ({modalIsOpen, setIsOpen}:ModalProps) => {
         group_description:data.group_description,
         }
         const response = await userAccessRequest<any, any>('createGroup', requestBody)
-        console.log(response)
+        setCreateGroupResponse(response)
+        if(response.status!==200) {
+            toast('succes')
+        }
         responseLoading(false)
     }
 
@@ -49,10 +54,9 @@ const CreateGroupModal = ({modalIsOpen, setIsOpen}:ModalProps) => {
         <div className='newGroup_modal  bg-[#000000c2] p-5 max-w-[600px] flex flex-col justify-center items-center gap-8 rounded-md'>
           <header className='font-plus_jakarta_sans w-full flex flex-col gap-4'>
             <div className='header_and_close w-full flex justify-between items-center'>
-              <h1 className='text-white text-[28px] whitespace-nowrap w-fit'>Create your own group</h1> 
-              <button  onClick={()=> setIsOpen(!modalIsOpen)} className='text-red-500 text-[20px] font-extrabold w-fit cursor-pointer'>x</button>             
+              <h1 className='text-white text-[28px] whitespace-nowrap w-fit'>Group created successfuly</h1> 
+              <button  onClick={()=> setModalStatus(!modalIsOpen)} className='text-red-500 text-[20px] font-extrabold w-fit cursor-pointer'>x</button>             
             </div>
-
             <h3 className='text-[#9B9C9E]'>Create a new group and invite your friends to it. Think carefully about its name because you won't be able to change it!</h3>
           </header>
           <form onSubmit={handleSubmit(onSubmit as any)} className='flex flex-col gap-8'>
@@ -68,7 +72,7 @@ const CreateGroupModal = ({modalIsOpen, setIsOpen}:ModalProps) => {
                   )
               }
               error={errors.group_name?.message ? true : false}
-              helperText={errors.group_name?.message ? errors.group_name.message as string:""}
+              helperText={errors.group_name?.message ? errors.group_name.message as string: ""}
               type='text'
               InputLabelProps={{ style: {color:"#9B9C9E"}}} 
               sx={{input: {color:"#fff", background:"#1A1D21", border:"2px solid #363A3D", borderRadius:"10px"}}} 
@@ -99,6 +103,11 @@ const CreateGroupModal = ({modalIsOpen, setIsOpen}:ModalProps) => {
               variant="outlined" 
             />  
             </ThemeProvider>
+            <div className='text-[#d32f2f] font-plus_jakarta_sans'>
+                {
+                    createGroupResponse && createGroupResponse.status === 510 ? createGroupResponse.client_message : ""
+                }
+            </div>
             <SubmitButton text='Create group' isLoading={responseStatus}/>          
           </form>
           <footer className='modal_footer relative w-1/3 opacity-40 flex justify-center items-center'>
