@@ -11,6 +11,7 @@ import main_logo from '../../../../../../public/home/mainlogo.svg'
 import { useForm } from 'react-hook-form';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 import toast from 'react-hot-toast';
+import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
 
 interface ModalProps {
     modalIsOpen:boolean;
@@ -32,8 +33,9 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
         }
         const response = await userAccessRequest<any, any>('createGroup', requestBody)
         setCreateGroupResponse(response)
-        if(response.status!==200) {
-            toast('succes')
+        if(response.status!==500) {
+            turnOnNotification({response})
+            response.status===200 ? setModalStatus(false) : null
         }
         responseLoading(false)
     }

@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import PulseLoader from 'react-spinners/PulseLoader';
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
+import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
 const RegisterForm = () => {
     const [registerResponse, setRegisterResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const [responseLoading, setResponseLoading] = useState<boolean>(false)
@@ -20,6 +21,9 @@ const RegisterForm = () => {
         delete data.register_password_repeat
         const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('register', data)
         console.log(userAccessResponse)
+        if(userAccessResponse.status!==500) {
+            turnOnNotification({response:userAccessResponse})
+        }
         setRegisterResponse(userAccessResponse)
         setResponseLoading(false)
     }

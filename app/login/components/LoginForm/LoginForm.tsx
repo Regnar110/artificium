@@ -11,6 +11,7 @@ import PulseLoader from 'react-spinners/PulseLoader';
 import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection';
 import { useAppDispatch } from '@/redux/hooks/typedHooks';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
+import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
 const LoginForm = () => {
     const dispatch = useAppDispatch()
     const [ loginResponse, setLoginResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
@@ -24,6 +25,9 @@ const LoginForm = () => {
       setLoginResponse(userAccessResponse)
       setResponseLoading(false)
       userAccessResponse.status === 510 || userAccessResponse.status === 500 ? null : AuthUserStoreInjection({ user: userAccessResponse.body, dispatch})
+      if(userAccessResponse.status!==500) {
+        turnOnNotification({response:userAccessResponse})
+    }
     }
 
       const theme = createTheme({
