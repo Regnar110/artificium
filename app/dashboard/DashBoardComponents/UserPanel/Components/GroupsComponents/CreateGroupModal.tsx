@@ -32,8 +32,9 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
         group_description:data.group_description,
         }
         const response = await userAccessRequest<any, any>('createGroup', requestBody)
+        console.log(response)
         setCreateGroupResponse(response)
-        if(response.status!==500) {
+        if(response.status!==500) { // nie wyświetlamy błedów typu 500 - są to błedy typowo związane z błedami po stronie całych bloków funkcyjnych serwera
             turnOnNotification({response})
             response.status===200 ? setModalStatus(false) : null
         }
@@ -49,6 +50,7 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
     })
   return (
     <Modal
+        ariaHideApp={false}
         isOpen={modalIsOpen}
         contentLabel="Create new group"
         className={"flex gap-8 bg-[#000000d3]  p-2 h-full justify-center items-center"}

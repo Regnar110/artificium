@@ -59,3 +59,15 @@ interface ChattingWindowsType {
     windowType:"artificium" | "chat" | "library",
     selectedGroup:string
 }
+
+
+//GROUPS
+
+interface Group {
+    _id:string,
+    group_admin:string
+    group_name:string
+    group_description:string
+    group_users:string[]
+    group_invite_slugId:string
+}

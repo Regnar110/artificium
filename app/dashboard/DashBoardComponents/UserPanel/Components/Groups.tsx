@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import green_group from '../../../../../public/Dashboard/UserPanel/Groups/green.svg'
 import SingleGroup from './GroupsComponents/SingleGroup'
 import AddNewGroup from './GroupsComponents/AddNewGroup'
 import PanelHeader from './GenericComponents/PanelHeader'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
-import { getChat, selectGroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import { selectGroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import { userAccessRequest } from '@/app/utils/UserAccessRequest'
+import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 const Groups = () => {
   const dispatch = useAppDispatch()
-  const group = useAppSelector(getChat)
-  console.log(group)
+  const authUser = useAppSelector(getUserId)
   const onGroupClick = (e:React.FormEvent<HTMLDivElement>) => {
     dispatch(selectGroup(e.currentTarget.id))
   }
+
+  useEffect( () => {
+    const getGroups = async () => {
+      const response = await userAccessRequest<Group[], any>('getUserGroups', {user_id: authUser})
+      return response
+    }
+    getGroups()
+  },[])
   return (
     <div className='groups_container flex flex-col gap-y-4'>
       <PanelHeader title='Groups'/>

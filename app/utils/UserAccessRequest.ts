@@ -15,5 +15,7 @@ export const userAccessRequest = async <ReturnType, BodyType>(endpoint:string, r
         }
     )
     const parsedResponse:ReturnType = await response.json()
+    console.log(response)
+    console.log(parsedResponse)
     return parsedResponse
 }
