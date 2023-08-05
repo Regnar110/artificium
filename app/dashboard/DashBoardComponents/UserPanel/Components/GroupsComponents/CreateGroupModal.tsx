@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
-import { useAppSelector } from '@/redux/hooks/typedHooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks';
 import { getUserId } from '@/redux/slices/userSession/userSessionSlice';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, TextField } from '@mui/material';
@@ -10,8 +10,8 @@ import Modal from 'react-modal';
 import main_logo from '../../../../../../public/home/mainlogo.svg'
 import { useForm } from 'react-hook-form';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
-import toast from 'react-hot-toast';
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
+import { injectGroups } from '@/redux/slices/groups/groupsSlice';
 
 interface ModalProps {
     modalIsOpen:boolean;
@@ -22,6 +22,7 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
     const [responseStatus, responseLoading] = useState<boolean>(false)
     const [ createGroupResponse, setCreateGroupResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const authUserId = useAppSelector(getUserId)
+    const dispatch = useAppDispatch()
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async (data:{group_name:string, group_description:string}) => {
         responseLoading(true)
@@ -32,7 +33,6 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
         group_description:data.group_description,
         }
         const response = await userAccessRequest<any, any>('createGroup', requestBody)
-        console.log(response)
         setCreateGroupResponse(response)
         if(response.status!==500) { // nie wyświetlamy błedów typu 500 - są to błedy typowo związane z błedami po stronie całych bloków funkcyjnych serwera
             turnOnNotification({response})

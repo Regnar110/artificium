@@ -1,21 +1,39 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import UserHeader from './Components/UserHeader'
 import General from './Components/General'
 import Groups from './Components/Groups'
 import BottomSettings from './Components/BottomSettings/BottomSettings'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
-import { getUserProvider, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserId, getUserProvider, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
+import { userAccessRequest } from '@/app/utils/UserAccessRequest'
+import { getStoredGroups, injectGroups, injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
 const UserPanel = () => {
   const dispatch = useAppDispatch()
   const userProvider:Providers = useAppSelector(state => getUserProvider(state))
   const handleAppLogOut = () => authUserSignOut({userProvider, dispatch})
   const user = useAppSelector(state => isUserAuthenticated(state))
+  const userGroups = useAppSelector(getStoredGroups)
+  const authUser = useAppSelector(getUserId)
+  const prevGroupsRef = useRef<Group[] | null>(null);
 
   useEffect(() => {
-    console.log(user)
-  },[user])
+    console.log('mount')
+    const getGroups = async () => {
+      const response = await userAccessRequest<Group[] | UserAccessErrorResponse, any>('getUserGroups', {user_id: authUser})
+      if('status' in response && response.status) {
+        console.log(response)
+      } else {
+        if(JSON.stringify(response) !== JSON.stringify(prevGroupsRef.current)) {
+          dispatch(injectInitialGroups(response as Group[]))
+          prevGroupsRef.current = response as Group[] 
+        }
+      }
+      return response
+    }
+    getGroups()
+  },[userGroups])
 
   return (
     <div className={`bg-[#0D0F10] min-w-[280px] w-full md:w-[280px] relative h-screen flex flex-col gap-y-5 justify-between rounded-lg py-8 px-6 min-h-[681px] overflow-scroll overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-[#0D0F10]  `}>

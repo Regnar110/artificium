@@ -4,7 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState:ChattingWindowsType = {
     windowType:"artificium",
-    selectedGroup:""
+    selectedGroup:{}
 }
 
 export const chattingWindowsSlice = createSlice({

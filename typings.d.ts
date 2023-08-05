@@ -57,7 +57,7 @@ type Providers = "artificium" | "google"
 
 interface ChattingWindowsType {
     windowType:"artificium" | "chat" | "library",
-    selectedGroup:string
+    selectedGroup:Partial<Group>
 }
 
 
