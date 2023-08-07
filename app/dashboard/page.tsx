@@ -30,10 +30,10 @@ const Dashboard = () => {
           <UserPanel/>        
           <UserBoardWrapper>
             {
-              chat.selectedGroup.length > 0 ?
+              chat.selectedGroup._id ?
               <>
                 <BoardHeader>
-                  <HeaderWithAvatars/>
+                  <HeaderWithAvatars chat_title={chat.selectedGroup.group_name as string} chat_description={chat.selectedGroup.group_description as string}/>
                   <ChatingWindowsWrapper/>
                 </BoardHeader>
                 <ChatPanel/>
@@ -44,15 +44,17 @@ const Dashboard = () => {
             <div></div>
             </UserBoardWrapper>   
       </MediaQuery>
+
+      {/*Wersja ze sliderem dla wersji mobilnych poniżej 768px*/}
       <MediaQuery maxWidth={767}>
         <Slider className=''  {...settings}>
             <UserPanel/>        
             <UserBoardWrapper>
               {
-                chat.selectedGroup.length > 0 ?
+                chat.selectedGroup._id ?
                 <>
                   <BoardHeader>
-                    <HeaderWithAvatars/>
+                    <HeaderWithAvatars chat_title={chat.selectedGroup.group_name as string} chat_description={chat.selectedGroup.group_description as string}/>
                     <ChatingWindowsWrapper/>
                   </BoardHeader>
                   <ChatPanel/>

@@ -17,7 +17,7 @@ export const chattingWindowsSlice = createSlice({
                 windowType:action.payload
             })
         },
-        selectGroup: (state, action:PayloadAction<string>)=> {
+        selectGroup: (state, action:PayloadAction<Group>)=> {
             state = Object.assign(state, {
                 ...state,
                 selectedGroup:action.payload

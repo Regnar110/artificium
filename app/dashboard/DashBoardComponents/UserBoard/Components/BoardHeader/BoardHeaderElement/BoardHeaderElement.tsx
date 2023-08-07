@@ -6,7 +6,7 @@ interface BoardHeaderElementProps {
 }
 const BoardHeaderElement = ({header, description}:BoardHeaderElementProps) => {
   return (
-    <div className='header max-w-[300px]'>
+    <div className='header max-w-[300px] min-h-[85px]'>
         <h1 className='text-[25px]'>{header}</h1>
         <span className='text-[16px] text-[#9B9C9E]'>{description}</span>
     </div>

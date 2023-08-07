@@ -1,15 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ChatWrapper from './Components/Chat/ChatWrapper'
 import CurrentlyOnline from './Components/UserList/CurrentlyOnline/CurrentlyOnline'
 import CurrentlyOffline from './Components/UserList/CurrentlyOffline/CurrentlyOffline'
 import ListCategoriesOptions from './Components/UserList/ListCategoriesOptions/ListCategoriesOptions'
 import Image from 'next/image'
 import hide from '../../../../public/buttons/slider_buttons/slide_right.svg'
+import { getSocketInstance } from '@/app/utils/SocketInstance/socketInstance'
+import { useAppSelector } from '@/redux/hooks/typedHooks'
+import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 const ChatPanel = () => {
+  const [simpleList, setList] = useState()
+  const authUser = useAppSelector(getUserId)
+  const ioInstance = getSocketInstance({authUser})
+  useEffect(() => {
+    ioInstance.on("authUser_friends_with_status", (...args) => {
+      console.log("dostałem emitowaną wiadomość")
+    })
+  },[])
   const [friendsVisible, setFriendsVisible] = useState<boolean>(true)
   return (
     <section className='relative flex w-full h-full overflow-hidden rounded-lg mt-5'>
       <ChatWrapper friendsVisibility={friendsVisible}/>
+
       <div id='user_list_with_statuses' className={`w-[300px] p-5 ${friendsVisible === true ? "visible" : "hidden"} overflow-hidden flex flex-col justify-between gap-4`}>
         <div id='lists' className='flex flex-col overflow-scroll scrollbar scrollbar-w-[3px] scrollbar-thumb-[#0D0F10] scrollbar-track-[#131619] overflow-x-hidden gap-6 '>
           <CurrentlyOnline/>

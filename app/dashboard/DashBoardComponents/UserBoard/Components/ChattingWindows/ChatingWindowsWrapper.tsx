@@ -19,7 +19,7 @@ const ChatingWindowsWrapper = () => {
     }
 
     return (
-        <div className='chatting_windows_icons font-plus_jakarta_sans flex gap-10'>
+        <div className='chatting_windows_icons font-plus_jakarta_sans flex  gap-10 relative '>
             <ChattingWindow window_slug='artificium' window_icon={artificium_icon} window_name='Artificium' onClick={onWindowClick} isClicked={windowClicked==="artificium" ? true:false}/>
             <ChattingWindow window_slug='chat' window_icon={chat} window_name='Chat' onClick={onWindowClick} isClicked={windowClicked==="chat" ? true:false}/>
             <ChattingWindow window_slug='library' window_icon={library} window_name='Library' onClick={onWindowClick} isClicked={windowClicked==="library" ? true:false}/>   

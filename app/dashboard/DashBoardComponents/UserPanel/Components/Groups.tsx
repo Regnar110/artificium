@@ -12,8 +12,8 @@ const Groups = () => {
   //useReg służy do memoizacji poprzedniego stanu grup. 
   // Ma to na celu zapobiegnięcie zapętleniu się renderowania komponentu.
   // Komponent wyrerenderuje się tylko gdy prevGroups będzie się różnił od tych pobranych z servera.
-  const onGroupClick = (e:React.FormEvent<HTMLDivElement>) => {
-    dispatch(selectGroup(e.currentTarget.id))
+  const groupSelect = (group_data:Group) => {
+    dispatch(selectGroup(group_data))
   }
 
   // Hook tutaj służy jedynie do tego, żeby aktualizować ten komponent w przypadku gdy zostanie dodana lub usunięta grupa.
@@ -26,7 +26,7 @@ const Groups = () => {
       <div className='groups flex flex-col gap-y-6 max-h-[300px] max-w-[250px] overflow-y-auto overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-green-500 scrollbar-track-gray-100'>
         {
           userGroups.map(el => {
-            return <SingleGroup key={el._id} onGroupClick={onGroupClick} group_icon={green_group} group_title={el.group_name}/>
+            return <SingleGroup key={el._id} group_id={el._id} groupSelect={() => groupSelect(el)} group_icon={green_group} group_title={el.group_name}/>
           })
         }
       </div>
