@@ -11,7 +11,7 @@ import main_logo from '../../../../../../public/home/mainlogo.svg'
 import { useForm } from 'react-hook-form';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
-import { injectGroups } from '@/redux/slices/groups/groupsSlice';
+import { addNewGroup, injectGroups } from '@/redux/slices/groups/groupsSlice';
 
 interface ModalProps {
     modalIsOpen:boolean;
@@ -33,10 +33,17 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
         group_description:data.group_description,
         }
         const response = await userAccessRequest<any, any>('createGroup', requestBody)
+        console.log(response)
         setCreateGroupResponse(response)
         if(response.status!==500) { // nie wyświetlamy błedów typu 500 - są to błedy typowo związane z błedami po stronie całych bloków funkcyjnych serwera
             turnOnNotification({response})
-            response.status===200 ? setModalStatus(false) : null
+            // tutaj dodajemy  nową grupę, która pomyslnie została dodana do db i do której pomyślnie powiązano użytkownika, który ją stworzył.
+            // Dzięki temu część stanu aplikacji aktualizuje się. Co wywołuje re-renderowanie się komponentu Groups, który wyświetla dzięki
+            // temu najświeższą wersję grup            
+            response.status===200 ? Promise.resolve([setModalStatus(false), dispatch(addNewGroup(response.body.inserted_group as Group))]) : null
+
+
+            
         }
         responseLoading(false)
     }
@@ -71,7 +78,8 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
                       "group_name",
                       {
                         required:{value:true, message:"This field is required"},
-                        minLength:{value:6, message:"Group name is to short"}
+                        minLength:{value:6, message:"Group name is to short. Min is 6 characters"},
+                        maxLength:{value:18, message:"Group name is to long. Max is 18 characters"}
                       }
                   )
               }
