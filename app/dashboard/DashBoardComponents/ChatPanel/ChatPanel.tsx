@@ -5,18 +5,8 @@ import CurrentlyOffline from './Components/UserList/CurrentlyOffline/CurrentlyOf
 import ListCategoriesOptions from './Components/UserList/ListCategoriesOptions/ListCategoriesOptions'
 import Image from 'next/image'
 import hide from '../../../../public/buttons/slider_buttons/slide_right.svg'
-import { getSocketInstance } from '@/app/utils/SocketInstance/socketInstance'
-import { useAppSelector } from '@/redux/hooks/typedHooks'
-import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 const ChatPanel = () => {
   const [simpleList, setList] = useState()
-  const authUser = useAppSelector(getUserId)
-  const ioInstance = getSocketInstance({authUser})
-  useEffect(() => {
-    ioInstance.on("authUser_friends_with_status", (...args) => {
-      console.log("dostałem emitowaną wiadomość")
-    })
-  },[])
   const [friendsVisible, setFriendsVisible] = useState<boolean>(true)
   return (
     <section className='relative flex w-full h-full overflow-hidden rounded-lg mt-5'>

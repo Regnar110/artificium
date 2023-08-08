@@ -11,8 +11,11 @@ import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
 const UserPanel = () => {
   const dispatch = useAppDispatch()
+  const authUserId = useAppSelector(getUserId)
   const userProvider:Providers = useAppSelector(state => getUserProvider(state))
-  const handleAppLogOut = () => authUserSignOut({userProvider, dispatch})
+  const handleAppLogOut = () => {
+    authUserSignOut({userProvider, authUserId, dispatch})
+  }
   const authUser = useAppSelector(getUserId)
 
   useEffect(() => {
