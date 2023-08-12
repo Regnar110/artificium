@@ -17,7 +17,6 @@ import {
 
     key: 'root',
     storage: storage,
-    blacklist: [],// stan, który nie będzie cachowany w pamięci podręcznej przeglądarki. Jedynym stanem, który będzie się "Zapamiętywał" będzie user i localbasker ponieważ categories i products mogą się zmieniać dynamicznie jeżeli np ktoś doda nowe produkty
     whitelist: ["userSession"] 
   }
 

@@ -11,16 +11,16 @@ interface Props {
 
 const DashboardPageWrapper = ({children}:Props) => {
     const router = useRouter()
-    const userSession = useAppSelector(state => isUserAuthenticated(state))
-    const [DOMStatus, setDOMStatus] = useState<boolean>(false)
+    const [DOMStatus, setDOMStatus] = useState<boolean>(true)
+    const userSession = useAppSelector(isUserAuthenticated)
     useEffect(() => {
-      if(userSession === true) {
-        setDOMStatus(true)
-      } else {
-        router.push("/login")
-        setDOMStatus(false)
-      }
-      
+      console.log(localStorage)
+        if(userSession === true) { // sprawdzamy czy sesja użytkownika aplikacji została umieszczona w storew
+          setDOMStatus(true) // umożliwiamy dostęp do części aplikacji
+        } else {
+          router.push("/login")
+          setDOMStatus(false)
+        }
     },[userSession])
   return DOMStatus ?
     <main className='dashboard box-border text-black bg-[#131619] w-full flex justify-center items-center gap-3 min-h-[screen] overflow-hidden'>

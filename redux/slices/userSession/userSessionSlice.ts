@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Root } from "postcss";
 
-
 const initialState: Partial<AuthenticatedUser>  = {}
 
 export const userSessionSlice = createSlice({

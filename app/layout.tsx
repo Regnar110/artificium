@@ -6,7 +6,6 @@ import { Session } from 'next-auth'
 import NextAuthSessionProvider from './utils/NextAuthSessionProvider/NextAuthSessionProvider'
 import { Suspense } from 'react'
 import PageLoader from './AppComponents/PageLoader/PageLoader'
-import { Toaster } from 'react-hot-toast'
 import ToastNotifications from './AppComponents/ToastNotifications/ToastNotifications'
 
 //LAYOUT jet plikiem, który zawiera wspólne dla wszystkich stron aplikacji elementy tj. nawigacja lub stopka

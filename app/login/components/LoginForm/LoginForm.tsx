@@ -12,12 +12,13 @@ import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthU
 import { useAppDispatch } from '@/redux/hooks/typedHooks';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
+import { useRouter } from 'next/navigation';
 const LoginForm = () => {
     const dispatch = useAppDispatch()
     const [ loginResponse, setLoginResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
     const [ responseLoading, setResponseLoading ] = useState<boolean>(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
+  const router = useRouter()
 
     const onSubmit = async (data:RegisterFormData) => {
       setResponseLoading(true)
@@ -27,7 +28,8 @@ const LoginForm = () => {
       userAccessResponse.status === 510 || userAccessResponse.status === 500 ? null : AuthUserStoreInjection({ user: userAccessResponse.body, dispatch})
       if(userAccessResponse.status!==500) {
         turnOnNotification({response:userAccessResponse})
-    }
+        userAccessResponse.status! === 200 ? router.push("/dashboard") : null
+      }
     }
 
       const theme = createTheme({

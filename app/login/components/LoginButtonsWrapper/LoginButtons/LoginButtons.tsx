@@ -6,14 +6,16 @@ import { NextAuthProviderLoginPopUpCenter } from '@/app/utils/NextAuthProviderLo
 import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection'
 import { useAppDispatch } from '@/redux/hooks/typedHooks'
 import ProviderLoginButton from '@/app/AppComponents/ProviderLoginButton/ProviderLoginButton'
+import { useRouter } from 'next/navigation'
 const LoginButtons = () => {
   const {data:session} = useSession()
   const dispatch = useAppDispatch()
-
+  const router = useRouter()
   useEffect(() => {
     if(session) {
       const user = session.user as UserAccesSuccessResponse | UserAccessErrorResponse
       user.status === 510 || user.status === 500 ? signOut() : AuthUserStoreInjection({ user: user.body, dispatch})
+      user.status === 200 ? router.push('/dashboard') : null 
     }
 
   },[session])
