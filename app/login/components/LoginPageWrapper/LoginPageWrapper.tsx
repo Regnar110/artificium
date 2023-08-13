@@ -22,7 +22,7 @@ const LoginPageWrapper = ({children}:Props) => {
       {children.map(el => el)}
     </main>
   : 
-  <PageLoader proceedTo={"/dashboard"}/>
+  <PageLoader/>
 }
 
 export default LoginPageWrapper
