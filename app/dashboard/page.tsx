@@ -68,7 +68,6 @@ const Dashboard = () => {
       </MediaQuery>
           <div className='hidden'></div>
           <div className='hidden'></div>
-              
     </DashboardPageWrapper>
   )
 }

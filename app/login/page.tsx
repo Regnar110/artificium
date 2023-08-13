@@ -1,3 +1,4 @@
+'use client'
 import LoginPageWrapper from './components/LoginPageWrapper/LoginPageWrapper'
 import LoginSection from './components/LoginSection/LoginSection'
 import ArtificiumAbsoluteLogo from '../AppComponents/ArtificiumAbsoluteLogo/ArtificiumAbsoluteLogo'
@@ -10,8 +11,7 @@ import LoginForm from './components/LoginForm/LoginForm'
 import SignUpRedirect from './components/SignUpRedirect/SignUpRedirect'
 import LoginIllustration from './components/LoginIllustration/LoginIllustration'
 import RegisterFooter from '../register/components/RegisterFooter/RegisterFooter'
-
-export default async function Login() {
+export default function Login() {
   return (
     <LoginPageWrapper>
       <LoginSection>

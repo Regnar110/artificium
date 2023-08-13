@@ -23,7 +23,6 @@ const PageLoader = () => {
             </ThemeProvider>
             
         </div>
-        
         <Image className='w-[35px]' src={artificium_logo_icon} alt="artificium_logo_icon"/>
     </main>
   )

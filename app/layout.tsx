@@ -29,9 +29,10 @@ export default function RootLayout({
         <NextAuthSessionProvider>
           <ClientBoundedProvider>
             <Suspense fallback={<PageLoader/>}>
-            {children}          
+            {children}  
+            </Suspense>        
             <ToastNotifications />
-            </Suspense>
+            
           </ClientBoundedProvider>          
         </NextAuthSessionProvider>
       </body>

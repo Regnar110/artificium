@@ -12,6 +12,7 @@ import {
     PERSIST,
     PURGE,
     REGISTER,
+    persistStore,
   } from 'redux-persist'
   const persistConfig = {
 
@@ -36,6 +37,8 @@ import {
       }),
   })
   setupListeners(store.dispatch)
+// persistStore() zwraca nam obiekt typu Persistor, który reprezentuje utrwalony w pamięci podręcznej przeglądarki stan.
+export const persistor = persistStore(store)
 export default store
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
