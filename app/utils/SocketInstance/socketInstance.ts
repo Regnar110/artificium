@@ -6,6 +6,7 @@ interface SocketProps {
     authUser:string
 }
 export const getSocketInstance = ({authUser}:SocketProps) => { // funkcja zwracająca instancję socketIo. Zapobiega ona tworzeniu wielu instancji w czasie używania aplikacji
+    
     if(!ioInstance) {
         ioInstance = io("http://localhost:3001/",{ // socket io jest inicjalizowany z przekazaniem id użytkownika instancji celem umożliwienia jego rozpoznania
             query: {

@@ -11,7 +11,6 @@ const LoginPageWrapper = ({children}:Props) => {
   const router = useRouter()
   const userSession = useAppSelector(state => isUserAuthenticated(state))
   useEffect(() => {
-    console.log(localStorage)
     if(userSession === true) {
       router.push("/dashboard")
     }

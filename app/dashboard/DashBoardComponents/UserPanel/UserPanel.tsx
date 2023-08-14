@@ -5,17 +5,23 @@ import General from './Components/General'
 import Groups from './Components/Groups'
 import BottomSettings from './Components/BottomSettings/BottomSettings'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
-import { getUserId, getUserProvider, injectUser, isUserAuthenticated, signOutUser } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserId, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
 import { useSession } from 'next-auth/react'
 import { Session } from 'next-auth'
-const UserPanel = () => {
+import { Socket } from 'socket.io-client'
+import { DefaultEventsMap } from 'socket.io/dist/typed-events'
+
+interface UserPanelProps {
+  socket?: Socket<DefaultEventsMap, DefaultEventsMap>
+}
+const UserPanel = ({socket}:UserPanelProps) => {
   const dispatch = useAppDispatch()
   const authUser = useAppSelector(getUserId)
   const logOut = async() => {
-    await authUserSignOut({providerSession: providerSession.data as Session, userSession, authUser, dispatch})
+    await authUserSignOut({providerSession: providerSession.data as Session, userSession, authUser, dispatch, socket:socket as Socket<DefaultEventsMap, DefaultEventsMap>})
   }
   const userSession = useAppSelector(isUserAuthenticated)
   const providerSession = useSession()

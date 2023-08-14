@@ -8,14 +8,17 @@ import { turnOnNotification } from "@/app/AppComponents/ToastNotifications/TurnO
 import { Session } from "next-auth";
 
 import { persistor } from "@/redux/store/store";
+import { Socket } from "socket.io-client";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 interface Props {
     providerSession:Session,
     userSession:boolean,
     authUser:string,
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
+    socket: Socket<DefaultEventsMap, DefaultEventsMap>
 }
-export const authUserSignOut = async ({providerSession, userSession, authUser, dispatch}:Props) => {
+export const authUserSignOut = async ({providerSession, userSession, authUser, dispatch, socket}:Props) => {
     // persistor nam potrzebny do wyczyszczenia z pamięci podręcznej przegladarki danych zalogowanego użytkownika celem prawidłowego jego wylogowania i zakończenia jego sesji.
     // dalej będzie używana metoda purge obiektu persistor, która czyści dane z utrwalonego stanu w pamięci podręcznej przegladarki
     // Najpierw będziemy przywracać stan userSession do initialState a potem czyścimy pamięc podręczną.
@@ -32,6 +35,9 @@ export const authUserSignOut = async ({providerSession, userSession, authUser, d
               // Użytkownik zalogowany przez formularz - wylogowujemy go
               
               dispatch(signOutUser())
+
+              //zamykamy połączenie z socketem
+              socket.close()
               await persistor.purge()
             } else {
               // użytkownik nie jest zalogowany w ogóle. Opuszczamy funkcję
@@ -44,7 +50,9 @@ export const authUserSignOut = async ({providerSession, userSession, authUser, d
             await signOut({redirect:false, callbackUrl: 'http://localhost:3000/login' })
             await (async ()=> {
               dispatch(signOutUser())
+              socket.close()
               await persistor.purge()
+            
             })() 
           }
         turnOnNotification({response:logoutRequest})

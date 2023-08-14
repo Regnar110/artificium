@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 interface Props {
-    children: JSX.Element[]
+  children: JSX.Element[]
 }
 
 const DashboardPageWrapper = ({children}:Props) => {
@@ -14,7 +14,6 @@ const DashboardPageWrapper = ({children}:Props) => {
     const [DOMStatus, setDOMStatus] = useState<boolean>(false)
     const userSession = useAppSelector(isUserAuthenticated)
     useEffect(() => {
-      console.log(localStorage)
         if(userSession === true) { // sprawdzamy czy sesja użytkownika aplikacji została umieszczona w storew
           setDOMStatus(true) // umożliwiamy dostęp do części aplikacji
         } else {
