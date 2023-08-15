@@ -7,6 +7,7 @@ import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthU
 import { useAppDispatch } from '@/redux/hooks/typedHooks'
 import ProviderLoginButton from '@/app/AppComponents/ProviderLoginButton/ProviderLoginButton'
 import { useRouter } from 'next/navigation'
+import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification'
 const LoginButtons = () => {
   const {data:session} = useSession()
   const dispatch = useAppDispatch()
@@ -16,6 +17,7 @@ const LoginButtons = () => {
       const user = session.user as UserAccesSuccessResponse | UserAccessErrorResponse
       user.status === 510 || user.status === 500 ? signOut() : AuthUserStoreInjection({ user: user.body, dispatch})
       user.status === 200 ? router.push('/dashboard') : null 
+      console.log(session)
     }
 
   },[session])

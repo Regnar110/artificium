@@ -2,6 +2,7 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { userAccessRequest } from "../UserAccessRequest";
+import { getSocketInstance } from "../SocketInstance/socketInstance";
 
 export const nextAuthOptions:NextAuthOptions = {
     providers: [
@@ -31,12 +32,47 @@ export const nextAuthOptions:NextAuthOptions = {
           delete userData.id
           delete userData.name
           //logowanie - najpierw sprawdzimy czy konto z tym mailem istnieje już w bazie i czy provider się zgadza
-          const response = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
-          // tutaj powinniśmy otrzymać UserAccessSuccessResponse  w którym body jest obiektem użytkownika. Body przy udanym logowaniu powinno zawsze być obiektem użytkownika z bazy
-          //mongo.
+          let response = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
+          let modifiedResponse;
+          if(response.status === 200) {
+            // udało się zalgoować użytkownika po stronie serwera
+            // Tworzymy nową instancję połączenia z serwerem Socket.io
+            let socket = getSocketInstance({authUser: response.body._id})
 
-          // zwracamy jako obiekt user obiekt response z danymi dotyczącymi odpowiedzi z serwera.
-            session.user = response
+            // Łączymy się z serwerem socket.io
+
+            //Otrzymujmey odpowiedź z socketa odnośnie tego czy udało się połączyć czy nie ( true lub false)
+            // Jeżeli odopowiedź jest false natychmiast zamykamy połaczenie, jeżeli true nie robimy nic.
+            socket.on("connection_response", (data) => data === false ? socket.disconnect(): null)
+            console.log(socket.connected)
+
+            // Jeżeli socket.connect() zawiera pole connected z wartością false ( nie udało się połączyć )
+            if(socket.connected === false) {
+              // Jeżeli nie udał się nawiązać połączenia z socketem zwracamy obiekt błędu jako response oraz wylogowujemy użytkownika zmieniając jego status pola isOnline na false
+              const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser: userData._id})
+              response = {
+                error_message:"CLIENT ERROR: Failed to establish connection with server socket io",
+                client_message:"Failed to establish a stable connection to the server",
+                status: 510
+              }
+              socket.close()    
+              // session.user jest obiektem błędu 
+              session.user = response
+                   
+
+              // Udało się połączyć z socketem.
+            } else if (socket.connected === true) {
+              // Obiekt response zawiera dane logowania uzytkownika
+              // Pomyslknie zalogowany uzytkownik i pomyslnie utworzone połaczenie z socketem
+              session.user = response       
+            }
+          } else {
+            // Status logowania użytkownika po stronie serwera jest 500 lub 510.
+            // session.user jest błędem po stronie serwera
+            session.user = response 
+          }
+          console.log(session)
+            // zwracamy sesję, która w toku działania funkcji staje się obiektem powodzenia lub błędu UserAccessSuccessResponse lub UserAccessErrorResponse
             return session
 
           //Ogólnie w tej funkcji zwracamy zawsze sesję. Ale w drodze uwierzytelniania sprawdzamy czy:

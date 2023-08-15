@@ -23,35 +23,33 @@ import { Session } from 'next-auth'
 import { useRouter } from 'next/navigation'
 import { turnOnNotification } from '../AppComponents/ToastNotifications/TurnOnNotification'
 const Dashboard = () => {
+  
   const authUser = useAppSelector(getUserId)
-  let socket = getSocketInstance({authUser})
-  socket.connect()
+  
   const userSession = useAppSelector(isUserAuthenticated)
   const providerSession = useSession()
   const router = useRouter()
   const dispatch = useAppDispatch()
   useEffect(() => {
-    if(userSession) {
+    if(userSession === true) {
       console.log("DASH PAGE MOUNT")
-      socket.on("connection_response", async (data) => {
-        console.log(data)
-        // jezeli z jakiegoś powodu nie udało się nawiązać połączenia z socketem rusza procedura wylogowania użytkownika razem z zamknięciem połączenia socket io.
-        if(data === false) {
-          await authUserSignOut({providerSession:providerSession.data as Session, userSession, authUser, dispatch, socket})
-          turnOnNotification({response:{
-            status:500,
-            client_message:"Failed to establish a stable connection to the server IO instance"
-          } as UserAccessErrorResponse})
-        }
-      })      
+      let socket = getSocketInstance({authUser})
+      // socket.on("connection_response", async (data) => {
+      //   // jezeli z jakiegoś powodu nie udało się nawiązać połączenia z socketem rusza procedura wylogowania użytkownika razem z zamknięciem połączenia socket io.
+      //   if(data === false) {
+      //     console.log("MOUNT LOGOUT")
+      //     await authUserSignOut({providerSession:providerSession.data as Session, userSession, authUser, dispatch, socket})
+      //     router.push("/login")
+      //     // turnOnNotification({response:{
+      //     //   status:500,
+      //     //   client_message:"Failed to establish a stable connection to the server IO instance"
+      //     // } as UserAccessErrorResponse})
+      //   }
+      // })      
     } else {
-      console.log("BRAK SESJI DASHBOARD PAGE")
-    }
-
-    return () => {
       socket.close()
     }
-  },[userSession, providerSession])
+  },[])
   let settings = {
     speed: 500,
     Infinity:false,
