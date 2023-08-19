@@ -8,48 +8,17 @@ import HeaderWithAvatars from './DashBoardComponents/UserBoard/Components/BoardH
 import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
 import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/DashboardPageWrapper'
 import EmptyBoardWaterMark from './DashBoardComponents/EmptyBoardWaterMark/EmptyBoardWaterMark'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
+import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import MediaQuery from 'react-responsive'
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getUserId, getUserProvider, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
-import { getSocketInstance } from '../utils/SocketInstance/socketInstance'
-import { authUserSignOut } from '../utils/AuthUserSignOut/authUserSignOut'
-import { useSession } from 'next-auth/react'
-import { Session } from 'next-auth'
-import { useRouter } from 'next/navigation'
-import { turnOnNotification } from '../AppComponents/ToastNotifications/TurnOnNotification'
+import { getSocketInstance, ioInstance } from '../utils/SocketInstance/socketInstance'
+import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
+
 const Dashboard = () => {
-  
-  const authUser = useAppSelector(getUserId)
-  
-  const userSession = useAppSelector(isUserAuthenticated)
-  const providerSession = useSession()
-  const router = useRouter()
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    if(userSession === true) {
-      console.log("DASH PAGE MOUNT")
-      let socket = getSocketInstance({authUser})
-      // socket.on("connection_response", async (data) => {
-      //   // jezeli z jakiegoś powodu nie udało się nawiązać połączenia z socketem rusza procedura wylogowania użytkownika razem z zamknięciem połączenia socket io.
-      //   if(data === false) {
-      //     console.log("MOUNT LOGOUT")
-      //     await authUserSignOut({providerSession:providerSession.data as Session, userSession, authUser, dispatch, socket})
-      //     router.push("/login")
-      //     // turnOnNotification({response:{
-      //     //   status:500,
-      //     //   client_message:"Failed to establish a stable connection to the server IO instance"
-      //     // } as UserAccessErrorResponse})
-      //   }
-      // })      
-    } else {
-      socket.close()
-    }
-  },[])
   let settings = {
     speed: 500,
     Infinity:false,
@@ -57,10 +26,20 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   const chat = useAppSelector(getChat)
+  const authUser = useAppSelector(getUserId)
+  useEffect(() => {
+    return () => {
+      debugger;
+      console.log("unmount")
+      console.log(ioInstance) // DLACZEGO TO JEST NULL SKORO INSTANCJA POWINNA BYĆ JUŻ ZAINICJOWANA????
+      // DLACZEGO POJAWIA SIE KOLEJNY LOGOUT W KONSOLI SERWERA????
+      ioInstance?.disconnect()
+    }
+  },[])
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>
-          <UserPanel socket={socket}/>        
+          <UserPanel/>        
           <UserBoardWrapper>
             {
               chat.selectedGroup._id ?
