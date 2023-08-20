@@ -3,6 +3,9 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { userAccessRequest } from "../UserAccessRequest";
 import { getSocketInstance } from "../SocketInstance/socketInstance";
+import store from "@/redux/store/store";
+import { getUserId } from "@/redux/slices/userSession/userSessionSlice";
+import { injectSocketInstance } from "@/redux/slices/socketInstance/socketInstanceSlice";
 
 export const nextAuthOptions:NextAuthOptions = {
     providers: [
@@ -19,7 +22,10 @@ export const nextAuthOptions:NextAuthOptions = {
           }),
     ],
     callbacks: {
+
+      //TUTAJ MUSIMY ZMIENIĆ ŻEBY NAJPIER BYŁO NAWIĄZYWANE POŁACZENIE Z SOCKET.iO A POTEM PRÓBA LOGOWANIA UŻYTKOWNIKA!
         async session({session}) {
+          console.log("WYWOŁANE SESJI LOGOWANIA")
           // po wywołaniu sign in i "zalogowaniu się" wywoływany ejst ten callback który ma zwrócić sesję.
           // Przed jej zwróceniem ustalamy
           const userData = { // tworzmy obiekt użytkownika na wypadek gdy jest on nowym użytkownikiem. Obiekt ten posłuży w razie co do rejestracji w bazie
@@ -31,51 +37,47 @@ export const nextAuthOptions:NextAuthOptions = {
           delete userData.image
           delete userData.id
           delete userData.name
-          debugger;
-          //logowanie - najpierw sprawdzimy czy konto z tym mailem istnieje już w bazie i czy provider się zgadza
-          let response = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
-          if(response.status === 200) {
-            // udało się zalgoować użytkownika po stronie serwera
-            // Tworzymy nową instancję połączenia z serwerem Socket.io
-            
-            let socket = getSocketInstance({authUser: response.body._id})
-            console.log(socket)
 
-            // Łączymy się z serwerem socket.io
+          let socket = getSocketInstance()
+          const isSocketConnected = await new Promise(resolve => {
+            if(socket.connected) {
+              resolve(true)
+            } else {
+              socket.once('connect', () => resolve(true)) // jeżeli socket zostanie połączony natychmiast zwracamy true
+            }
+          })
+          console.log("isSocketConnected to: " + isSocketConnected)
 
-            //Otrzymujmey odpowiedź z socketa odnośnie tego czy udało się połączyć czy nie ( true lub false)
-            // Jeżeli odopowiedź jest false natychmiast zamykamy połaczenie, jeżeli true nie robimy nic.
-            socket.on("connection_response", (data) => data === false ? socket.disconnect(): null)
-            console.log("STATUS POŁĄCZENIA SOCKET.io:" + socket.connected)
-
-            // Jeżeli socket.connect() zawiera pole connected z wartością false ( nie udało się połączyć )
-            if(socket.connected === false) {
-              console.log("BLOK SOCKET POŁĄCZENIE === FALSE")
-              // Jeżeli nie udał się nawiązać połączenia z socketem zwracamy obiekt błędu jako response oraz wylogowujemy użytkownika zmieniając jego status pola isOnline na false
-              const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser: userData._id})
-              console.log(logoutRequest)
-              response = {
+          switch (isSocketConnected) {
+            // Jeżeli socket jest połączony
+            case true: 
+              console.log("51: isSocketConnected to: TRUE")
+              store.dispatch(injectSocketInstance(socket))
+              // logujemy uzytkownika.
+              let logInResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
+              if(logInResponse.status === 200) {
+                console.log("54: UDAŁO SIĘ ZALOGOWAĆ UZYTKOWNIKA GOOGLE")
+                console.log(socket.id)
+                session.user = {
+                  ...logInResponse,
+                  socket_id:socket.id
+                }
+              } else {
+                console.log("57: NIE UDAŁO SIĘ ZALOGOWAĆ UZYTKOWNIKA GOOGLE")
+                socket.disconnect()
+                session.user = logInResponse
+              }
+              break;
+            // Jeżeli socket nie jest połączony
+            case false: 
+              console.log("isSocketConnected to: FALSE")
+              const errorResponse = {
                 error_message:"CLIENT ERROR: Failed to establish connection with server socket io",
                 client_message:"Failed to establish a stable connection to the server",
                 status: 510
               }
-              // socket.close()    
-              // session.user jest obiektem błędu 
-              session.user = response
-                   
-
-              // Udało się połączyć z socketem.
-            } else if (socket.connected === true) {
-              console.log("STATUS POŁĄCZENIA SOCKET.io to:" + socket.connected)
-              // Obiekt response zawiera dane logowania uzytkownika
-              // Pomyslknie zalogowany uzytkownik i pomyslnie utworzone połaczenie z socketem
-              session.user = response       
-            }
-          } else {
-            console.log("Nie udało się zalogować użytkownika po stronie serwera 500 lub 510")
-            // Status logowania użytkownika po stronie serwera jest 500 lub 510.
-            // session.user jest błędem po stronie serwera
-            session.user = response 
+              session.user = errorResponse
+              break;
           }
           console.log("ZWRÓCONA SESJA TO:")
           console.log(session)

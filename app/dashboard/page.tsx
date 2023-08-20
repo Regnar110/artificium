@@ -29,11 +29,10 @@ const Dashboard = () => {
   const authUser = useAppSelector(getUserId)
   useEffect(() => {
     return () => {
-      debugger;
-      console.log("unmount")
-      console.log(ioInstance) // DLACZEGO TO JEST NULL SKORO INSTANCJA POWINNA BYĆ JUŻ ZAINICJOWANA????
-      // DLACZEGO POJAWIA SIE KOLEJNY LOGOUT W KONSOLI SERWERA????
-      ioInstance?.disconnect()
+      // console.log("unmount")
+      // console.log(ioInstance) // DLACZEGO TO JEST NULL SKORO INSTANCJA POWINNA BYĆ JUŻ ZAINICJOWANA????
+      // // DLACZEGO POJAWIA SIE KOLEJNY LOGOUT W KONSOLI SERWERA????
+      // ioInstance?.disconnect()
     }
   },[])
   return (

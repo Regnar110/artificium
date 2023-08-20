@@ -11,6 +11,7 @@ import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
 import { useSession } from 'next-auth/react'
 import { Session } from 'next-auth'
+import { getActiveSocket } from '@/redux/slices/socketInstance/socketInstanceSlice'
 
 
 const UserPanel = () => {
@@ -19,13 +20,15 @@ const UserPanel = () => {
   const dispatch = useAppDispatch()
   const authUser = useAppSelector(getUserId)
   const logOut = async() => {
-    await authUserSignOut({providerSession: providerSession.data as Session, userSession, authUser, dispatch})
+    debugger;
+    await authUserSignOut({providerSession: providerSession.data as Session, userSession, authUser, dispatch, activeSocket})
   }
   const userSession = useAppSelector(isUserAuthenticated)
+  const activeSocket = useAppSelector(getActiveSocket)
   const providerSession = useSession()
   useEffect(() => {
     // tutaj ściągamy z serwera( a ten z bazy danych ) najświeższe grupy
-    const getGroups = async () => { 
+    const getGroups = async () => {
       const response = await userAccessRequest<Group[] | UserAccessErrorResponse, any>('getUserGroups', {user_id: authUser})
       if('status' in response && response.status) {
         console.log(response)
