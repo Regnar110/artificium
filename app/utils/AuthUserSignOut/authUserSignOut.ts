@@ -13,14 +13,14 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { getSocketInstance, ioInstance } from "../SocketInstance/socketInstance";
 
 interface Props {
-    providerSession:Session,
+    userProvider: "google" | "artificium",
     userSession:boolean,
     authUser:string,
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
     activeSocket:Socket<DefaultEventsMap, DefaultEventsMap>
 }
-export const authUserSignOut = async ({providerSession, userSession, authUser, dispatch, activeSocket}:Props) => {
-    console.log(activeSocket)
+export const authUserSignOut = async ({userProvider, userSession, authUser, dispatch, activeSocket}:Props) => {
+  debugger;
     // persistor nam potrzebny do wyczyszczenia z pamięci podręcznej przegladarki danych zalogowanego użytkownika celem prawidłowego jego wylogowania i zakończenia jego sesji.
     // dalej będzie używana metoda purge obiektu persistor, która czyści dane z utrwalonego stanu w pamięci podręcznej przegladarki
     // Najpierw będziemy przywracać stan userSession do initialState a potem czyścimy pamięc podręczną.
@@ -31,8 +31,8 @@ export const authUserSignOut = async ({providerSession, userSession, authUser, d
     const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser})
     if(logoutRequest.status === 200) { // jeżeli status zalogowania użytkownika w dokumencie mongoDB zmienił się na false
         // PONIŻEJ OPERACJE PO STRONIE KLIENTA - ZMIANA STANU APLIKACJI
-        if(providerSession === null) {
-            //UŻYTKOWNIK NIE ZALOGOWANY PRZEZ PROVIDERA. Sprawdzamy dalej, czy jest zalogowany rpzy pomocy formularza
+        if(userProvider === "artificium") {
+            //UŻYTKOWNIK NIE ZALOGOWANY PRZEZ PROVIDERA GOOGLE. Sprawdzamy dalej, czy jest zalogowany rpzy pomocy formularza
             if(userSession) { 
               // Użytkownik zalogowany przez formularz - wylogowujemy go
               
@@ -44,7 +44,7 @@ export const authUserSignOut = async ({providerSession, userSession, authUser, d
               // użytkownik nie jest zalogowany w ogóle. Opuszczamy funkcję
               return
             }
-          } else {
+          } else if(userProvider === "google") {
             //Wylogowanie użytkownika zalogowanego za pośrednictwem providera
 
             //redirect : false sprawia że strona po wykonaniu signOut nie jest reloadowana

@@ -2,20 +2,60 @@ import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 // Między wywołaniami w aplikacji ioInstance traci swoją waetość??
-export let ioInstance: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
-export const getSocketInstance = () => {
-    // console.log(ioInstance)
-    console.log("GETTING SOCKET") // funkcja zwracająca instancję socketIo. Zapobiega ona tworzeniu wielu instancji w czasie używania aplikacji
-    if(!ioInstance) {
-        console.log("NOWA Io instancja")
-        ioInstance = io("http://localhost:3001/",{
-            reconnection:false,
-             // socket io jest inicjalizowany z przekazaniem id użytkownika instancji celem umożliwienia jego rozpoznania
-        }) as Socket<DefaultEventsMap, DefaultEventsMap> 
-        return ioInstance
-    } else {
-        console.log("IO JUŻ JEST ZAINICJALiZOWANE")
-        // console.log(ioInstance)
-        return ioInstance 
+// interface Props {
+//     resetExisting:boolean
+// }
+// export var ioInstance: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
+// export const getSocketInstance = ({resetExisting}:Props) => {
+//     if(ioInstance && resetExisting){
+//         console.log("RESETTINg EXISTING SOCKET INSTANCE TO NULL")
+//         console.log(ioInstance)
+//         ioInstance = null
+//         return
+//     } else {
+//         console.log("GETTING SOCKET") // funkcja zwracająca instancję socketIo. Zapobiega ona tworzeniu wielu instancji w czasie używania aplikacji
+//         if(!ioInstance) {
+//             console.log("NOWA Io instancja")
+//             ioInstance = io("http://localhost:3001/",{
+//                 reconnection:false,
+//                 // socket io jest inicjalizowany z przekazaniem id użytkownika instancji celem umożliwienia jego rozpoznania
+//             }) as Socket<DefaultEventsMap, DefaultEventsMap> 
+//             return ioInstance
+//         } else {
+//             console.log("IO JUŻ JEST ZAINICJALiZOWANE")
+//             // console.log(ioInstance)
+//             return ioInstance 
+//         }        
+//     }
+//     // console.log(ioInstance)
+
+// }
+
+export class ioInstance {
+    private static socketInstance:Socket<DefaultEventsMap, DefaultEventsMap> | null
+    private constructor() {} // prywatny konstruktor żeby zapobiec tworzeniu nowych instancji klasy. Ma to być umożliwione tylko przy pomocy metody getSocketInstance
+
+    public static async getSocketInstance() {
+        if(!this.socketInstance) {
+            this.socketInstance = io("http://localhost:3001/", {
+                reconnection:false,
+            })
+            const isSocketConnected = await new Promise(resolve => {
+                if(this.socketInstance!.connected) {
+                  resolve(true)
+                } else {
+                  this.socketInstance!.once('connect', () => resolve(true))
+                }
+              })
+              if(isSocketConnected) return this.socketInstance // jezeli isSocketConnected === true zwracamy instancję
+        }
+        return this.socketInstance
+    }
+
+    public static closeSocketInstanceConnection() { 
+        if(this.socketInstance) {
+            this.socketInstance.disconnect()
+            this.socketInstance= null
+        } 
     }
 }

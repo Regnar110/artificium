@@ -1,12 +1,26 @@
 'use client'
-import { signIn, useSession } from "next-auth/react";
+import { AuthUserStoreInjection } from "@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection";
+import { useAppDispatch } from "@/redux/hooks/typedHooks";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const SignInPage = ({params}:{ params: { provider_slug:string}}) => {
     const { data: session, status } = useSession();
+    const router = useRouter()
+    const dispatch = useAppDispatch()
     useEffect(() => {
         if (!(status === "loading") && !session) void signIn(params.provider_slug);
-        if (session) window.close();
+        if (session) {
+            debugger;
+            const user = session.user as UserAccesSuccessResponse | UserAccessErrorResponse
+            user.status === 510 || user.status === 500 ? signOut() : AuthUserStoreInjection({ user: user.body, dispatch})
+            user.status === 200 ? router.push('/dashboard') : null 
+            console.log(session)
+            window.close();
+
+            //Przeniesione z login buttons
+        }
     }, [session, status]);
 
     return (

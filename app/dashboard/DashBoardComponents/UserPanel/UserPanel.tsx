@@ -5,7 +5,7 @@ import General from './Components/General'
 import Groups from './Components/Groups'
 import BottomSettings from './Components/BottomSettings/BottomSettings'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
-import { getUserId, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserId, getUserProvider, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
@@ -19,13 +19,14 @@ const UserPanel = () => {
   // i zalogowany a także nawiązał połączenie z instancją socket.io na serwerze. Dzięki temu nie musimy inicjalizowac nowej instancji z użyciem identyfikatora authUser.
   const dispatch = useAppDispatch()
   const authUser = useAppSelector(getUserId)
+  const userProvider = useAppSelector(getUserProvider)
   const logOut = async() => {
     debugger;
-    await authUserSignOut({providerSession: providerSession.data as Session, userSession, authUser, dispatch, activeSocket})
+    await authUserSignOut({userProvider, userSession, authUser, dispatch, activeSocket})
   }
   const userSession = useAppSelector(isUserAuthenticated)
   const activeSocket = useAppSelector(getActiveSocket)
-  const providerSession = useSession()
+  // const providerSession = useSession()
   useEffect(() => {
     // tutaj ściągamy z serwera( a ten z bazy danych ) najświeższe grupy
     const getGroups = async () => {
@@ -41,7 +42,7 @@ const UserPanel = () => {
 
     // nie uzależniamy montowania komponentu od stanu grup. Tutaj tylko inicjalizujemy jego początkową wartość.
     //Komponent Groups(niżej) będzie bazował na tym początkowym stanie i będzie się on re-renderował gdy zostanie dodana nowa grupa.
-  },[userSession, providerSession])
+  },[userSession])
   // authUserSignOut({userProvider, authUserId, dispatch})
   return (
     <div className={`bg-[#0D0F10] min-w-[280px] w-full md:w-[280px] relative h-screen flex flex-col gap-y-5 justify-between rounded-lg py-8 px-6 min-h-[681px] overflow-scroll overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-[#0D0F10]  `}>

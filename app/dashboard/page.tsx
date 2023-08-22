@@ -27,14 +27,14 @@ const Dashboard = () => {
   }
   const chat = useAppSelector(getChat)
   const authUser = useAppSelector(getUserId)
-  useEffect(() => {
-    return () => {
-      // console.log("unmount")
-      // console.log(ioInstance) // DLACZEGO TO JEST NULL SKORO INSTANCJA POWINNA BYĆ JUŻ ZAINICJOWANA????
-      // // DLACZEGO POJAWIA SIE KOLEJNY LOGOUT W KONSOLI SERWERA????
-      // ioInstance?.disconnect()
-    }
-  },[])
+  // useEffect(() => {
+  //   return () => {
+  //     // console.log("unmount")
+  //     // console.log(ioInstance) // DLACZEGO TO JEST NULL SKORO INSTANCJA POWINNA BYĆ JUŻ ZAINICJOWANA????
+  //     // // DLACZEGO POJAWIA SIE KOLEJNY LOGOUT W KONSOLI SERWERA????
+  //     // ioInstance?.disconnect()
+  //   }
+  // },[])
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>
