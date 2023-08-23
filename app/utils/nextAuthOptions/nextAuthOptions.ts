@@ -6,6 +6,7 @@ import { ioInstance } from "../SocketInstance/socketInstance";
 import store from "@/redux/store/store";
 import { injectSocketInstance } from "@/redux/slices/socketInstance/socketInstanceSlice";
 import { AuthUserStoreInjection } from "../AuthUserStoreInjection/AuthUserStoreInjection";
+import { injectUser } from "@/redux/slices/userSession/userSessionSlice";
 
 export const nextAuthOptions:NextAuthOptions = {
     providers: [
@@ -16,54 +17,62 @@ export const nextAuthOptions:NextAuthOptions = {
               params: {
                 prompt: "consent",
                 access_type: "offline",
-                response_type: "code"
-              }
-            }
+                response_type: "code",
+              
+              },
+            },
+  
           }),
     ],
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }) {
-        console.log("USER")
-        console.log(user)
-        console.log("ACCOUNT")
-        console.log(account)
-        console.log("PROFILE")
-        console.log(profile)
+      // async signIn({ user, account, profile }) {
 
-        const socket = await ioInstance.getSocketInstance()
-          const userData = { // tworzmy obiekt użytkownika na wypadek gdy jest on nowym użytkownikiem. Obiekt ten posłuży w razie co do rejestracji w bazie
-            ...user,
-            nickname: (user.name as string).replace(/\s/g, ''),
-            provider:"google",
-            socket:socket!.id
-          } as RegisterFormData
-          delete userData.image
-          delete userData.id
-          delete userData.name
+        // const socket = await ioInstance.getSocketInstance()
+        // console.log("NEXT AUTH SOCKET ID")
+        // console.log(socket.id)
+        //   const userData = { // tworzmy obiekt użytkownika na wypadek gdy jest on nowym użytkownikiem. Obiekt ten posłuży w razie co do rejestracji w bazie
+        //     ...user,
+        //     nickname: (user.name as string).replace(/\s/g, ''),
+        //     provider:"google",
+        //     socket:socket!.id
+        //   } as RegisterFormData
+        //   delete userData.image
+        //   delete userData.id
+        //   delete userData.name
           
-          console.log("NEW CREATED USER DATA:")
-          console.log(userData)
-          console.log("SOCKET ID")
-          console.log(socket.io.engine.id)
-          console.log("SOCKET CONNECTED TO:")
-          console.log(socket.connected)
+          // console.log("NEW CREATED USER DATA:")
+          // console.log(userData)
+          // console.log("SOCKET ID")
+          // console.log(socket.io.engine.id)
+          // console.log("SOCKET CONNECTED TO:")
+          // console.log(socket.connected)
 
-          let logInResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
-          if(logInResponse.status === 200) {
-            console.log("54: UDAŁO SIĘ ZALOGOWAĆ UZYTKOWNIKA GOOGLE")
-            console.log(logInResponse.body)
-            AuthUserStoreInjection({
-              user: logInResponse.body,
-              dispatch: store.dispatch
-            })
-            return true
-          } else {
-            console.log("57: NIE UDAŁO SIĘ ZALOGOWAĆ UZYTKOWNIKA GOOGLE. KOŃCZENIE POŁĄCZENIA SOCKET")
-            ioInstance.closeSocketInstanceConnection()
-            return false
-          }
-      },
+      //     let logInResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
+      //     if(logInResponse.status === 200) {
+      //       console.log("54: UDAŁO SIĘ ZALOGOWAĆ UZYTKOWNIKA GOOGLE")
+      //       console.log(logInResponse.body)
+      //       AuthUserStoreInjection({
+      //         user: logInResponse.body,
+      //         dispatch: store.dispatch
+      //       })
 
+      //       // store.dispatch(injectUser(logInResponse.body))
+
+      //       user = logInResponse.body
+      //       console.log("Nowy user to")
+      //       console.log(user)
+      //       return true
+      //     } else {
+      //       // console.log("57: NIE UDAŁO SIĘ ZALOGOWAĆ UZYTKOWNIKA GOOGLE. KOŃCZENIE POŁĄCZENIA SOCKET")
+      //       ioInstance.closeSocketInstanceConnection()
+      //       return false
+      //     }
+      // },
+      // async session({session,user}) {
+      //   console.log("SESJA")
+      //   console.log(session)
+      //   return session
+      // }
       //TUTAJ MUSIMY ZMIENIĆ ŻEBY NAJPIER BYŁO NAWIĄZYWANE POŁACZENIE Z SOCKET.iO A POTEM PRÓBA LOGOWANIA UŻYTKOWNIKA!
         // async session({session}) {
         //   console.log("WYWOŁANE SESJI LOGOWANIA")
@@ -133,5 +142,8 @@ export const nextAuthOptions:NextAuthOptions = {
         //     // Za każdym razem w odpowiedzi otrzymamy odpowiednią odpowiedź w postaci obiektu z kodem reprezentującym status naszego żądania
         //     // Jeżeli jest 200 - użytkownik jest uwierzytelniony, jeżeli 500 - coś poszło nie tak po stronie serwera - brak zgody na dostęp do aplikacji
         // }
-    }
+    },
+    // session: {
+    //   strategy:"jwt"
+    // }
 }

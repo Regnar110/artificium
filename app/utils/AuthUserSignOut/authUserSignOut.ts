@@ -17,10 +17,8 @@ interface Props {
     userSession:boolean,
     authUser:string,
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
-    activeSocket:Socket<DefaultEventsMap, DefaultEventsMap>
 }
-export const authUserSignOut = async ({userProvider, userSession, authUser, dispatch, activeSocket}:Props) => {
-  debugger;
+export const authUserSignOut = async ({userProvider, userSession, authUser, dispatch}:Props) => {
     // persistor nam potrzebny do wyczyszczenia z pamięci podręcznej przegladarki danych zalogowanego użytkownika celem prawidłowego jego wylogowania i zakończenia jego sesji.
     // dalej będzie używana metoda purge obiektu persistor, która czyści dane z utrwalonego stanu w pamięci podręcznej przegladarki
     // Najpierw będziemy przywracać stan userSession do initialState a potem czyścimy pamięc podręczną.
@@ -39,6 +37,7 @@ export const authUserSignOut = async ({userProvider, userSession, authUser, disp
               dispatch(signOutUser())
 
               //zamykamy połączenie z socketem
+              ioInstance.closeSocketInstanceConnection()
               await persistor.purge()
             } else {
               // użytkownik nie jest zalogowany w ogóle. Opuszczamy funkcję
@@ -48,11 +47,13 @@ export const authUserSignOut = async ({userProvider, userSession, authUser, disp
             //Wylogowanie użytkownika zalogowanego za pośrednictwem providera
 
             //redirect : false sprawia że strona po wykonaniu signOut nie jest reloadowana
-            await signOut({redirect:false, callbackUrl: 'http://localhost:3000/login' })
+            await signOut({redirect:false })
+            
+            
             await (async ()=> {
               dispatch(signOutUser())
+              ioInstance.closeSocketInstanceConnection()
               await persistor.purge()
-            
             })() 
           }
         turnOnNotification({response:logoutRequest})

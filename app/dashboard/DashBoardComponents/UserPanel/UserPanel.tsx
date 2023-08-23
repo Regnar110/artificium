@@ -9,8 +9,6 @@ import { getUserId, getUserProvider, isUserAuthenticated } from '@/redux/slices/
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
-import { useSession } from 'next-auth/react'
-import { Session } from 'next-auth'
 import { getActiveSocket } from '@/redux/slices/socketInstance/socketInstanceSlice'
 
 
@@ -22,7 +20,7 @@ const UserPanel = () => {
   const userProvider = useAppSelector(getUserProvider)
   const logOut = async() => {
     debugger;
-    await authUserSignOut({userProvider, userSession, authUser, dispatch, activeSocket})
+    await authUserSignOut({userProvider, userSession, authUser, dispatch})
   }
   const userSession = useAppSelector(isUserAuthenticated)
   const activeSocket = useAppSelector(getActiveSocket)
