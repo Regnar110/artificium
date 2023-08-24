@@ -23,6 +23,10 @@ interface RegisterFormData {
     provider: "artificium" | "google"
 }
 
+interface LoginFormData {
+    email:string;
+    login_password:string
+}
 interface ProviderLoginData {
     email:string
     provider:string

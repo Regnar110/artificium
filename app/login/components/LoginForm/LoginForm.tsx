@@ -1,18 +1,15 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import Button from '@mui/material/Button'
+import React, { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox'
 import { useForm } from "react-hook-form";
-import { userAccessRequest } from '@/app/utils/UserAccessRequest';
-import PulseLoader from 'react-spinners/PulseLoader';
-import { AuthUserStoreInjection } from '@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection';
 import { useAppDispatch } from '@/redux/hooks/typedHooks';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
 import { useRouter } from 'next/navigation';
+import { authUserLogIn } from '@/app/utils/AuthUserLogIn/AuthUserLogIn';
 const LoginForm = () => {
     const dispatch = useAppDispatch()
     const [ loginResponse, setLoginResponse ] = useState<UserAccesSuccessResponse | UserAccessErrorResponse>()
@@ -20,16 +17,13 @@ const LoginForm = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const router = useRouter()
 
-    const onSubmit = async (data:RegisterFormData) => {
+    const onSubmit = async (data:LoginFormData) => {
       setResponseLoading(true)
-      const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('login', data)
-      setLoginResponse(userAccessResponse)
+      const loginResponse = await authUserLogIn({sessionData:data, dispatch})
+      setLoginResponse(loginResponse)
       setResponseLoading(false)
-      userAccessResponse.status === 510 || userAccessResponse.status === 500 ? null : AuthUserStoreInjection({ user: userAccessResponse.body, dispatch})
-      if(userAccessResponse.status!==500) {
-        turnOnNotification({response:userAccessResponse})
-        userAccessResponse.status! === 200 ? router.push("/dashboard") : null
-      }
+      loginResponse.status === 200 ? router.push("/dashboard") : null
+      turnOnNotification({response:loginResponse})
     }
 
       const theme = createTheme({

@@ -1,3 +1,6 @@
+// Generyczna funkcja, która służy do wykonywania otypowyanych i przewidywalnych w działaniu żądań do serwera. 
+// Póki co obsługuje tylko żądania POST.
+
 export const userAccessRequest = async <ReturnType, BodyType>(endpoint:string, requestBody?:BodyType):Promise<ReturnType> => {
     const response = await fetch(`http://localhost:3001/${endpoint}`,
         {

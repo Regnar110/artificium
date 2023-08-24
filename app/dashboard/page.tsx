@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import UserPanel from './DashBoardComponents/UserPanel/UserPanel'
 import UserBoardWrapper from './DashBoardComponents/UserBoard/UserBoardWrapper'
 import ChatingWindowsWrapper from './DashBoardComponents/UserBoard/Components/ChattingWindows/ChatingWindowsWrapper'
@@ -15,9 +15,6 @@ import MediaQuery from 'react-responsive'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getSocketInstance, ioInstance } from '../utils/SocketInstance/socketInstance'
-import { getUserId, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
-import { useRouter } from 'next/navigation'
 
 const Dashboard = () => {
   let settings = {

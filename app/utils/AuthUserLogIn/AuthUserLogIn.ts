@@ -8,16 +8,23 @@ interface ProviderLogInProps {
 }
 
 export const authUserLogIn = async ({sessionData, dispatch}:ProviderLogInProps) => {
-    const socket = await ioInstance.getSocketInstance()
-    const userData = { // tworzmy obiekt użytkownika na wypadek gdy jest on nowym użytkownikiem. Obiekt ten posłuży w razie co do rejestracji w bazie
-        ...sessionData,
-        nickname: (sessionData.name as string).replace(/\s/g, ''),
-        provider:"google",
-      } as RegisterFormData
-      delete userData.image
-      delete userData.id
-      delete userData.name
-      let logInResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
-      logInResponse.status === 200 && dispatch(injectUser(logInResponse.body))
-      return logInResponse
+    // Logując się tworzymy nową instancję socket.io
+    await ioInstance.getSocketInstance()
+    let userData:any;
+    let logInResponse:UserAccesSuccessResponse | UserAccessErrorResponse;
+    if(sessionData.image) { // LOGOWANIE PRZEZ PROVIDERA
+        // Tworzymy obiekt wysyłany do API dla użytkownika logującego się przez Providera.
+        // Obiekt jest typu RegisterFormData ponieważ zawsze przesyłamy obiekt jak by uzytkownik się rejestrował. API potrem sprawdza czy taki użytkownik już istnieje
+        // Jeżeli tak, to zwraca jego obiekt, a jeżeli nie to po prostu go rejestruje w bazie za pomocą tego obiektu
+        userData = {
+            ...sessionData,
+            nickname: (sessionData.name as string).replace(/\s/g, ''),
+            provider: "google"
+        } as RegisterFormData
+        logInResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>("googleIdentityLogin", userData)
+    } else { // LOGOWANIE PRZEZ FORMULARZ
+        logInResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , LoginFormData>("login", sessionData )
+    }
+    logInResponse.status === 200 && dispatch(injectUser(logInResponse.body))
+    return logInResponse
 }

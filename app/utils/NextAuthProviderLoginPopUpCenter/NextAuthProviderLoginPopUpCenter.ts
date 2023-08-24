@@ -27,3 +27,5 @@ export const NextAuthProviderLoginPopUpCenter = (url:string, title:string) => {
   };
 
 // Jest to funkcja, która otwiera nowe okno i wyświetla w nim url. Okno ma nazwę title. 
+
+// NIE UŻYWANY KOMPONENT. POZOSTAŁ DO EWENTUALNEGO PÓŹNIEJSZEGO WDROŻENIA
