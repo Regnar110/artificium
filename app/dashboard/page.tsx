@@ -16,7 +16,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { getSocketInstance, ioInstance } from '../utils/SocketInstance/socketInstance'
-import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserId, isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
+import { useRouter } from 'next/navigation'
 
 const Dashboard = () => {
   let settings = {
@@ -26,15 +27,7 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   const chat = useAppSelector(getChat)
-  const authUser = useAppSelector(getUserId)
-  // useEffect(() => {
-  //   return () => {
-  //     // console.log("unmount")
-  //     // console.log(ioInstance) // DLACZEGO TO JEST NULL SKORO INSTANCJA POWINNA BYĆ JUŻ ZAINICJOWANA????
-  //     // // DLACZEGO POJAWIA SIE KOLEJNY LOGOUT W KONSOLI SERWERA????
-  //     // ioInstance?.disconnect()
-  //   }
-  // },[])
+
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>

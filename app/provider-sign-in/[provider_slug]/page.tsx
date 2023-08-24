@@ -1,4 +1,6 @@
 'use client'
+import { turnOnNotification } from "@/app/AppComponents/ToastNotifications/TurnOnNotification";
+import { authUserLogIn } from "@/app/utils/AuthUserLogIn/AuthUserLogIn";
 import { AuthUserStoreInjection } from "@/app/utils/AuthUserStoreInjection/AuthUserStoreInjection";
 import { useAppDispatch } from "@/redux/hooks/typedHooks";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -10,15 +12,17 @@ const SignInPage = ({params}:{ params: { provider_slug:string}}) => {
     const router = useRouter()
     const dispatch = useAppDispatch()
     useEffect(() => {
+        console.log("PROVIDER")
         if (!(status === "loading") && !session) void signIn(params.provider_slug);
         if (session) {
-            debugger;
-            const user = session.user as UserAccesSuccessResponse | UserAccessErrorResponse
-            user.status === 510 || user.status === 500 ? signOut() : AuthUserStoreInjection({ user: user.body, dispatch})
-            user.status === 200 ? router.push('/dashboard') : null 
-            console.log(session)
-            window.close();
+            (   async () => {
+                    const loginResponse = await authUserLogIn({sessionData:session?.user, dispatch})
+                    turnOnNotification({response:loginResponse})
+                    loginResponse.status === 200 ? router.push("/dashboard") : router.push("/login")
 
+                }
+            )()
+            router.push("/dashboard")
             //Przeniesione z login buttons
         }
     }, [session, status]);

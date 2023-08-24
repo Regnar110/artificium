@@ -9,17 +9,22 @@ import { getUserId, getUserProvider, isUserAuthenticated } from '@/redux/slices/
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
+import { useRouter } from 'next/navigation'
+import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification'
 
 
 const UserPanel = () => {
   // przy pobraniu instancji przekazujemy {} ponieważ domyślnie jeżeli użytkownik ma dostęp do tego komponentu to jest już sprawdzony
   // i zalogowany a także nawiązał połączenie z instancją socket.io na serwerze. Dzięki temu nie musimy inicjalizowac nowej instancji z użyciem identyfikatora authUser.
   const dispatch = useAppDispatch()
+  const router = useRouter();
   const authUser = useAppSelector(getUserId)
-  const userProvider = useAppSelector(getUserProvider)
   const userSession = useAppSelector(isUserAuthenticated)
+  const userProvider = useAppSelector(getUserProvider)
   const logOut = async() => {
-    await authUserSignOut({userProvider, userSession, authUser, dispatch})
+    const logoutResponse = await authUserSignOut({userProvider, authUser, dispatch})
+    logoutResponse.status === 200 ? router.push('/login') : null
+    turnOnNotification({response:logoutResponse})
   }
   
   // const providerSession = useSession()
