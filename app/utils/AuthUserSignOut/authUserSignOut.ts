@@ -29,33 +29,13 @@ export const authUserSignOut = async ({userProvider, userSession, authUser, disp
     const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser})
     if(logoutRequest.status === 200) { // jeżeli status zalogowania użytkownika w dokumencie mongoDB zmienił się na false
         // PONIŻEJ OPERACJE PO STRONIE KLIENTA - ZMIANA STANU APLIKACJI
-        if(userProvider === "artificium") {
-            //UŻYTKOWNIK NIE ZALOGOWANY PRZEZ PROVIDERA GOOGLE. Sprawdzamy dalej, czy jest zalogowany rpzy pomocy formularza
-            if(userSession) { 
-              // Użytkownik zalogowany przez formularz - wylogowujemy go
-              
-              dispatch(signOutUser())
 
-              //zamykamy połączenie z socketem
-              ioInstance.closeSocketInstanceConnection()
-              await persistor.purge()
-            } else {
-              // użytkownik nie jest zalogowany w ogóle. Opuszczamy funkcję
-              return
-            }
-          } else if(userProvider === "google") {
-            //Wylogowanie użytkownika zalogowanego za pośrednictwem providera
-
-            //redirect : false sprawia że strona po wykonaniu signOut nie jest reloadowana
-            await signOut({redirect:false })
-            
-            
-            await (async ()=> {
-              dispatch(signOutUser())
-              ioInstance.closeSocketInstanceConnection()
-              await persistor.purge()
-            })() 
-          }
+        dispatch(signOutUser())
+        if(userProvider === "google") {
+          await signOut()
+        }
+        await persistor.purge()
+        ioInstance.closeSocketInstanceConnection()
         turnOnNotification({response:logoutRequest})
     } else {
         turnOnNotification({response:logoutRequest})

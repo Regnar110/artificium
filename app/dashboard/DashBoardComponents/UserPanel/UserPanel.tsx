@@ -9,7 +9,6 @@ import { getUserId, getUserProvider, isUserAuthenticated } from '@/redux/slices/
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
-import { getActiveSocket } from '@/redux/slices/socketInstance/socketInstanceSlice'
 
 
 const UserPanel = () => {
@@ -18,12 +17,11 @@ const UserPanel = () => {
   const dispatch = useAppDispatch()
   const authUser = useAppSelector(getUserId)
   const userProvider = useAppSelector(getUserProvider)
+  const userSession = useAppSelector(isUserAuthenticated)
   const logOut = async() => {
-    debugger;
     await authUserSignOut({userProvider, userSession, authUser, dispatch})
   }
-  const userSession = useAppSelector(isUserAuthenticated)
-  const activeSocket = useAppSelector(getActiveSocket)
+  
   // const providerSession = useSession()
   useEffect(() => {
     // tutaj ściągamy z serwera( a ten z bazy danych ) najświeższe grupy

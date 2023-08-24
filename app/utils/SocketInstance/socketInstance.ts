@@ -53,8 +53,10 @@ export class ioInstance {
               })
               this.activeSocketId = this.socketInstance.io.engine.id
               if(isSocketConnected) return this.socketInstance // jezeli isSocketConnected === true zwracamy instancję
-        }
-        return this.socketInstance
+            } else {
+                return this.socketInstance
+            }
+        
     }
 
     public static closeSocketInstanceConnection() { 

@@ -1,4 +1,3 @@
-'use client'
 import LoginPageWrapper from './components/LoginPageWrapper/LoginPageWrapper'
 import LoginSection from './components/LoginSection/LoginSection'
 import ArtificiumAbsoluteLogo from '../AppComponents/ArtificiumAbsoluteLogo/ArtificiumAbsoluteLogo'

@@ -10,8 +10,9 @@ export const userSessionSlice = createSlice({
     initialState,
     reducers: {
         injectUser: (state, action:PayloadAction<Partial<AuthenticatedUser>>) => {
+            console.log("INJECTING USER")
+            console.log(action.payload)
             state = Object.assign(state, action.payload)
-            console.log(state._id)
         },
         signOutUser: () => initialState
     }

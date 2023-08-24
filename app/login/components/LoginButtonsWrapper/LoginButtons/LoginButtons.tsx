@@ -9,8 +9,6 @@ import { getUserProvider } from '@/redux/slices/userSession/userSessionSlice'
 
 const LoginButtons = async () => {
   const userProvider = useAppSelector(getUserProvider)
-  //LOGIKA PRZENIESIONA do provider-sign-in page.tsx
-  // const socketInstance = await ioInstance.getSocketInstance()
   return (
     <div className='flex flex-col overflow-hidden'>
       <div className='buttons_container flex flex-col sm:flex-row gap-4 sm:gap-8'>
