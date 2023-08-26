@@ -1,5 +1,6 @@
 'use client'
 import PageLoader from '@/app/AppComponents/PageLoader/PageLoader'
+import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
 import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { isUserAuthenticated } from '@/redux/slices/userSession/userSessionSlice'
 import { useRouter } from 'next/navigation'
@@ -16,10 +17,17 @@ const DashboardPageWrapper = ({children}:Props) => {
     useEffect(() => {
         if(userSession === true) { // sprawdzamy czy sesja użytkownika aplikacji została umieszczona w storew
           setDOMStatus(true) // umożliwiamy dostęp do części aplikacji
+
+          //Tutaj następuje uruchomienie nowego połączenia z socket io gdy użytkownik np. nie wyloguje się z aplikacji.
+          // Refresh strony powoduje zamknięcie połączenia z socket io. Tutaj otwieramy nowe.
+          if(!ioInstance.activeSocketId) (async()=>ioInstance.getSocketInstance())();
+
+          
         } else {
           setDOMStatus(false)
           router.push("/login")
         }
+
     },[userSession])
   return DOMStatus ?
     <main className='dashboard box-border text-black bg-[#131619] w-full flex justify-center items-center gap-3 min-h-[screen] overflow-hidden'>
