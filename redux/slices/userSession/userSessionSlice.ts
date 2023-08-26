@@ -10,6 +10,7 @@ export const userSessionSlice = createSlice({
     initialState,
     reducers: {
         injectUser: (state, action:PayloadAction<Partial<AuthenticatedUser>>) => {
+            // TO DO: Do stanu zostaje wstrzyknięte pole obiektu isOnline. Nie jest nam ono do niczego potrzbne. Usunąć.
             console.log("INJECTING USER")
             console.log(action.payload)
             state = Object.assign(state, action.payload)
@@ -22,8 +23,8 @@ export const { injectUser, signOutUser} = userSessionSlice.actions
 
 export default userSessionSlice.reducer
 //SELEKTORY
-export const getUserObject = (state:RootState):Partial<AuthenticatedUser> => {
-    return state.userSession
+export const getUserObject = (state:RootState):AuthenticatedUser => {
+    return state.userSession as AuthenticatedUser
 }
 export const isUserAuthenticated = (state:RootState):boolean => {
     // Na bazie tego selektora aplikacja będzie miała wiedzę na temat tego czy uzytkownik jest zalogowany i czy ma prawo uzyskać dostęp

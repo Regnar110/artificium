@@ -46,6 +46,7 @@ interface UserAccessErrorResponse {
 
 interface AuthenticatedUser {
     _id: string,
+    isOnline: boolean,
     email: string,
     nickname: string,
     provider: "artificium" | "google",
