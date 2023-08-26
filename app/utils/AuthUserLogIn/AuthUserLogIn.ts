@@ -9,7 +9,6 @@ interface ProviderLogInProps {
 
 export const authUserLogIn = async ({sessionData, dispatch}:ProviderLogInProps) => {
     // Logując się tworzymy nową instancję socket.io
-    await ioInstance.getSocketInstance()
     let userData:any;
     let logInResponse:UserAccesSuccessResponse | UserAccessErrorResponse;
     if(sessionData.image) { // LOGOWANIE PRZEZ PROVIDERA
@@ -25,6 +24,9 @@ export const authUserLogIn = async ({sessionData, dispatch}:ProviderLogInProps) 
     } else { // LOGOWANIE PRZEZ FORMULARZ
         logInResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , LoginFormData>("login", sessionData )
     }
-    logInResponse.status === 200 && dispatch(injectUser(logInResponse.body))
+    if(logInResponse.status === 200) {
+        dispatch(injectUser(logInResponse.body))
+        await ioInstance.getSocketInstance()
+    } 
     return logInResponse
 }
