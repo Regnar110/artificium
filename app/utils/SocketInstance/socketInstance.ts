@@ -7,10 +7,13 @@ export class ioInstance {
     static activeSocketId: string | undefined = undefined
     private constructor() {} // prywatny konstruktor żeby zapobiec tworzeniu nowych instancji klasy. Ma to być umożliwione tylko przy pomocy metody getSocketInstance
 
-    public static async getSocketInstance() {
+    public static async getSocketInstance(userId:string) {
         if(!this.socketInstance) {
             this.socketInstance = io("http://localhost:3001/", {
                 reconnection:false,
+                query:{
+                    userId
+                }
             })
 
             // Poniżej czekamy ąż socketInstance będzie miało wartość pola connected true
