@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import CurrentlyOffline from '../CurrentlyOffline/CurrentlyOffline'
 import CurrentlyOnline from '../CurrentlyOnline/CurrentlyOnline'
 import ListCategoriesOptions from '../ListCategoriesOptions/ListCategoriesOptions'
 import ListVisibilitySetter from '../ListVisiblitySetter/ListVisibilitySetter'
+import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
 
 interface Props {
     friendsVisible:boolean
@@ -10,7 +11,12 @@ interface Props {
 }
 
 const FriendsListWrapper = ({friendsVisible, setFriendsVisible}:Props) => {
-
+    useEffect(() => {
+        const socket = ioInstance.getActiveSocket() 
+        socket.on("chat", (...args) => {
+            console.log(args)
+        })
+    },[])
   return (
     <>
         <div id='user_list_with_statuses' className={`w-[300px] p-5 ${friendsVisible === true ? "visible" : "hidden"} overflow-hidden flex flex-col justify-between gap-4`}>
