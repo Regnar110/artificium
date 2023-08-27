@@ -29,7 +29,10 @@ export class ioInstance {
             } else {
                 return this.socketInstance
             }
-        
+    }
+
+    public static getActiveSocket() {
+        return this.socketInstance as Socket<DefaultEventsMap, DefaultEventsMap>
     }
 
     public static closeSocketInstanceConnection() { 
