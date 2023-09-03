@@ -2,7 +2,7 @@ import React from 'react'
 import user_avatar from '../../../../../../../public/Dashboard/UserBoard/user_avatar.png'
 import UserAvatarWithStatus from '@/app/AppComponents/UserAvatarWithStatus/UserAvatarWithStatus'
 interface Props {
-  friends: any[]
+  friends: Friend[]
 }
 const CurrentlyOnline = ({friends}:Props) => {
 

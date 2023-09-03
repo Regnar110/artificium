@@ -76,3 +76,14 @@ interface Group {
     group_users:string[]
     group_invite_slugId:string
 }
+
+
+// Friend List
+
+interface Friend {
+    _id: ObjectId,
+    isOnline:boolean,
+    email:string,
+    nickname:string,
+    avatar_id:string
+}
