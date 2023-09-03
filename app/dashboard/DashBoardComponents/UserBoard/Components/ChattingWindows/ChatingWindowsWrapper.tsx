@@ -5,13 +5,11 @@ import library from '../../../../../../public/Dashboard/UserBoard/library.svg'
 import React, {useEffect, useState} from 'react'
 import ChattingWindow from './ChattingWindow'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
-import { getChat, selectWindow } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import { selectWindow } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 
 type ClickedWindowTypes = "artificium" | "chat" | "library"
 const ChatingWindowsWrapper = () => {
     const dispatch = useAppDispatch()
-    const chatChosen = useAppSelector(getChat)
-    console.log(chatChosen)
     const [ windowClicked, setWindowClicked ] = useState<ClickedWindowTypes>("artificium")
     const onWindowClick = (targetId:ClickedWindowTypes) => {
         dispatch(selectWindow(targetId))

@@ -35,6 +35,10 @@ export class ioInstance {
         return this.socketInstance as Socket<DefaultEventsMap, DefaultEventsMap>
     }
 
+    public static changeSocketRoom(room:string) {
+        this.socketInstance?.emit("CHANGE_ROOM", room)
+    }
+
     public static closeSocketInstanceConnection() { 
         if(this.socketInstance) {
             this.socketInstance.disconnect()

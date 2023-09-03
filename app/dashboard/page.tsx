@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserPanel from './DashBoardComponents/UserPanel/UserPanel'
 import UserBoardWrapper from './DashBoardComponents/UserBoard/UserBoardWrapper'
 import ChatingWindowsWrapper from './DashBoardComponents/UserBoard/Components/ChattingWindows/ChatingWindowsWrapper'
@@ -25,17 +25,22 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   const chat = useAppSelector(getChat)
-
+  if(chat._id) {
+    ioInstance.getActiveSocket().emit("CHANGE_ROOM", chat._id)
+    ioInstance.getActiveSocket().on(chat._id, (...args) => {
+      console.log(args)
+    })  
+  }
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>
           <UserPanel/>        
           <UserBoardWrapper>
             {
-              chat.selectedGroup._id ?
+              chat._id ?
               <>
                 <BoardHeader>
-                  <HeaderWithAvatars chat_title={chat.selectedGroup.group_name as string} chat_description={chat.selectedGroup.group_description as string}/>
+                  <HeaderWithAvatars chat_title={chat.group_name as string} chat_description={chat.group_description as string}/>
                   <ChatingWindowsWrapper/>
                 </BoardHeader>
                 <ChatPanel/>
@@ -44,7 +49,7 @@ const Dashboard = () => {
                 <EmptyBoardWaterMark/>
             } 
             <div></div>
-            </UserBoardWrapper>   
+          </UserBoardWrapper>   
       </MediaQuery>
 
       {/*Wersja ze sliderem dla wersji mobilnych poniżej 768px*/}
@@ -53,10 +58,10 @@ const Dashboard = () => {
             <UserPanel/>        
             <UserBoardWrapper>
               {
-                chat.selectedGroup._id ?
+                chat._id ?
                 <>
                   <BoardHeader>
-                    <HeaderWithAvatars chat_title={chat.selectedGroup.group_name as string} chat_description={chat.selectedGroup.group_description as string}/>
+                    <HeaderWithAvatars chat_title={chat.group_name as string} chat_description={chat.group_description as string}/>
                     <ChatingWindowsWrapper/>
                   </BoardHeader>
                   <ChatPanel/>

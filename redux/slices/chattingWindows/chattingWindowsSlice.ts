@@ -1,3 +1,4 @@
+import { ioInstance } from "@/app/utils/SocketInstance/socketInstance";
 import { RootState } from "@/redux/store/store";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
@@ -22,6 +23,7 @@ export const chattingWindowsSlice = createSlice({
                 ...state,
                 selectedGroup:action.payload
             })
+            ioInstance.changeSocketRoom(action.payload._id)
         }
     }
 }) 
@@ -33,7 +35,7 @@ export default chattingWindowsSlice.reducer
 //SELEKTORY
 
 export const getChat = (state:RootState) => {
-    return state.chattingWindows
+    return state.chattingWindows.selectedGroup
 }
 
 
