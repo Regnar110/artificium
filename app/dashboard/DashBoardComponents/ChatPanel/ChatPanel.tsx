@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import ChatWrapper from './Components/Chat/ChatWrapper'
 import FriendsListWrapper from './Components/UserList/FriendsListWrapper/FriendsListWrapper'

@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import UserPanel from './DashBoardComponents/UserPanel/UserPanel'
 import UserBoardWrapper from './DashBoardComponents/UserBoard/UserBoardWrapper'
 import ChatingWindowsWrapper from './DashBoardComponents/UserBoard/Components/ChattingWindows/ChatingWindowsWrapper'
@@ -15,22 +15,17 @@ import MediaQuery from 'react-responsive'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ioInstance } from '../utils/SocketInstance/socketInstance'
 
 const Dashboard = () => {
+  const chat = useAppSelector(getChat)  
+  
   let settings = {
     speed: 500,
     Infinity:false,
     slidesToShow: 1,
     slidesToScroll: 1
   }
-  const chat = useAppSelector(getChat)
-  if(chat._id) {
-    ioInstance.getActiveSocket().emit("CHANGE_ROOM", chat._id)
-    ioInstance.getActiveSocket().on(chat._id, (...args) => {
-      console.log(args)
-    })  
-  }
+
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>
