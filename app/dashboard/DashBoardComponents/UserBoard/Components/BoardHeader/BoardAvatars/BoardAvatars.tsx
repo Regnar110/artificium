@@ -19,17 +19,27 @@ const BoardAvatars = () => {
         const socket = ioInstance.getActiveSocket();
         if(groupId) {
           socket.emit("JOIN_GROUP_ROOM", groupId, userId) 
-          socket.on(groupId, (...args) => console.log(args))      
+          socket.on(groupId, (...args) => console.log(args))
+
+          //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją!
+          socket.on("GROUP_USER_LEAVE", (...args) => {
+            console.log(`UŻYTKOWNIK ${args[0]} OPUŚCIŁ POKÓJ GRUPY`)
+          })
+          socket.on("GROUP_USER_JOIN", (...args) => {
+            console.log(`UŻYTKOWNIK ${args[0]} DOŁĄCZYŁ DO GRUPY`)
+          })
         }
     // wpychamy do komponentu nowy event listener socket, który nasłuchuje wiadomości z pokoju o nazwie id grupy
         return () => {
-          // jeżeli komponent zostanie odmontowany przy zmianie chat to wyłączamy listener socketu o nazwie chat._id
-          // bez tego liczba listenerów przy re-renderowaniach będzie się na siebie nakładać co wywoła niepotrzebneodpowiedzi z serwera.
-          socket.off(groupId)
-
-          // Następnie emitujemy do servera prośbę o odłączenie użytkownika z grupy po stronie serwera.
+          // Emitujemy do servera prośbę o odłączenie użytkownika z grupy po stronie serwera.
           // Ma to na celu, zapobiegnięcie dostarczania wiadomości wyłącznych dla użytkowników którzy są aktualnie w grupie użytkownikom, którzy ją opuścili.
           socket.emit("LEAVE_GROUP_ROOM", groupId, userId)
+        
+          // jeżeli komponent zostanie odmontowany przy zmianie chat to wyłączamy listener socketu o nazwie chat._id
+          // bez tego liczba listenerów przy re-renderowaniach będzie się na siebie nakładać co wywoła niepotrzebneodpowiedzi z serwera.
+
+          socket.off(groupId)
+          socket.off("GROUP_USER_LEAVE")
         }
       },[groupId, userId])
       
