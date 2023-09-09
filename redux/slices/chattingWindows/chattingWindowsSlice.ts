@@ -18,25 +18,58 @@ export const chattingWindowsSlice = createSlice({
                 windowType:action.payload
             })
         },
+        
         selectGroup: (state, action:PayloadAction<Group>)=> {
             state = Object.assign(state, {
                 ...state,
                 selectedGroup:action.payload
             })
             ioInstance.changeSocketRoom(action.payload._id)
-        }
+        },
+
+        addActiveUserToGroup: (state, action:PayloadAction<AuthenticatedUser>) => {
+            console.log("DODAJE UŻYTKOWNIKA DO GRUPPY")
+            console.log(state.selectedGroup)
+            const newSelectedGroup = {
+                ...state.selectedGroup,
+                active_users: [...state.selectedGroup.active_users, action.payload]
+            }
+            state = Object.assign(state, {
+                ...state,
+                selectedGroup: newSelectedGroup
+            })
+        },
+
+        removeUserFromgroup: (state, action:PayloadAction<string>) => {
+            console.log(action.payload)
+            console.log(typeof action.payload)
+            console.log("USUWANIE Z GRUPY")
+            const newSelectedGroup = {
+                ...state.selectedGroup,
+                active_users: state.selectedGroup.active_users!.filter(user => user._id != action.payload)
+            }
+
+            console.log(newSelectedGroup)
+
+            state = Object.assign(state, {
+                ...state,
+                selectedGroup:newSelectedGroup
+            })
+        },
+
+        resetGroups: (state) => initialState
+
     }
 }) 
 
-export const { selectWindow, selectGroup } = chattingWindowsSlice.actions
+export const { selectWindow, selectGroup, addActiveUserToGroup, removeUserFromgroup, resetGroups } = chattingWindowsSlice.actions
 
 export default chattingWindowsSlice.reducer
 
 //SELEKTORY
 
-export const getChat = (state:RootState) => {
-    return state.chattingWindows.selectedGroup
-}
+export const getChat = (state:RootState) => state.chattingWindows.selectedGroup
+export const getGroup = (state:RootState) => state.chattingWindows.selectedGroup
 
 
 // Chatting windows będą zawierać :

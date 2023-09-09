@@ -5,31 +5,53 @@ import UserAvatarWithStatus from '../../../../../../AppComponents/UserAvatarWith
 import user_avatar from '../../../../../../../public/Dashboard/UserBoard/user_avatar.png'
 import share from '../../../../../../../public/Dashboard/UserBoard/share.svg'
 import edit from '../../../../../../../public/Dashboard/UserBoard/edit.svg'
-import { useAppSelector } from '@/redux/hooks/typedHooks'
-import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
+import { addActiveUserToGroup, getChat, getGroup, removeUserFromgroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
 import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 
+
+// KOMPONENT RENDERUJĄCY ZNAJOMYCH DOSTĘPNYCH W WYBRANEJ PRZEZ UZYTKOWNIKA GRUPIE.
+// PRZY ZAMONTOWANIU TEGO KOMPONENTU( CO DZIEJE SIĘ PO UPRZEDNIM WYBRANIU GRUPY) UŻYTKOWNIK ZOSTAJE DOŁĄCZONY PO STRONIE SERWERA
+// DO POKOJU SOCKET.IO KTÓRY UMOŻLIWI MU EKSKLUZYWNE POŁĄCZENIE TYLKO Z UŻYTKOWNIKAMI Z TEJ SAMEJ GRUPY.
+// PRZY ODMONTOWANIU WSZYSTKIE LISTENERY Z INSTANCJI SOCKET ZOSTANĄ USUNIĘTE A SAM UŻYTKOWNIK ZOSTANIE USUNIĘTY Z POKOJU SOCKET.IO
+
+
 const BoardAvatars = () => {
+
     const {_id:groupId} = useAppSelector(getChat)
     const userId = useAppSelector(getUserId)
-    useEffect(() => { // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
+    const group = useAppSelector(getGroup)
+    const dispatch = useAppDispatch()
+    useEffect(() => { 
+      console.log("GRUPA TO")
+      console.log(group)
+      // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
         // Przy zmianie czatu emitujemy wiadomośc do socketa, że zmieniamy chat na chat._id( co jest id konkretnej grupy)
         // Wtedy na back-endzie jestśmy podłączeni do pokoju o nazwie konkretnego chatu.
         const socket = ioInstance.getActiveSocket();
         if(groupId) {
-          socket.emit("JOIN_GROUP_ROOM", groupId, userId) 
+          socket.emit("JOIN_GROUP_ROOM", groupId, userId)
+          socket.on("JOINING_GROUP", (...args) => {
+            // GDY DOŁĄCZYMY DO GRUPY OTRZYMUJEMY LISTĘ POCZĄTKOWĄ ACTIVE_USERS
+          }) 
           socket.on(groupId, (...args) => console.log(args))
 
-          //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją!
+          //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją! W ODPOWIEDZI DOSTAJEMY ID UŻYTKOWNIKA KTÓRY OPUŚCIŁ GRUPĘ
           socket.on("GROUP_USER_LEAVE", (...args) => {
+            dispatch(removeUserFromgroup(args[0]))
             console.log(`UŻYTKOWNIK ${args[0]} OPUŚCIŁ POKÓJ GRUPY`)
+            console.log(args[0])
+            
           })
+
+          //EVENT GDY KTOŚ DOŁĄCZA DO GRUPY. W ODPOWIEDZI DOSTAJEMY OBIEKT UŻYTKOWNIKA KTÓRY DOŁĄCZYŁ DO GRUPY
           socket.on("GROUP_USER_JOIN", (...args) => {
             console.log(`UŻYTKOWNIK ${args[0]} DOŁĄCZYŁ DO GRUPY`)
+            dispatch(addActiveUserToGroup(args[0]))
+            console.log(args[0])
           })
         }
-    // wpychamy do komponentu nowy event listener socket, który nasłuchuje wiadomości z pokoju o nazwie id grupy
         return () => {
           // Emitujemy do servera prośbę o odłączenie użytkownika z grupy po stronie serwera.
           // Ma to na celu, zapobiegnięcie dostarczania wiadomości wyłącznych dla użytkowników którzy są aktualnie w grupie użytkownikom, którzy ją opuścili.
@@ -40,12 +62,15 @@ const BoardAvatars = () => {
 
           socket.off(groupId)
           socket.off("GROUP_USER_LEAVE")
+          socket.off("GROUP_USER_JOIN")
+          socket.off("GROUP_USER_LEAVE")
         }
       },[groupId, userId])
       
 
     return (
         <div className='avatar_functionalities flex gap-6 w-fit'>
+          <button onClick={() => console.log(group)}>CLICK</button>
             <div className='users_avatars_status_container flex'>
                 <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"ONLINE"}}/>
                 <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"OFFLINE"}}/>

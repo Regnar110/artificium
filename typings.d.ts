@@ -74,6 +74,7 @@ interface Group {
     group_name:string
     group_description:string
     group_users:string[]
+    active_users: AuthenticatedUser[]
     group_invite_slugId:string
 }
 

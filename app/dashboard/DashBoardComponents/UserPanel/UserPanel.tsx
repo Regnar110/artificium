@@ -30,6 +30,7 @@ const UserPanel = () => {
     // tutaj ściągamy z serwera( a ten z bazy danych ) najświeższe grupy
     const getGroups = async () => {
       const response = await userAccessRequest<Group[] | UserAccessErrorResponse, any>('getUserGroups', {user_id: authUser})
+      console.log(response)
       if('status' in response && response.status) {
         console.log(response)
       } else {
