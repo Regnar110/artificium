@@ -27,6 +27,7 @@ export const chattingWindowsSlice = createSlice({
             ioInstance.changeSocketRoom(action.payload._id)
         },
 
+        //AKCJA WYWOŁANA GDY DODAJEMY DO AKTUALNEJ GRUPY NOWEGO UŻYTKOWNIKA. ( GDY JESTEŚMY AKTUALNIE W TEJ GRUPIE )
         addActiveUserToGroup: (state, action:PayloadAction<AuthenticatedUser>) => {
             console.log("DODAJE UŻYTKOWNIKA DO GRUPPY")
             console.log(state.selectedGroup)
@@ -40,6 +41,7 @@ export const chattingWindowsSlice = createSlice({
             })
         },
 
+        //AKCJA WYWOŁANA GDY USUWAMY Z AKTUALNEJ GRUPY NOWEGO UŻYTKOWNIKA. ( GDY JESTEŚMY AKTUALNIE W TEJ GRUPIE )
         removeUserFromgroup: (state, action:PayloadAction<string>) => {
             console.log(action.payload)
             console.log(typeof action.payload)
@@ -56,13 +58,25 @@ export const chattingWindowsSlice = createSlice({
                 selectedGroup:newSelectedGroup
             })
         },
+        //AKCJA WYWOŁYWANA GDY ZMIENIMY GRUPĘ NA INNĄ I OTRZYMAMY Z SERWERA AKTUALNĄ LISTĘ ACTIVE_USERS - TUTAJ WBIJAMY JĄ DO STANU GRUPY
+        injectNewActiveUsers: (state, action:PayloadAction<AuthenticatedUser[]>) => {
+            const selectedGroupWNewUsers = {
+                ...state.selectedGroup,
+                active_users:action.payload
+            }
+            state = Object.assign(state, {
+                ...state,
+                selectedGroup:selectedGroupWNewUsers
+            })
+        },
+
 
         resetGroups: (state) => initialState
 
     }
 }) 
 
-export const { selectWindow, selectGroup, addActiveUserToGroup, removeUserFromgroup, resetGroups } = chattingWindowsSlice.actions
+export const { selectWindow, selectGroup, addActiveUserToGroup, removeUserFromgroup, injectNewActiveUsers, resetGroups } = chattingWindowsSlice.actions
 
 export default chattingWindowsSlice.reducer
 

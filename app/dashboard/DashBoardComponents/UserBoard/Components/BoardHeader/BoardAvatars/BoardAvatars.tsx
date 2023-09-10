@@ -6,9 +6,9 @@ import user_avatar from '../../../../../../../public/Dashboard/UserBoard/user_av
 import share from '../../../../../../../public/Dashboard/UserBoard/share.svg'
 import edit from '../../../../../../../public/Dashboard/UserBoard/edit.svg'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
-import { addActiveUserToGroup, getChat, getGroup, removeUserFromgroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import { addActiveUserToGroup, getChat, getGroup, injectNewActiveUsers, removeUserFromgroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
-import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserId, getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 
 
 // KOMPONENT RENDERUJĄCY ZNAJOMYCH DOSTĘPNYCH W WYBRANEJ PRZEZ UZYTKOWNIKA GRUPIE.
@@ -20,23 +20,18 @@ import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 const BoardAvatars = () => {
 
     const {_id:groupId} = useAppSelector(getChat)
-    const userId = useAppSelector(getUserId)
+    const user = useAppSelector(getUserObject)
     const group = useAppSelector(getGroup)
     const dispatch = useAppDispatch()
     useEffect(() => { 
-      console.log("GRUPA TO")
-      console.log(group)
       // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
         // Przy zmianie czatu emitujemy wiadomośc do socketa, że zmieniamy chat na chat._id( co jest id konkretnej grupy)
         // Wtedy na back-endzie jestśmy podłączeni do pokoju o nazwie konkretnego chatu.
         const socket = ioInstance.getActiveSocket();
         if(groupId) {
-          socket.emit("JOIN_GROUP_ROOM", groupId, userId)
-          socket.on("JOINING_GROUP", (...args) => {
-            // GDY DOŁĄCZYMY DO GRUPY OTRZYMUJEMY LISTĘ POCZĄTKOWĄ ACTIVE_USERS
-          }) 
-          socket.on(groupId, (...args) => console.log(args))
-
+          // PO ZMIANIE GRUPY EMITUJEMY WIADOMOŚĆ DO SERVERA ŻE DOŁĄCZYLIŚMY JAKO USER DO GRUPY O ID groupID
+          socket.emit("JOIN_GROUP_ROOM", groupId, user)
+          
           //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją! W ODPOWIEDZI DOSTAJEMY ID UŻYTKOWNIKA KTÓRY OPUŚCIŁ GRUPĘ
           socket.on("GROUP_USER_LEAVE", (...args) => {
             dispatch(removeUserFromgroup(args[0]))
@@ -46,26 +41,36 @@ const BoardAvatars = () => {
           })
 
           //EVENT GDY KTOŚ DOŁĄCZA DO GRUPY. W ODPOWIEDZI DOSTAJEMY OBIEKT UŻYTKOWNIKA KTÓRY DOŁĄCZYŁ DO GRUPY
+          //W ODPOWIEDZI NA EMIT JOINING_GROUP_ROOM OTRZYMAMY ODPOWIEDŹ Z POKOJU GRUPY GDZIE ...args[0] BĘDZIE OBIEKTEM UŻYTKOWNIKA, KTÓRY DOŁĄCZY DIO GRUPY.
           socket.on("GROUP_USER_JOIN", (...args) => {
             console.log(`UŻYTKOWNIK ${args[0]} DOŁĄCZYŁ DO GRUPY`)
             dispatch(addActiveUserToGroup(args[0]))
             console.log(args[0])
           })
+
+          // GDY ZMIENIMY GRUPĘ NA INNĄ DOSTAJEMY Z SERWERA AKTUALNĄ LISTĘ AKTYWNYCH UŻYTKOWNIKÓW W TEJ GRUPUIE!
+          socket.on("CURRENT_ACTIVE_USERS", (...args) => {
+            const current_active_users = args[0] as AuthenticatedUser[]
+            console.log("CURRENT_ACTIVE_USERS")
+            console.log(current_active_users)
+            dispatch(injectNewActiveUsers(current_active_users))
+          })
         }
         return () => {
           // Emitujemy do servera prośbę o odłączenie użytkownika z grupy po stronie serwera.
           // Ma to na celu, zapobiegnięcie dostarczania wiadomości wyłącznych dla użytkowników którzy są aktualnie w grupie użytkownikom, którzy ją opuścili.
-          socket.emit("LEAVE_GROUP_ROOM", groupId, userId)
+          socket.emit("LEAVE_GROUP_ROOM", groupId, user._id)
         
           // jeżeli komponent zostanie odmontowany przy zmianie chat to wyłączamy listener socketu o nazwie chat._id
           // bez tego liczba listenerów przy re-renderowaniach będzie się na siebie nakładać co wywoła niepotrzebneodpowiedzi z serwera.
 
           socket.off(groupId)
+          socket.off("CURRENT_ACTIVE_USERS")
           socket.off("GROUP_USER_LEAVE")
           socket.off("GROUP_USER_JOIN")
           socket.off("GROUP_USER_LEAVE")
         }
-      },[groupId, userId])
+      },[groupId, user])
       
 
     return (
