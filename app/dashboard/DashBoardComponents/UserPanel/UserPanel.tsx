@@ -11,6 +11,7 @@ import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
 import { useRouter } from 'next/navigation'
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification'
+import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 
 
 const UserPanel = () => {
@@ -18,9 +19,10 @@ const UserPanel = () => {
   // i zalogowany a także nawiązał połączenie z instancją socket.io na serwerze. Dzięki temu nie musimy inicjalizowac nowej instancji z użyciem identyfikatora authUser.
   const dispatch = useAppDispatch()
   const router = useRouter();
+  const {_id:groupId} = useAppSelector(getChat)
   const {_id:authUser, provider:userProvider} = useAppSelector(getUserObject)
   const logOut = async() => {
-    const logoutResponse = await authUserSignOut({userProvider, authUser, dispatch})
+    const logoutResponse = await authUserSignOut({userProvider, authUser, dispatch, groupId})
     logoutResponse.status === 200 ? router.push('/login') : null
     turnOnNotification({response:logoutResponse})
   }

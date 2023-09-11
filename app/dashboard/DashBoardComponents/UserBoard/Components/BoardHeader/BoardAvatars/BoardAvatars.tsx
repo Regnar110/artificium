@@ -24,28 +24,28 @@ const BoardAvatars = () => {
     const group = useAppSelector(getGroup)
     const dispatch = useAppDispatch()
     useEffect(() => { 
+      console.log("BOARD_AVATARS USEEFECT")
       // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
         // Przy zmianie czatu emitujemy wiadomośc do socketa, że zmieniamy chat na chat._id( co jest id konkretnej grupy)
         // Wtedy na back-endzie jestśmy podłączeni do pokoju o nazwie konkretnego chatu.
         const socket = ioInstance.getActiveSocket();
         if(groupId) {
           // PO ZMIANIE GRUPY EMITUJEMY WIADOMOŚĆ DO SERVERA ŻE DOŁĄCZYLIŚMY JAKO USER DO GRUPY O ID groupID
-          socket.emit("JOIN_GROUP_ROOM", groupId, user)
+          user._id && socket.emit("JOIN_GROUP_ROOM", groupId, user)
           
           //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją! W ODPOWIEDZI DOSTAJEMY ID UŻYTKOWNIKA KTÓRY OPUŚCIŁ GRUPĘ
           socket.on("GROUP_USER_LEAVE", (...args) => {
-            dispatch(removeUserFromgroup(args[0]))
-            console.log(`UŻYTKOWNIK ${args[0]} OPUŚCIŁ POKÓJ GRUPY`)
+            console.log("GROUP_USER_LEAVE")
             console.log(args[0])
-            
+            dispatch(removeUserFromgroup(args[0]))
           })
 
           //EVENT GDY KTOŚ DOŁĄCZA DO GRUPY. W ODPOWIEDZI DOSTAJEMY OBIEKT UŻYTKOWNIKA KTÓRY DOŁĄCZYŁ DO GRUPY
           //W ODPOWIEDZI NA EMIT JOINING_GROUP_ROOM OTRZYMAMY ODPOWIEDŹ Z POKOJU GRUPY GDZIE ...args[0] BĘDZIE OBIEKTEM UŻYTKOWNIKA, KTÓRY DOŁĄCZY DIO GRUPY.
           socket.on("GROUP_USER_JOIN", (...args) => {
-            console.log(`UŻYTKOWNIK ${args[0]} DOŁĄCZYŁ DO GRUPY`)
-            dispatch(addActiveUserToGroup(args[0]))
+            console.log("GROUP_USER_JOIN")
             console.log(args[0])
+            dispatch(addActiveUserToGroup(args[0]))
           })
 
           // GDY ZMIENIMY GRUPĘ NA INNĄ DOSTAJEMY Z SERWERA AKTUALNĄ LISTĘ AKTYWNYCH UŻYTKOWNIKÓW W TEJ GRUPUIE!
@@ -59,7 +59,7 @@ const BoardAvatars = () => {
         return () => {
           // Emitujemy do servera prośbę o odłączenie użytkownika z grupy po stronie serwera.
           // Ma to na celu, zapobiegnięcie dostarczania wiadomości wyłącznych dla użytkowników którzy są aktualnie w grupie użytkownikom, którzy ją opuścili.
-          socket.emit("LEAVE_GROUP_ROOM", groupId, user._id)
+          // user._id !== null && socket.emit("LEAVE_GROUP_ROOM", groupId, user._id)
         
           // jeżeli komponent zostanie odmontowany przy zmianie chat to wyłączamy listener socketu o nazwie chat._id
           // bez tego liczba listenerów przy re-renderowaniach będzie się na siebie nakładać co wywoła niepotrzebneodpowiedzi z serwera.

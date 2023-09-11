@@ -11,8 +11,9 @@ interface Props {
     userProvider: "google" | "artificium",
     authUser:string,
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
+    groupId?:String,
 }
-export const authUserSignOut = async ({userProvider, authUser, dispatch}:Props) => {
+export const authUserSignOut = async ({userProvider, authUser, dispatch, groupId}:Props) => {
     // persistor nam potrzebny do wyczyszczenia z pamięci podręcznej przegladarki danych zalogowanego użytkownika celem prawidłowego jego wylogowania i zakończenia jego sesji.
     // dalej będzie używana metoda purge obiektu persistor, która czyści dane z utrwalonego stanu w pamięci podręcznej przegladarki
     // Najpierw będziemy przywracać stan userSession do initialState a potem czyścimy pamięc podręczną.
@@ -23,6 +24,13 @@ export const authUserSignOut = async ({userProvider, authUser, dispatch}:Props) 
     const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser})
     if(logoutRequest.status === 200) { // jeżeli status zalogowania użytkownika w dokumencie mongoDB zmienił się na false
         // PONIŻEJ OPERACJE PO STRONIE KLIENTA - ZMIANA STANU APLIKACJI
+
+        // JEŻELI UŻYTKOWNIK BYŁ W TRAKCIE WYLOGOWYWANIA W JAKIEJŚĆ GRUPIE TO ZOSTAJE Z NIEJ USUNIĘTY.
+        if(groupId) {
+            const socket = ioInstance.getActiveSocket()
+            socket.emit("LEAVE_GROUP_ROOM", groupId, authUser)            
+        }
+
         dispatch(signOutUser())
         if(userProvider === "google") {
           await signOut()
