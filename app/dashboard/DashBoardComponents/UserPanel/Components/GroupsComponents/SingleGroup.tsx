@@ -1,5 +1,6 @@
 import React from 'react'
 import Image, { StaticImageData } from 'next/image'
+
 interface SingleGroupProps {
     groupSelect: () => void
     group_id:string

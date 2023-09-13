@@ -84,6 +84,7 @@ export default chattingWindowsSlice.reducer
 
 export const getChat = (state:RootState) => state.chattingWindows.selectedGroup
 export const getGroup = (state:RootState) => state.chattingWindows.selectedGroup
+export const isGroupSelected = (state:RootState):boolean => state.chattingWindows.selectedGroup._id ? true : false
 
 
 // Chatting windows będą zawierać :
