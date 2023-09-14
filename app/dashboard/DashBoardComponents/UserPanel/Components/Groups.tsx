@@ -31,7 +31,6 @@ const Groups = () => {
   const selectedGroup = useAppSelector(getGroup)
   
   const groupSelect = (group_data:Group) => {
-    
     // JEŻELI UŻYTKOWNIK JEST W JAKIEŚ GRUPIE TO:
     
     // SPRAWDZAMY CZY GRUPA KTÓRĄ WYBRAŁ UŻYTKOWNIK NIE JEST GRUPĄ W KTÓREJ OBECNIE PRZEBYWA
@@ -61,7 +60,7 @@ const Groups = () => {
       // Wtedy na back-endzie jestśmy podłączeni do pokoju o nazwie konkretnego chatu.
 
       if(selectedGroup._id) {
-
+        window.addEventListener("beforeunload", () => _emit_LEAVE_GROUP_ROOM(socket, selectedGroup._id!, user._id))
         // PO ZMIANIE GRUPY EMITUJEMY WIADOMOŚĆ DO SERVERA ŻE DOŁĄCZYLIŚMY JAKO USER DO GRUPY O ID groupID
         
         //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją! W ODPOWIEDZI DOSTAJEMY ID UŻYTKOWNIKA KTÓRY OPUŚCIŁ GRUPĘ

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Image, { StaticImageData } from 'next/image'
 
 interface UserAvatarWithStatusProps {
@@ -16,8 +16,12 @@ interface UserAvatarWithStatusProps {
 }
 
 const UserAvatarWithStatus = ({user_avatar, user_status, user_data}:UserAvatarWithStatusProps) => {
+  const [ userModalIsOpen, setUserModalStatus ] = useState<boolean>(false)
+  const openCloseUserModal = () => {
+    console.log("MODAL ACTION")
+  }
   return (
-    <div className='avatar_with_statusoverflow-hidden flex justify-start items-start gap-2 w-fit h-fit'>
+    <div className='avatar_with_status overflow-hidden flex justify-start items-start gap-2 w-fit h-fit' onClick={() => openCloseUserModal()}>
       <div className='avatar_wrapper relative h-[40px] w-[40px] flex cursor-pointer'>
         <Image fill style={{objectFit:"contain"}} src={user_avatar} alt='avatar_icon'/>
         {

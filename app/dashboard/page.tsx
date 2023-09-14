@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserPanel from './DashBoardComponents/UserPanel/UserPanel'
 import UserBoardWrapper from './DashBoardComponents/UserBoard/UserBoardWrapper'
 import ChatingWindowsWrapper from './DashBoardComponents/UserBoard/Components/ChattingWindows/ChatingWindowsWrapper'
@@ -8,24 +8,39 @@ import HeaderWithAvatars from './DashBoardComponents/UserBoard/Components/BoardH
 import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
 import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/DashboardPageWrapper'
 import EmptyBoardWaterMark from './DashBoardComponents/EmptyBoardWaterMark/EmptyBoardWaterMark'
-import { useAppSelector } from '@/redux/hooks/typedHooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import MediaQuery from 'react-responsive'
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { authUserSignOut } from '../utils/AuthUserSignOut/authUserSignOut'
+import { getUserId, getUserProvider } from '@/redux/slices/userSession/userSessionSlice'
 
 const Dashboard = () => {
   const chat = useAppSelector(getChat)  
-  
+  const {_id:groupId} =  useAppSelector(getChat)
+  const dispatch = useAppDispatch()
+  const authUser = useAppSelector(getUserId)
+  const userProvider = useAppSelector(getUserProvider)
   let settings = {
     speed: 500,
     Infinity:false,
     slidesToShow: 1,
     slidesToScroll: 1
   }
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", async () => {
+  //     await authUserSignOut({userProvider, authUser, dispatch, groupId})
+  //   })
 
+  //   return () => {
+  //     window.removeEventListener("beforeunload", async () => {
+  //       await authUserSignOut({userProvider, authUser, dispatch, groupId})
+  //     })
+  //   }
+  // })
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>
