@@ -15,10 +15,10 @@ const FriendsListWrapper = ({friendsVisible, setFriendsVisible}:Props) => {
     const [ friendList, setFriendList ] = useState<Friend[] | "LOADING">("LOADING")
 
     useEffect(() => {
-        
         // ten komponent odbiera z serwera wiadomość z listą znajomych zalogowanego użytkownika. Lista offline i online. 
         const socket = ioInstance.getActiveSocket() 
         socket.on("chat", (...args) => {
+            console.log(args[0])
             setFriendList(args[0] as Friend[])
         })
     },[])

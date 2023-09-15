@@ -86,5 +86,7 @@ interface Friend {
     isOnline:boolean,
     email:string,
     nickname:string,
-    avatar_id:string
+    avatar_id:string,
+    user_friends_ids: ObjectId[],
+    user_groups_ids: ObjectId[]
 }

@@ -1,33 +1,37 @@
 'use client'
 import React, { useState } from 'react'
 import Image, { StaticImageData } from 'next/image'
+import UserModal from '@/app/dashboard/DashBoardComponents/UserModal/UserModal'
 
 interface UserAvatarWithStatusProps {
+    size: "normal" | "large",
     user_avatar: StaticImageData,
     user_status?: {
       with_dot?: boolean
       with_text?: boolean
       status: "ONLINE" | "OFFLINE" 
     }
-    user_data?: {
-      nickname?:string
-      account_type?:"FREE" | "PREMIUM"
-    }
+    user_data?: Friend | AuthenticatedUser
+    show_nick: boolean,
+    account_type?:"FREE" | "PREMIUM"
+    modal_action:boolean
 }
 
-const UserAvatarWithStatus = ({user_avatar, user_status, user_data}:UserAvatarWithStatusProps) => {
+const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_nick, account_type, modal_action}:UserAvatarWithStatusProps) => {
   const [ userModalIsOpen, setUserModalStatus ] = useState<boolean>(false)
-  const openCloseUserModal = () => {
-    console.log("MODAL ACTION")
+  const openCloseUserModal = (new_status:boolean) => {
+    setUserModalStatus(new_status)
   }
   return (
-    <div className='avatar_with_status overflow-hidden flex justify-start items-start gap-2 w-fit h-fit' onClick={() => openCloseUserModal()}>
-      <div className='avatar_wrapper relative h-[40px] w-[40px] flex cursor-pointer'>
+    <>
+    
+    <div className={`avatar_with_status overflow-hidden flex justify-start items-start ${size === "normal" ? "gap-2": "gap-6"} w-fit h-fit`} onClick={() => openCloseUserModal(true)}>
+      <div className={`avatar_wrapper relative ${size === "normal" ? "h-[40px] w-[40px]" : "h-[100px] w-[100px]"} flex cursor-pointer`}>
         <Image fill style={{objectFit:"contain"}} src={user_avatar} alt='avatar_icon'/>
         {
           user_status?.with_dot ? (
-          <div className='status_circle h-[16px] w-[16px] rounded-full flex justify-center items-center bg-[#0D0F10] absolute top-0 -right-1'>
-            <div className={`inner_statuc_circle w-[10px] h-[10px] ${user_status.status === "ONLINE" ? "bg-green-500":"bg-[#b83030]"}  rounded-full`}/>
+          <div className={`status_circle ${size === "normal" ? "h-[16px] w-[16px]" : "h-[32px] w-[32px]"} rounded-full flex justify-center items-center bg-[#0D0F10] absolute top-0 -right-1`}>
+            <div className={`inner_status_circle ${size === "normal" ? "h-[10px] w-[10px]" : "h-[20px] w-[20px]"}  ${user_status.status === "ONLINE" ? "bg-green-500":"bg-[#b83030]"}  rounded-full`}/>
           </div>              
           )
           :null
@@ -38,12 +42,12 @@ const UserAvatarWithStatus = ({user_avatar, user_status, user_data}:UserAvatarWi
         {
           user_data ? (
             <div className='user_nick w-full flex flex-col'>
-              <span className='nick text-white text-[14px] xl:text-[16px] cursor-pointer'>{user_data.nickname}</span>
+              {show_nick && <span className={`nick text-white ${size === "normal" ? "text-[14px] xl:text-[16px]" : "text-[24px] xl:text-[28px]"} cursor-pointer`}>{user_data.nickname}</span>}
               {
-                user_data.account_type === "FREE" 
+                account_type === "FREE" 
                 ?  
                   <span className='account_status text-[#B6F09C] text-[10px] xl:text-[12px] cursor-pointer'>Free account</span>
-                : user_data.account_type === "PREMIUM" ?
+                : account_type === "PREMIUM" ?
                   <span className='account_status text-[#B6F09C] text-[10px] xl:text-[12px] cursor-pointer'>Premium account</span>
                 :
                 null
@@ -59,8 +63,9 @@ const UserAvatarWithStatus = ({user_avatar, user_status, user_data}:UserAvatarWi
             null
           }        
       </div>
-
   </div>
+  {modal_action === true && user_data ? <UserModal modalIsOpen={userModalIsOpen} setModal={openCloseUserModal} user_data={user_data!}/> : null}
+  </>
   )
 }
 

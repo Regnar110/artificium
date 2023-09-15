@@ -12,7 +12,7 @@ interface MessageProps {
 const ChatMessage = ({user_avatar, user_nickname, message}:MessageProps) => {
   return (
     <div className='chat_message flex gap-5 border-[1px] border-[#1A1D21] p-3 rounded-lg'>
-         <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status:"ONLINE"}}/>
+         <UserAvatarWithStatus size='normal' user_avatar={user_avatar} user_status={{with_dot:true, status:"ONLINE"}} modal_action={true}/>
         <div className='nick_and_message'>
             <h1 className='nick text-[16px]'>{user_nickname}</h1>
             <p className='message text-[#9B9C9E] text-[14px] font-medium break-all'>{message}</p>

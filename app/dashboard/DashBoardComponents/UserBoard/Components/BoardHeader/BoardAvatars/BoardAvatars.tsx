@@ -12,13 +12,12 @@ import { getGroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 
 const BoardAvatars = () => {
     const {active_users} = useAppSelector(getGroup)
-    let rest_users = active_users?.length! > 3 ? active_users?.length! - 3 : null
     return (
         <div className='avatar_functionalities flex gap-6 w-fit'>
             <div className='users_avatars_status_container flex'>
                 {
                   active_users?.map((active_user, index) => {
-                    return index <= 2 ? <UserAvatarWithStatus user_avatar={user_avatar} user_status={{with_dot:true, status: active_user.isOnline ? "ONLINE":"OFFLINE"}}/> : null
+                    return index <= 2 ? <UserAvatarWithStatus size='normal' user_avatar={user_avatar} user_data={active_user} show_nick={false} user_status={{with_dot:true, status: active_user.isOnline ? "ONLINE":"OFFLINE"}} modal_action={true}/> : null
                    
                   })
                 }
