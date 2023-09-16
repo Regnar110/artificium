@@ -17,7 +17,7 @@ const BoardAvatars = () => {
             <div className='users_avatars_status_container flex'>
                 {
                   active_users?.map((active_user, index) => {
-                    return index <= 2 ? <UserAvatarWithStatus size='normal' user_avatar={user_avatar} user_data={active_user} show_nick={false} user_status={{with_dot:true, status: active_user.isOnline ? "ONLINE":"OFFLINE"}} modal_action={true}/> : null
+                    return index <= 2 ? <UserAvatarWithStatus size='normal' user_avatar={user_avatar} user_data={active_user} show_nick={false} user_status={{with_dot:true, status: active_user.isOnline ? "ONLINE":"OFFLINE"}} reveal_mail={false} modal_action={true}/> : null
                    
                   })
                 }
