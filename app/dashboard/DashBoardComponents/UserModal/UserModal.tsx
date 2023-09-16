@@ -7,6 +7,10 @@ import Modal from 'react-modal';
 import user_avatar from '../../../../public/Dashboard/UserPanel/UserHeader/Avatar.png'
 import InviteButton from '@/app/AppComponents/InviteButton/InviteButton';
 import CommonFriends from './components/CommonFriends';
+import CommonGroups from './components/CommonGroups';
+import { useAppSelector } from '@/redux/hooks/typedHooks';
+import { getUserObject } from '@/redux/slices/userSession/userSessionSlice';
+import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 
 interface UserModalProps {
   modalIsOpen:boolean;
@@ -14,10 +18,29 @@ interface UserModalProps {
   setModal:(new_status: boolean) => void
 }
 const UserModal = ({modalIsOpen, user_data, setModal}:UserModalProps) => {
-  console.log(modalIsOpen)
-  useEffect(() =>{
+  const authUser = useAppSelector(getUserObject)
 
-  }, [modalIsOpen])
+  useEffect(() =>{
+    //FUNKCJA KTÓRA ZWRACA TABLICĘ Z WSPÓLNYMI GRUPAMI UŻYTKOWNIKA APLIKACJI I UŻYTKOWNIKA W KTÓREGO IKONKĘ KLIKNĄŁ
+    if(user_data._id) {
+      console.log(authUser.user_groups_ids)
+      const preparedGroups = user_data.user_groups_ids.filter(group => {
+        for(const app_user_group of authUser.user_groups_ids){
+          return group === app_user_group
+        }
+      })
+
+      //FUNKCJA KTÓRA ZWRACA TABLICĘ Z WSPÓLNYMI ZNAJOMYMI UŻYTKOWNIKA APLIKACJI I UŻYTKOWNIKA W KTÓREGO IKONKĘ KLIKNĄŁ
+      const preparedFriends = user_data.user_friends_ids.filter(friend => {
+        for(const app_user_friend of authUser.user_friends_ids) {
+          return friend === app_user_friend
+        }
+      }) 
+      // console.log(user_data.user_groups_ids)
+      const ready = userAccessRequest('getSelectedGroups', preparedGroups)     
+    }
+
+  }, [modalIsOpen, user_data])
   return (
     <Modal        
         ariaHideApp={false}
@@ -38,6 +61,7 @@ const UserModal = ({modalIsOpen, user_data, setModal}:UserModalProps) => {
             <InviteButton text='Invite'/>
           </section>
           <CommonFriends user_avatar={user_avatar}/>
+          <CommonGroups/>
           <footer className='w-full flex justify-center items-center'>
             <Image src={artifiucium_logo} alt="artificium logo" className='w-[200px]'/>
           </footer>

@@ -27,7 +27,7 @@ const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_n
     <>
     
     <div className={`avatar_with_status overflow-hidden flex justify-start items-start ${size === "normal" ? "gap-2": "gap-6"} w-fit h-fit`} onClick={() => openCloseUserModal(true)}>
-      <div className={`avatar_wrapper relative ${size === "normal" ? "h-[40px] w-[40px]" : size === "medium" ? "h-[50px] w-[50px]" : "h-[90px] w-[90px]"} flex cursor-pointer`}>
+      <div className={`avatar_wrapper relative ${size === "normal" ? "h-[40px] w-[40px]" : size === "medium" ? "h-[50px] w-[50px]" : "h-[80px] w-[80px]"} flex cursor-pointer`}>
         <Image fill style={{objectFit:"contain"}} src={user_avatar} alt='avatar_icon'/>
         {
           user_status?.with_dot ? (
