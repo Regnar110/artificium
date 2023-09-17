@@ -1,5 +1,5 @@
 import UserAvatarWithStatus from '@/app/AppComponents/UserAvatarWithStatus/UserAvatarWithStatus';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from "next/image"
 import artifiucium_logo from '../../../../public/home/mainlogo.svg'
 import artificium_icon from '../../../../public/logo/artificium_logo.png'
@@ -19,26 +19,26 @@ interface UserModalProps {
 }
 const UserModal = ({modalIsOpen, user_data, setModal}:UserModalProps) => {
   const authUser = useAppSelector(getUserObject)
-
-  useEffect(() =>{
-    //FUNKCJA KTÓRA ZWRACA TABLICĘ Z WSPÓLNYMI GRUPAMI UŻYTKOWNIKA APLIKACJI I UŻYTKOWNIKA W KTÓREGO IKONKĘ KLIKNĄŁ
+  const isUserFriend = authUser.user_friends_ids.includes(user_data._id)
+  const [commonGroups, setCommonGroups ] = useState<Group[]>()
+  const [ commonFriends, setCommonFriends ]= useState<Friend[]>()
+  const getCommonGroupsAndFriends = async () => {
+    console.log(user_data.user_friends_ids)
+    console.log(authUser.user_friends_ids)
     if(user_data._id) {
-      console.log(authUser.user_groups_ids)
-      const preparedGroups = user_data.user_groups_ids.filter(group => {
-        for(const app_user_group of authUser.user_groups_ids){
-          return group === app_user_group
-        }
-      })
-
+      const preparedGroups = user_data.user_groups_ids.filter(group => authUser.user_groups_ids.includes(group));
       //FUNKCJA KTÓRA ZWRACA TABLICĘ Z WSPÓLNYMI ZNAJOMYMI UŻYTKOWNIKA APLIKACJI I UŻYTKOWNIKA W KTÓREGO IKONKĘ KLIKNĄŁ
-      const preparedFriends = user_data.user_friends_ids.filter(friend => {
-        for(const app_user_friend of authUser.user_friends_ids) {
-          return friend === app_user_friend
-        }
-      }) 
-      // console.log(user_data.user_groups_ids)
-      const ready = userAccessRequest('getSelectedGroups', preparedGroups)     
-    }
+      const preparedFriends = user_data.user_friends_ids.filter(friend =>authUser.user_friends_ids.includes(friend));
+      const groups_response = await userAccessRequest<Group[], string[]>('getSelectedGroups', preparedGroups)
+      const friends_response = await userAccessRequest<Friend[], string[]>('getSelectedUsers', preparedFriends)
+      setCommonGroups(groups_response)
+      setCommonFriends(friends_response)
+    }   
+  }
+  useEffect(() =>{
+    getCommonGroupsAndFriends()
+    //FUNKCJA KTÓRA ZWRACA TABLICĘ Z WSPÓLNYMI GRUPAMI UŻYTKOWNIKA APLIKACJI I UŻYTKOWNIKA W KTÓREGO IKONKĘ KLIKNĄŁ
+      // console.log(user_data.user_groups_ids
 
   }, [modalIsOpen, user_data])
   return (
@@ -58,10 +58,10 @@ const UserModal = ({modalIsOpen, user_data, setModal}:UserModalProps) => {
           </header>
           <section className='user_avatar flex items-center justify-between'>
             <UserAvatarWithStatus size='large' modal_action={false} user_data={user_data} user_avatar={user_avatar} show_nick={true} user_status={{with_dot:true, with_text:false, status:user_data.isOnline ? "ONLINE" : "OFFLINE"}} reveal_mail={true}/>
-            <InviteButton text='Invite'/>
+            <InviteButton text='Invite' isAlreadyFriend={isUserFriend}/>
           </section>
-          <CommonFriends user_avatar={user_avatar}/>
-          <CommonGroups/>
+          <CommonFriends user_avatar={user_avatar} friends={commonFriends!}/>
+          <CommonGroups groups={commonGroups!}/>
           <footer className='w-full flex justify-center items-center'>
             <Image src={artifiucium_logo} alt="artificium logo" className='w-[200px]'/>
           </footer>

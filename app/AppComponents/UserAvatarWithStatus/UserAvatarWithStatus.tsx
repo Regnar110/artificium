@@ -2,6 +2,8 @@
 import React, { useState } from 'react'
 import Image, { StaticImageData } from 'next/image'
 import UserModal from '@/app/dashboard/DashBoardComponents/UserModal/UserModal'
+import { useAppSelector } from '@/redux/hooks/typedHooks'
+import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 
 interface UserAvatarWithStatusProps {
     size: "normal" | "medium" | "large",
@@ -20,6 +22,7 @@ interface UserAvatarWithStatusProps {
 
 const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_nick, account_type, reveal_mail, modal_action}:UserAvatarWithStatusProps) => {
   const [ userModalIsOpen, setUserModalStatus ] = useState<boolean>(false)
+  const authUserId = useAppSelector(getUserId)
   const openCloseUserModal = (new_status:boolean) => {
     setUserModalStatus(new_status)
   }
@@ -68,7 +71,9 @@ const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_n
           }        
       </div>
   </div>
-  {modal_action === true && user_data ? <UserModal modalIsOpen={userModalIsOpen} setModal={openCloseUserModal} user_data={user_data!}/> : null}
+
+  {/*JEŻELI AAVATAR NALEŻY DO UŻYTKOWNIKA APLIKACJI(ZALOGOWANEGO) TO NIE TWORZYMY DLA NIEGO MODALU*/}
+  {modal_action === true && user_data && user_data._id !== authUserId ? <UserModal modalIsOpen={userModalIsOpen} setModal={openCloseUserModal} user_data={user_data!}/> : null}
   </>
   )
 }

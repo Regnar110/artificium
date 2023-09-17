@@ -14,15 +14,16 @@ interface Props {
 const FriendsListWrapper = ({friendsVisible, setFriendsVisible}:Props) => {
     const [ friendList, setFriendList ] = useState<Friend[] | "LOADING">("LOADING")
 
-    useEffect(() => {
-        // ten komponent odbiera z serwera wiadomość z listą znajomych zalogowanego użytkownika. Lista offline i online. 
-        const socket = ioInstance.getActiveSocket() 
-        socket.on("chat", (...args) => {
-            console.log(args[0])
-            setFriendList(args[0] as Friend[])
-        })
-    },[])
-  return friendList.length >= 0 ? 
+    // TEN SPOSÓB INTERWAŁOWEGO ŚCIAGANIA LIST ONLINE POWODUJE PROBLEMY I SPOWOLNIENIE APLIKACJI, A NAWET ZAWIESZENIE
+    // useEffect(() => {
+    //     // ten komponent odbiera z serwera wiadomość z listą znajomych zalogowanego użytkownika. Lista offline i online. 
+    //     const socket = ioInstance.getActiveSocket() 
+    //     socket.on("chat", (...args) => {
+    //         console.log(args[0])
+    //         setFriendList(args[0] as Friend[])
+    //     })
+    // },[])
+  return friendList.length > 0 ? 
             <>
                 <div id='user_list_with_statuses' className={`w-[300px] p-5 ${friendsVisible === true ? "visible" : "hidden"} overflow-hidden flex flex-col justify-between gap-4`}>
                     <div id='lists' className='flex flex-col overflow-scroll scrollbar scrollbar-w-[3px] scrollbar-thumb-[#0D0F10] scrollbar-track-[#131619] overflow-x-hidden gap-6 '>
