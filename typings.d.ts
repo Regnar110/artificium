@@ -90,3 +90,5 @@ interface Friend {
     user_friends_ids: ObjectId[],
     user_groups_ids: ObjectId[]
 }
+
+type FriendList = AuthenticatedUser[]

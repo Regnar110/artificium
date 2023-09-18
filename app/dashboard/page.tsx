@@ -18,6 +18,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { authUserSignOut } from '../utils/AuthUserSignOut/authUserSignOut'
 import { getUserId, getUserProvider } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
+import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE, unsubscribeFriendListListeners } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
 
 const Dashboard = () => {
   const chat = useAppSelector(getChat)  
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const dispatch = useAppDispatch()
   const authUser = useAppSelector(getUserId)
   const userProvider = useAppSelector(getUserProvider)
+  const socket = ioInstance.getActiveSocket()
   let settings = {
     speed: 500,
     Infinity:false,
@@ -32,27 +34,10 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   useEffect(() => {
-    const socket = ioInstance.getActiveSocket()
     if(socket) { 
-      socket.on(`${authUser}_USER_IS_ONLINE`, (...args)=> {
-        console.log("ON USER ID SOCKET - FIRNED CAME ONLINE")
-        console.log(args)
-      })
-      
-      socket.on(`${authUser}_USER_IS_OFFLINE`, (...args) => {
-        console.log("ON USER IF SOCKET - FRIEND IS NOW OFFLINE")
-        console.log(args)
-      })
+      _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
+      _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, authUser)
     }
-    // window.addEventListener("beforeunload", async () => {
-    //   await authUserSignOut({userProvider, authUser, dispatch, groupId})
-    // })
-
-    // return () => {
-    //   window.removeEventListener("beforeunload", async () => {
-    //     await authUserSignOut({userProvider, authUser, dispatch, groupId})
-    //   })
-    // }
   },[])
   return (
     <DashboardPageWrapper>

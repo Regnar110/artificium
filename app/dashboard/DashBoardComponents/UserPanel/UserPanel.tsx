@@ -12,6 +12,7 @@ import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
 import { useRouter } from 'next/navigation'
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import { showFriendList } from '@/redux/slices/friendList/friendListSlice'
 
 
 const UserPanel = () => {
@@ -19,6 +20,7 @@ const UserPanel = () => {
   // i zalogowany a także nawiązał połączenie z instancją socket.io na serwerze. Dzięki temu nie musimy inicjalizowac nowej instancji z użyciem identyfikatora authUser.
   const dispatch = useAppDispatch()
   const router = useRouter();
+  const friends = useAppSelector(showFriendList)
   const {_id:groupId} = useAppSelector(getChat)
   const {_id:authUser, provider:userProvider} = useAppSelector(getUserObject)
   const logOut = async() => {
@@ -50,6 +52,7 @@ const UserPanel = () => {
     <div className={`bg-[#0D0F10] min-w-[280px] w-full md:w-[280px] relative h-screen flex flex-col gap-y-5 justify-between rounded-lg py-8 px-6 min-h-[681px] overflow-scroll overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-[#0D0F10]  `}>
       <div className='flex-wrapper flex flex-col'>
         <button className='text-white text-[12px]' onClick={() => logOut()}>Log out</button>
+        <button className='text-white' onClick={() => console.log(friends)}>FRIENDLIST</button>
         <UserHeader/>
         <General/>
         <Groups/>        

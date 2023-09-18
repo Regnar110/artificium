@@ -2,6 +2,7 @@ import { AnyAction, Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 import { ioInstance } from "../SocketInstance/socketInstance"
 import { userAccessRequest } from "../UserAccessRequest"
 import { injectUser } from "@/redux/slices/userSession/userSessionSlice";
+import { _emit_USER_IS_ONLINE } from "../SocketFriendListHandlers/SocketFriendListHandlers";
 interface ProviderLogInProps {
     sessionData: any,
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
@@ -30,7 +31,7 @@ export const authUserLogIn = async ({sessionData, dispatch}:ProviderLogInProps) 
         const socket = await ioInstance.getSocketInstance(logInResponse.body._id)
 
         // INFORMUJEMY SOCKET NA SERWERZE ŻE UŻYTKOWNIK JEST TERAZ ONLINE
-        socket!.emit("USER_IS_ONLINE", logInResponse.body)
+        _emit_USER_IS_ONLINE(socket!, logInResponse.body)
     } 
     return logInResponse
 }

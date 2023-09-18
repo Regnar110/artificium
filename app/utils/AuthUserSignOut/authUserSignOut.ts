@@ -7,6 +7,7 @@ import { userAccessRequest } from "../UserAccessRequest";
 import { persistor } from "@/redux/store/store";
 import { ioInstance } from "../SocketInstance/socketInstance";
 import { resetGroups } from "@/redux/slices/chattingWindows/chattingWindowsSlice";
+import { _emit_USER_IS_OFFLINE, unsubscribeFriendListListeners } from "../SocketFriendListHandlers/SocketFriendListHandlers";
 
 interface Props {
     userProvider: "google" | "artificium",
@@ -35,7 +36,9 @@ export const authUserSignOut = async ({userProvider, authUser, dispatch, groupId
             // - ELIMINUJE TO KILKA BŁĘDÓW, KTÓRE BYŁY WYWOŁYWANE PRZEZ KILKUKROTNE WYWOŁYWANIE JOIN_GROUP_ROOM ( PRZEZ RE-RENDER KOMPONENTU GROUPS )
             dispatch(resetGroups())            
         }
-        socket.emit("USER_IS_OFFLINE", authUser)
+
+        _emit_USER_IS_OFFLINE(socket, authUser)
+        unsubscribeFriendListListeners(socket, authUser)
         dispatch(signOutUser())
         if(userProvider === "google") {
           await signOut()

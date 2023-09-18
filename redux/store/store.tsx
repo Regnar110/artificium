@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userSessionReducer from '../slices/userSession/userSessionSlice'
 import chattingWindowsReducer from '../slices/chattingWindows/chattingWindowsSlice'
 import groupsReducer from '../slices/groups/groupsSlice'
+import friendListReducer from '../slices/friendList/friendListSlice'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import storage from 'redux-persist/lib/storage'
 import {
@@ -25,6 +26,7 @@ import {
     userSession: userSessionReducer,
     chattingWindows: chattingWindowsReducer,
     groups: groupsReducer,
+    friendList: friendListReducer
   })
   const persistedReducer = persistReducer(persistConfig, rootReducers)
   const store = configureStore({

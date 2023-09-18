@@ -4,15 +4,11 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 class SocketGroupRoomHandlers {
 
-    static _emit_JOIN_GROUP_ROOM(socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedGroupId:string, user:AuthenticatedUser) {
-        socket.emit("JOIN_GROUP_ROOM", selectedGroupId, user)
-    }
+    static _emit_JOIN_GROUP_ROOM = (socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedGroupId:string, user:AuthenticatedUser) => socket.emit("JOIN_GROUP_ROOM", selectedGroupId, user)
 
-    static _emit_LEAVE_GROUP_ROOM = (socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedGroupId:string, userId:string) => {
-        socket.emit("LEAVE_GROUP_ROOM", selectedGroupId , userId)
-    }
+    static _emit_LEAVE_GROUP_ROOM = (socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedGroupId:string, userId:string) => socket.emit("LEAVE_GROUP_ROOM", selectedGroupId , userId)
     
-    static _on_GROUP_USER_LEAVE =(socket: Socket<DefaultEventsMap, DefaultEventsMap>, dispatch:any) => {
+    static _on_GROUP_USER_LEAVE = (socket: Socket<DefaultEventsMap, DefaultEventsMap>, dispatch:any) => {
         socket.on("GROUP_USER_LEAVE", (...args) => {
             console.log("GROUP_USER_LEAVE")
             console.log(args[0])
@@ -38,7 +34,6 @@ class SocketGroupRoomHandlers {
     }
 
     static unsubscribeGroupRoomListeners = (socket: Socket<DefaultEventsMap, DefaultEventsMap>,selectedGroupId:string) => {
-        console.log(socket)
         socket.off(selectedGroupId)
         socket.off("CURRENT_ACTIVE_USERS")
         socket.off("GROUP_USER_LEAVE")
