@@ -27,7 +27,10 @@ export const authUserLogIn = async ({sessionData, dispatch}:ProviderLogInProps) 
     if(logInResponse.status === 200) {
         dispatch(injectUser(logInResponse.body))
         //inicjalizujemy połączenie z socketem po stronie serwera przesyłając mu również id użytkownika który się łączy
-        await ioInstance.getSocketInstance(logInResponse.body._id)
+        const socket = await ioInstance.getSocketInstance(logInResponse.body._id)
+
+        // INFORMUJEMY SOCKET NA SERWERZE ŻE UŻYTKOWNIK JEST TERAZ ONLINE
+        socket!.emit("USER_IS_ONLINE", logInResponse.body)
     } 
     return logInResponse
 }

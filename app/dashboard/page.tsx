@@ -17,6 +17,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { authUserSignOut } from '../utils/AuthUserSignOut/authUserSignOut'
 import { getUserId, getUserProvider } from '@/redux/slices/userSession/userSessionSlice'
+import { ioInstance } from '../utils/SocketInstance/socketInstance'
 
 const Dashboard = () => {
   const chat = useAppSelector(getChat)  
@@ -30,17 +31,29 @@ const Dashboard = () => {
     slidesToShow: 1,
     slidesToScroll: 1
   }
-  // useEffect(() => {
-  //   window.addEventListener("beforeunload", async () => {
-  //     await authUserSignOut({userProvider, authUser, dispatch, groupId})
-  //   })
+  useEffect(() => {
+    const socket = ioInstance.getActiveSocket()
+    if(socket) { 
+      socket.on(`${authUser}_USER_IS_ONLINE`, (...args)=> {
+        console.log("ON USER ID SOCKET - FIRNED CAME ONLINE")
+        console.log(args)
+      })
+      
+      socket.on(`${authUser}_USER_IS_OFFLINE`, (...args) => {
+        console.log("ON USER IF SOCKET - FRIEND IS NOW OFFLINE")
+        console.log(args)
+      })
+    }
+    // window.addEventListener("beforeunload", async () => {
+    //   await authUserSignOut({userProvider, authUser, dispatch, groupId})
+    // })
 
-  //   return () => {
-  //     window.removeEventListener("beforeunload", async () => {
-  //       await authUserSignOut({userProvider, authUser, dispatch, groupId})
-  //     })
-  //   }
-  // })
+    // return () => {
+    //   window.removeEventListener("beforeunload", async () => {
+    //     await authUserSignOut({userProvider, authUser, dispatch, groupId})
+    //   })
+    // }
+  },[])
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>

@@ -25,17 +25,17 @@ export const authUserSignOut = async ({userProvider, authUser, dispatch, groupId
     const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser})
     if(logoutRequest.status === 200) { // jeżeli status zalogowania użytkownika w dokumencie mongoDB zmienił się na false
         // PONIŻEJ OPERACJE PO STRONIE KLIENTA - ZMIANA STANU APLIKACJI
-
+        const socket = ioInstance.getActiveSocket()
         // JEŻELI UŻYTKOWNIK BYŁ W TRAKCIE WYLOGOWYWANIA W JAKIEJŚĆ GRUPIE TO ZOSTAJE Z NIEJ USUNIĘTY.
         if(groupId) {
-            const socket = ioInstance.getActiveSocket()
             socket.emit("LEAVE_GROUP_ROOM", groupId, authUser)
+            
 
             // RESETUJEMY STAN WYBRANYCH PRZEZ UZYTKOWNIKA GRUP I OKIEN CZATÓW. MA TO NA CELU WYMUSZENIE PRZY ODŚWIEŻENIU LUB PONOWNYM ZALOGOWANIU DO APLIKACJI WYBRANIE PONOWNIE GRUPY
             // - ELIMINUJE TO KILKA BŁĘDÓW, KTÓRE BYŁY WYWOŁYWANE PRZEZ KILKUKROTNE WYWOŁYWANIE JOIN_GROUP_ROOM ( PRZEZ RE-RENDER KOMPONENTU GROUPS )
             dispatch(resetGroups())            
         }
-
+        socket.emit("USER_IS_OFFLINE", authUser)
         dispatch(signOutUser())
         if(userProvider === "google") {
           await signOut()
