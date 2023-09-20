@@ -31,7 +31,7 @@ export const authUserLogIn = async ({sessionData, dispatch}:ProviderLogInProps) 
         const socket = await ioInstance.getSocketInstance(logInResponse.body._id)
 
         // INFORMUJEMY SOCKET NA SERWERZE ŻE UŻYTKOWNIK JEST TERAZ ONLINE
-        _emit_USER_IS_ONLINE(socket!, logInResponse.body)
+        _emit_USER_IS_ONLINE(socket!, logInResponse.body._id)
     } 
     return logInResponse
 }

@@ -91,4 +91,4 @@ interface Friend {
     user_groups_ids: ObjectId[]
 }
 
-type FriendList = AuthenticatedUser[]
+type FriendList = Friend[]

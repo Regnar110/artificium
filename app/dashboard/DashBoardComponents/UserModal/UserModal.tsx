@@ -22,9 +22,8 @@ const UserModal = ({modalIsOpen, user_data, setModal}:UserModalProps) => {
   const isUserFriend = authUser.user_friends_ids.includes(user_data._id)
   const [commonGroups, setCommonGroups ] = useState<Group[]>()
   const [ commonFriends, setCommonFriends ]= useState<Friend[]>()
+  
   const getCommonGroupsAndFriends = async () => {
-    console.log(user_data.user_friends_ids)
-    console.log(authUser.user_friends_ids)
     if(user_data._id) {
       const preparedGroups = user_data.user_groups_ids.filter(group => authUser.user_groups_ids.includes(group));
       //FUNKCJA KTÓRA ZWRACA TABLICĘ Z WSPÓLNYMI ZNAJOMYMI UŻYTKOWNIKA APLIKACJI I UŻYTKOWNIKA W KTÓREGO IKONKĘ KLIKNĄŁ

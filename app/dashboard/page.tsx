@@ -8,24 +8,20 @@ import HeaderWithAvatars from './DashBoardComponents/UserBoard/Components/BoardH
 import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
 import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/DashboardPageWrapper'
 import EmptyBoardWaterMark from './DashBoardComponents/EmptyBoardWaterMark/EmptyBoardWaterMark'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
+import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import MediaQuery from 'react-responsive'
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { authUserSignOut } from '../utils/AuthUserSignOut/authUserSignOut'
-import { getUserId, getUserProvider } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
-import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE, unsubscribeFriendListListeners } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
+import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
 
 const Dashboard = () => {
   const chat = useAppSelector(getChat)  
-  const {_id:groupId} =  useAppSelector(getChat)
-  const dispatch = useAppDispatch()
   const authUser = useAppSelector(getUserId)
-  const userProvider = useAppSelector(getUserProvider)
   const socket = ioInstance.getActiveSocket()
   let settings = {
     speed: 500,

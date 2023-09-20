@@ -2,7 +2,8 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userSessionReducer from '../slices/userSession/userSessionSlice'
 import chattingWindowsReducer from '../slices/chattingWindows/chattingWindowsSlice'
 import groupsReducer from '../slices/groups/groupsSlice'
-import friendListReducer from '../slices/friendList/friendListSlice'
+import onlineFriendListReducer from '../slices/friendList/onlineFriendListSlice'
+import offlineFriendListReducer from '../slices/friendList/offlineFriendListSlice'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import storage from 'redux-persist/lib/storage'
 import {
@@ -26,7 +27,8 @@ import {
     userSession: userSessionReducer,
     chattingWindows: chattingWindowsReducer,
     groups: groupsReducer,
-    friendList: friendListReducer
+    onlineFriendList: onlineFriendListReducer,
+    offlineFriendList: offlineFriendListReducer
   })
   const persistedReducer = persistReducer(persistConfig, rootReducers)
   const store = configureStore({
