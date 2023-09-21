@@ -8,8 +8,8 @@ import { RingLoader } from 'react-spinners'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
 import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
-import { ONLINE_injectUserToFriendList } from '@/redux/slices/friendList/onlineFriendListSlice'
-import { OFFLINE_injectUserToFriendList } from '@/redux/slices/friendList/offlineFriendListSlice'
+import { ONLINE_initializeOnlineUsers, ONLINE_injectUserToFriendList } from '@/redux/slices/friendList/onlineFriendListSlice'
+import { OFFLINE_initializeOfflineUsers, OFFLINE_injectUserToFriendList } from '@/redux/slices/friendList/offlineFriendListSlice'
 
 interface Props {
     friendsVisible:boolean
@@ -22,13 +22,13 @@ const FriendsListWrapper = ({friendsVisible, setFriendsVisible}:Props) => {
     const authUserId = useAppSelector(getUserId)
     const initializeFriendList = async () => {
         const allFriends = await userAccessRequest<any, any>('getUserFriends', {user_id: authUserId})
-        const onlineFriends = allFriends.filter((friend:Friend) => friend.isOnline === true)
-        const offlineFriends = allFriends.filter((friend:Friend) => friend.isOnline === false)
+        const onlineFriends = allFriends.filter((friend:Friend) => friend.isOnline === true) as Friend[]
+        const offlineFriends = allFriends.filter((friend:Friend) => friend.isOnline === false) as Friend[]
         if(onlineFriends.length > 0) {
-            dispatch(ONLINE_injectUserToFriendList(onlineFriends))
+            dispatch(ONLINE_initializeOnlineUsers(onlineFriends))
         }
         if(offlineFriends.length > 0) {
-            dispatch(OFFLINE_injectUserToFriendList(offlineFriends))
+            dispatch(OFFLINE_initializeOfflineUsers(offlineFriends))
         }
     }
     useEffect(() => {

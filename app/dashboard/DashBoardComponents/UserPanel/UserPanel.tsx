@@ -19,9 +19,9 @@ const UserPanel = () => {
   const dispatch = useAppDispatch()
   const router = useRouter();
   const {_id:groupId} = useAppSelector(getChat)
-  const {_id:authUser, provider:userProvider} = useAppSelector(getUserObject)
+  const {_id:authUser, user_friends_ids:authUserFriends, provider:userProvider} = useAppSelector(getUserObject)
   const logOut = async() => {
-    const logoutResponse = await authUserSignOut({userProvider, authUser, dispatch, groupId})
+    const logoutResponse = await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId})
     logoutResponse.status === 200 ? router.push('/login') : null
     turnOnNotification({response:logoutResponse})
   }

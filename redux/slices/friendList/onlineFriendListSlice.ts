@@ -9,10 +9,17 @@ export const onlineFriendListSlice = createSlice({
     initialState,
     reducers: {
 
-        ONLINE_injectUserToFriendList: (state, action:PayloadAction<Friend[]>) => {
+        ONLINE_initializeOnlineUsers: (state, action:PayloadAction<Friend[]>) => {
+
+            const online_users = action.payload
+            state.push(...online_users)
+        },
+
+        ONLINE_injectUserToFriendList: (state, action:PayloadAction<Friend>) => {
             // TO DO: Do stanu zostaje wstrzyknięte pole obiektu isOnline. Nie jest nam ono do niczego potrzbne. Usunąć.
-            const userToInject = action.payload
-            state.push(...userToInject)
+            const mutable_user = structuredClone(action.payload)
+            mutable_user.isOnline = true
+            state.push(mutable_user)
         },
         ONLINE_removeUserFromFriendList: (state, action:PayloadAction<string>) => {
             console.log("REMOVING USER FROM FRIENDLIST")
@@ -22,7 +29,7 @@ export const onlineFriendListSlice = createSlice({
     }
 }) 
 
-export const { ONLINE_injectUserToFriendList, ONLINE_removeUserFromFriendList} = onlineFriendListSlice.actions
+export const { ONLINE_injectUserToFriendList, ONLINE_removeUserFromFriendList, ONLINE_initializeOnlineUsers} = onlineFriendListSlice.actions
 
 export default onlineFriendListSlice.reducer
 //SELEKTORY
