@@ -12,11 +12,10 @@ import { _emit_USER_IS_OFFLINE, unsubscribeFriendListListeners } from "../Socket
 interface Props {
     userProvider: "google" | "artificium",
     authUser:string,
-    authUserFriends:string[],
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
     groupId?:String,
 }
-export const authUserSignOut = async ({userProvider, authUser, authUserFriends, dispatch, groupId}:Props) => {
+export const authUserSignOut = async ({userProvider, authUser, dispatch, groupId}:Props) => {
     // persistor nam potrzebny do wyczyszczenia z pamięci podręcznej przegladarki danych zalogowanego użytkownika celem prawidłowego jego wylogowania i zakończenia jego sesji.
     // dalej będzie używana metoda purge obiektu persistor, która czyści dane z utrwalonego stanu w pamięci podręcznej przegladarki
     // Najpierw będziemy przywracać stan userSession do initialState a potem czyścimy pamięc podręczną.
@@ -37,8 +36,6 @@ export const authUserSignOut = async ({userProvider, authUser, authUserFriends, 
             // - ELIMINUJE TO KILKA BŁĘDÓW, KTÓRE BYŁY WYWOŁYWANE PRZEZ KILKUKROTNE WYWOŁYWANIE JOIN_GROUP_ROOM ( PRZEZ RE-RENDER KOMPONENTU GROUPS )
             dispatch(resetGroups())            
         }
-        debugger;
-        _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends)
         unsubscribeFriendListListeners(socket, authUser)
         dispatch(signOutUser())
         if(userProvider === "google") {

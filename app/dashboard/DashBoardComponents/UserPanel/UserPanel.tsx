@@ -12,16 +12,24 @@ import { injectInitialGroups } from '@/redux/slices/groups/groupsSlice'
 import { useRouter } from 'next/navigation'
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
+import { _emit_USER_IS_OFFLINE } from '@/app/utils/SocketFriendListHandlers/SocketFriendListHandlers'
+import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
 
 const UserPanel = () => {
   // przy pobraniu instancji przekazujemy {} ponieważ domyślnie jeżeli użytkownik ma dostęp do tego komponentu to jest już sprawdzony
   // i zalogowany a także nawiązał połączenie z instancją socket.io na serwerze. Dzięki temu nie musimy inicjalizowac nowej instancji z użyciem identyfikatora authUser.
   const dispatch = useAppDispatch()
+  const socket = ioInstance.getActiveSocket();
   const router = useRouter();
   const {_id:groupId} = useAppSelector(getChat)
   const {_id:authUser, user_friends_ids:authUserFriends, provider:userProvider} = useAppSelector(getUserObject)
   const logOut = async() => {
-    const logoutResponse = await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId})
+    //TUTAJ JEST DZIWNY BŁĄD. ALBO NIE EMITUJE SIĘ EVENT USER IS OFFLINE ALBO USER LEAVE GROUP. W TEJ KOFIGURACJI NIE EMITUJE SIE USER IS OFFLINE. 
+    const logoutResponse = await authUserSignOut({userProvider, authUser, dispatch, groupId})
+    if(logoutResponse.status === 200 ) {
+      _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends)
+      router.push('/login')
+    }
     logoutResponse.status === 200 ? router.push('/login') : null
     turnOnNotification({response:logoutResponse})
   }

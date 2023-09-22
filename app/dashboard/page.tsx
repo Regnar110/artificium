@@ -31,6 +31,7 @@ const Dashboard = () => {
   }
   useEffect(() => {
     if(socket) { 
+      //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
       _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, authUser)
     }

@@ -10,7 +10,6 @@ export const offlineFriendListSlice = createSlice({
     reducers: {
 
         OFFLINE_initializeOfflineUsers: (state, action:PayloadAction<Friend[]>) => {
-
             const offline_users = action.payload
             state.push(...offline_users)
         },
