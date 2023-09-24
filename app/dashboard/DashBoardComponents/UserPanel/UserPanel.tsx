@@ -25,11 +25,7 @@ const UserPanel = () => {
   const {_id:authUser, user_friends_ids:authUserFriends, provider:userProvider} = useAppSelector(getUserObject)
   const logOut = async() => {
     //TUTAJ JEST DZIWNY BŁĄD. ALBO NIE EMITUJE SIĘ EVENT USER IS OFFLINE ALBO USER LEAVE GROUP. W TEJ KOFIGURACJI NIE EMITUJE SIE USER IS OFFLINE. 
-    const logoutResponse = await authUserSignOut({userProvider, authUser, dispatch, groupId})
-    if(logoutResponse.status === 200 ) {
-      _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends)
-      router.push('/login')
-    }
+    const logoutResponse = await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId})
     logoutResponse.status === 200 ? router.push('/login') : null
     turnOnNotification({response:logoutResponse})
   }
