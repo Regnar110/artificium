@@ -23,7 +23,6 @@ const LoginForm = () => {
       setLoginResponse(loginResponse)
       setResponseLoading(false)
       loginResponse.status === 200 ? router.push("/dashboard") : null
-      turnOnNotification({response:loginResponse})
     }
 
       const theme = createTheme({

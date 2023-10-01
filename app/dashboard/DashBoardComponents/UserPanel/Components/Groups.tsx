@@ -35,7 +35,7 @@ const Groups = () => {
     
     // SPRAWDZAMY CZY GRUPA KTÓRĄ WYBRAŁ UŻYTKOWNIK NIE JEST GRUPĄ W KTÓREJ OBECNIE PRZEBYWA
     if(isGroupSelectedBool === true) {
-      if(group_data._id !== selectedGroup._id) { 
+      if(group_data && group_data._id !== selectedGroup._id) { 
         // JEŻELI NIE JEST TO OPUSZCZAMY GRUPĘ W KTÓREJ PRZEBYWA ( BO KLIKNĄŁ INNĄ NIŻ TA  W KTÓREJ AKTUALNIE JEST) - jeżeli na odwrót to nic nie robimyu bo kliknął na grupę w której aktualnie jest
         _emit_LEAVE_GROUP_ROOM(socket, selectedGroup._id!, user._id)
 
@@ -55,20 +55,24 @@ const Groups = () => {
   // Komponent wykonuje akcje na bazie połączenia z pokojem po stronie servera (socket room) co umożliwia połączenie "na żywo" z innymi użytkownikami grupy.
 
   useEffect(() => { 
+    console.log("GROUPS WYWOŁANY EFFECT")
     // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
       // Przy zmianie czatu emitujemy wiadomośc do socketa, że zmieniamy chat na chat._id( co jest id konkretnej grupy)
       // Wtedy na back-endzie jestśmy podłączeni do pokoju o nazwie konkretnego chatu.
 
       if(selectedGroup._id) {
-        window.addEventListener("beforeunload", () => _emit_LEAVE_GROUP_ROOM(socket, selectedGroup._id!, user._id))
+        // window.addEventListener("beforeunload", () => _emit_LEAVE_GROUP_ROOM(socket, selectedGroup._id!, user._id))
+        // POWYZSZE WYWOŁYWAŁO DODATKOWY EVENT DO SOCKETA (DLA PROVIDERA - pOZOSTAŁ JEDEN DO WYKRYCIA)
+
+        
         // PO ZMIANIE GRUPY EMITUJEMY WIADOMOŚĆ DO SERVERA ŻE DOŁĄCZYLIŚMY JAKO USER DO GRUPY O ID groupID
         
         //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją! W ODPOWIEDZI DOSTAJEMY ID UŻYTKOWNIKA KTÓRY OPUŚCIŁ GRUPĘ
-        _on_GROUP_USER_LEAVE(socket, dispatch)
+        _on_GROUP_USER_LEAVE(socket, dispatch, selectedGroup.group_name!)
 
         //EVENT GDY KTOŚ DOŁĄCZA DO GRUPY. W ODPOWIEDZI DOSTAJEMY OBIEKT UŻYTKOWNIKA KTÓRY DOŁĄCZYŁ DO GRUPY
         //W ODPOWIEDZI NA EMIT JOINING_GROUP_ROOM OTRZYMAMY ODPOWIEDŹ Z POKOJU GRUPY GDZIE ...args[0] BĘDZIE OBIEKTEM UŻYTKOWNIKA, KTÓRY DOŁĄCZY DIO GRUPY.
-        _on_GROUP_USER_JOIN(socket, dispatch)
+        _on_GROUP_USER_JOIN(socket, dispatch, selectedGroup.group_name!)
 
         // GDY ZMIENIMY GRUPĘ NA INNĄ DOSTAJEMY Z SERWERA AKTUALNĄ LISTĘ AKTYWNYCH UŻYTKOWNIKÓW W TEJ GRUPUIE!
         _on_CURRENT_ACTIVE_USERS(socket, dispatch)

@@ -29,8 +29,6 @@ export const chattingWindowsSlice = createSlice({
 
         //AKCJA WYWOŁANA GDY DODAJEMY DO AKTUALNEJ GRUPY NOWEGO UŻYTKOWNIKA. ( GDY JESTEŚMY AKTUALNIE W TEJ GRUPIE )
         addActiveUserToGroup: (state, action:PayloadAction<AuthenticatedUser>) => {
-            console.log("DODAJE UŻYTKOWNIKA DO GRUPPY")
-            console.log(state.selectedGroup)
             const newSelectedGroup = {
                 ...state.selectedGroup,
                 active_users: [...state.selectedGroup.active_users, action.payload]
@@ -43,16 +41,10 @@ export const chattingWindowsSlice = createSlice({
 
         //AKCJA WYWOŁANA GDY USUWAMY Z AKTUALNEJ GRUPY NOWEGO UŻYTKOWNIKA. ( GDY JESTEŚMY AKTUALNIE W TEJ GRUPIE )
         removeUserFromgroup: (state, action:PayloadAction<string>) => {
-            console.log(action.payload)
-            console.log(typeof action.payload)
-            console.log("USUWANIE Z GRUPY")
             const newSelectedGroup = {
                 ...state.selectedGroup,
                 active_users: state.selectedGroup.active_users!.filter(user => user._id != action.payload)
             }
-
-            console.log(newSelectedGroup)
-
             state = Object.assign(state, {
                 ...state,
                 selectedGroup:newSelectedGroup

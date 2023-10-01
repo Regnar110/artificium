@@ -92,3 +92,9 @@ interface Friend {
 }
 
 type FriendList = Friend[]
+
+// TOAST TYPES
+
+type USER_APP_ACCESS = "USER_APP_ACCESS"
+type USER_GROUP_JOIN = "USER_GROUP_JOIN"
+type USER_GROUP_LEAVE = "USER_GROUP_LEAVE"

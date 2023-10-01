@@ -18,9 +18,11 @@ interface UserAvatarWithStatusProps {
     account_type?:"FREE" | "PREMIUM",
     reveal_mail:boolean
     modal_action:boolean
+    message?:string
+    hex_font_color?:string
 }
 
-const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_nick, account_type, reveal_mail, modal_action}:UserAvatarWithStatusProps) => {
+const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_nick, account_type, reveal_mail, modal_action, message, hex_font_color}:UserAvatarWithStatusProps) => {
   const [ userModalIsOpen, setUserModalStatus ] = useState<boolean>(false)
   const authUserId = useAppSelector(getUserId)
   const openCloseUserModal = (new_status:boolean) => {
@@ -45,8 +47,9 @@ const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_n
       <div className={`user_data flex flex-col w-fit h-fit `}>
         {
           user_data ? (
-            <div className='user_nick w-full flex flex-col'>
-              {show_nick && <span className={`nick text-white ${size === "normal" ? "text-[14px] xl:text-[16px]" : size === "medium" ? "text-[18px] xl:text-[20px]" : "text-[32px] xl:text-[36px]"} cursor-pointer`}>{user_data.nickname}</span>}
+            <div className={`user_nick w-full flex flex-col ${hex_font_color ? `text-[${hex_font_color}]` : 'text-white'}`}>
+              {show_nick && <span className={`nick ${size === "normal" ? "text-[14px] xl:text-[16px]" : size === "medium" ? "text-[18px] xl:text-[20px]" : "text-[32px] xl:text-[36px]"} cursor-pointer`}>{user_data.nickname}</span>}
+              {message &&  <span className={`additional_undernick_message text-[#9B9C9E] ${size === "normal" ? "text-[14px] xl:text-[16px]" : size === "medium" ? "text-[18px] xl:text-[20px]" : "text-[32px] xl:text-[36px]"}`}>{message}</span>}
               {
                 account_type === "FREE" 
                 ?  

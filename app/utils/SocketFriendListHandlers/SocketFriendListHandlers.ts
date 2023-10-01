@@ -1,3 +1,4 @@
+import { resetGroups } from "@/redux/slices/chattingWindows/chattingWindowsSlice";
 import { OFFLINE_injectUserToFriendList, OFFLINE_removeUserFromFriendList } from "@/redux/slices/friendList/offlineFriendListSlice";
 import { ONLINE_injectUserToFriendList, ONLINE_removeUserFromFriendList } from "@/redux/slices/friendList/onlineFriendListSlice";
 import store from "@/redux/store/store";
@@ -6,7 +7,17 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 type SOCKET = Socket<DefaultEventsMap, DefaultEventsMap>
 class SocketFriendListHandlers {
     
-    static _emit_USER_IS_OFFLINE = (socket:SOCKET, authUserId:string, friends_array:string[]) => socket.emit("USER_IS_OFFLINE", authUserId, friends_array)
+    static _emit_USER_IS_OFFLINE = (socket:SOCKET, authUserId:string, friends_array:string[], groupId?:string,) => {
+        socket.emit("USER_IS_OFFLINE", authUserId, friends_array)
+        // switch(groupId) {
+        //     case groupId:
+        //         socket.emit("LEAVE_GROUP_ROOM", groupId, authUserId)
+        //         store.dispatch(resetGroups())
+        //         break;
+        //     default:
+        //         break;  
+        // }
+    }
     static _emit_USER_IS_ONLINE = (socket:SOCKET, authUserId:string,  friends_array:string[]) => socket.emit("USER_IS_ONLINE", authUserId, friends_array)
 
     static _on_AUTHUSER_ID_USER_IS_ONLINE = (socket:SOCKET, authUser_id:string) => socket.on(`${authUser_id}_USER_IS_ONLINE`, (...args)=> {

@@ -8,21 +8,22 @@ import { persistor } from "@/redux/store/store";
 import { ioInstance } from "../SocketInstance/socketInstance";
 import { resetGroups } from "@/redux/slices/chattingWindows/chattingWindowsSlice";
 import { _emit_USER_IS_OFFLINE, unsubscribeFriendListListeners } from "../SocketFriendListHandlers/SocketFriendListHandlers";
+import { turnOnNotification } from "@/app/AppComponents/ToastNotifications/TurnOnNotification";
+import { _emit_LEAVE_GROUP_ROOM } from "../SocketGroupRoomHandlers.ts/SocketGroupRoomHandlers";
 
 interface Props {
     userProvider: "google" | "artificium",
     authUser:string,
     authUserFriends:string[]
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
-    groupId?:String,
+    groupId?:string,
 }
 export const authUserSignOut = async ({userProvider, authUser, authUserFriends, dispatch, groupId}:Props) => {
-
     //DLACZEGO GDY SOCKET JEST ZDEFINIOWANY PO ZA BLOKIEM IF PONIŻEJ DZIAŁA POPRAWNIE Z EMITERAMI. A JEŻELI EJST W SRODKU IF TO WYWOŁU SIĘ TYLKO PIERWSZY NAPOTKANY EMIT??
     var socket = ioInstance.getActiveSocket()
-    _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends)
+    _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends, groupId!)
     if(groupId) {
-        socket.emit("LEAVE_GROUP_ROOM", groupId, authUser)
+        _emit_LEAVE_GROUP_ROOM(socket, groupId, authUser)
         // RESETUJEMY STAN WYBRANYCH PRZEZ UZYTKOWNIKA GRUP I OKIEN CZATÓW. MA TO NA CELU WYMUSZENIE PRZY ODŚWIEŻENIU LUB PONOWNYM ZALOGOWANIU DO APLIKACJI WYBRANIE PONOWNIE GRUPY
         // - ELIMINUJE TO KILKA BŁĘDÓW, KTÓRE BYŁY WYWOŁYWANE PRZEZ KILKUKROTNE WYWOŁYWANIE JOIN_GROUP_ROOM ( PRZEZ RE-RENDER KOMPONENTU GROUPS )
         dispatch(resetGroups())            
@@ -48,39 +49,3 @@ export const authUserSignOut = async ({userProvider, authUser, authUserFriends, 
     }
     return logoutRequest
 }        
-
-
-
-
-
-
-
-
-
-// if(userProvider === "artificium") {
-        //     //UŻYTKOWNIK NIE ZALOGOWANY PRZEZ PROVIDERA GOOGLE. Sprawdzamy dalej, czy jest zalogowany rpzy pomocy formularza
-        //     if(userSession) { 
-        //       // Użytkownik zalogowany przez formularz - wylogowujemy go
-              
-              
-
-        //       //zamykamy połączenie z socketem
-        //       ioInstance.closeSocketInstanceConnection()
-        //       await persistor.purge()
-        //     } else {
-        //       // użytkownik nie jest zalogowany w ogóle. Opuszczamy funkcję
-        //       return
-        //     }
-        //   } else if(userProvider === "google") {
-        //     //Wylogowanie użytkownika zalogowanego za pośrednictwem providera
-
-        //     //redirect : false sprawia że strona po wykonaniu signOut nie jest reloadowana
-        //     await signOut()
-            
-            
-        //     await (async ()=> {
-        //       dispatch(signOutUser())
-        //       ioInstance.closeSocketInstanceConnection()
-        //       await persistor.purge()
-        //     })() 
-        //   }

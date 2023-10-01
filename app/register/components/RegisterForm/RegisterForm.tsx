@@ -22,7 +22,7 @@ const RegisterForm = () => {
         const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('register', data)
         console.log(userAccessResponse)
         if(userAccessResponse.status!==500) {
-            turnOnNotification({response:userAccessResponse})
+            turnOnNotification({type:"USER_ACCESS", response:userAccessResponse})
         }
         setRegisterResponse(userAccessResponse)
         setResponseLoading(false)

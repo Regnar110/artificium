@@ -8,6 +8,7 @@ const ToastNotifications = () => {
 
     <Toaster position='bottom-center'>
       {(t) => {
+        console.log(t)
         return (
             <div
             className='bg-[#060708] w-fit font-plus_jakarta_sans flex gap-3 justify-center items-center p-4'

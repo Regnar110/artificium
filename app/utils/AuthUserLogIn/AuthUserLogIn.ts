@@ -3,6 +3,7 @@ import { ioInstance } from "../SocketInstance/socketInstance"
 import { userAccessRequest } from "../UserAccessRequest"
 import { injectUser } from "@/redux/slices/userSession/userSessionSlice";
 import { _emit_USER_IS_ONLINE } from "../SocketFriendListHandlers/SocketFriendListHandlers";
+import { turnOnNotification } from "@/app/AppComponents/ToastNotifications/TurnOnNotification";
 interface ProviderLogInProps {
     sessionData: any,
     dispatch: ThunkDispatch<any, undefined, AnyAction> & Dispatch<AnyAction>;
@@ -33,5 +34,6 @@ export const authUserLogIn = async ({sessionData, dispatch}:ProviderLogInProps) 
         // INFORMUJEMY SOCKET NA SERWERZE ŻE UŻYTKOWNIK JEST TERAZ ONLINE
         _emit_USER_IS_ONLINE(socket!, logInResponse.body._id, logInResponse.body.user_friends_ids)
     } 
+    turnOnNotification({type:"USER_APP_ACCESS",response:logInResponse})
     return logInResponse
 }
