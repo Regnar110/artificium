@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { PayloadAction, combineReducers, configureStore } from "@reduxjs/toolkit";
 import userSessionReducer from '../slices/userSession/userSessionSlice'
 import chattingWindowsReducer from '../slices/chattingWindows/chattingWindowsSlice'
 import groupsReducer from '../slices/groups/groupsSlice'
@@ -23,14 +23,27 @@ import {
     whitelist: ["userSession"] 
   }
 
-  export const rootReducers = combineReducers({
+  // APP REDUCER KTÓRY REPREZENTUJE POJEDYŃCZĄ FUNKCJĘ REDUCERA KTÓRY ZAWIERA ZMIXOWANE REDUCERY.
+  // APP REDUCER I JEGO STAN JEST ZALEZNY OD RESETOWALNEGO ROOT REDUCERA I WYNIKU JEGO DZIAŁANIA.
+  const appReducer = combineReducers({
+    // TOP-LEVEL REDUCERY
     userSession: userSessionReducer,
     chattingWindows: chattingWindowsReducer,
     groups: groupsReducer,
     onlineFriendList: onlineFriendListReducer,
     offlineFriendList: offlineFriendListReducer
   })
-  const persistedReducer = persistReducer(persistConfig, rootReducers)
+
+  // RESETOWALNY ROOT REDUCER, KTÓRY PRZY WOWAŁNIU AKCJI WYLOGOWYWANIA UŻYTKOWNIKA PRZYWRACA CAŁY STAN APLIKACJI DO UNDEFINED (CZYLI RESETUJE GO)
+  // MA TO NA CELU ZAPOBIEGNIĘCIE NP W MOZILLA FIREFOX CACHOWANIA SIĘ STANU I NP. TWORZENIU SIĘ PODWÓJNYCH, POTRÓJNYCH LIST DANYCH Z KONKRETNEGO STANU ZE WZGLĘDU NA ICH
+  // NAKŁĄDANIE SIĘ NP. PRZY PONNOWNYM ZALOGOWANIU
+  export const resetableRootReducers = (state:any, action:PayloadAction) => {
+    if(action.type === 'userSession/signOutUser'){
+      return appReducer(undefined, action)
+    }
+    return appReducer(state, action)
+  }
+  const persistedReducer = persistReducer(persistConfig, resetableRootReducers)
   const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
