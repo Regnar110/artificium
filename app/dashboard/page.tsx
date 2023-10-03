@@ -18,16 +18,10 @@ import "slick-carousel/slick/slick-theme.css";
 import { getUserId, getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
 import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
-import { authUserSignOut } from '../utils/AuthUserSignOut/authUserSignOut'
 
 const Dashboard = () => {
-  const beforeWindowIsClosed = async () => {
-    await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId})
-    return null;
-  }
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
-  const dispatch = useAppDispatch()
-  const {_id:authUser, provider:userProvider, user_friends_ids:authUserFriends} = useAppSelector(getUserObject)
+  const authUser = useAppSelector(getUserId)
   const socket = ioInstance.getActiveSocket()
   let settings = {
     speed: 500,
@@ -36,7 +30,7 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   useEffect(() => {
-    window.addEventListener("beforeunload", beforeWindowIsClosed)
+
     if(socket) { 
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
