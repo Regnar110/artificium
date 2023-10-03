@@ -26,7 +26,8 @@ export const authUserSignOut = async ({userProvider, authUser, authUserFriends, 
         _emit_LEAVE_GROUP_ROOM(socket, groupId, authUser)
         // RESETUJEMY STAN WYBRANYCH PRZEZ UZYTKOWNIKA GRUP I OKIEN CZATÓW. MA TO NA CELU WYMUSZENIE PRZY ODŚWIEŻENIU LUB PONOWNYM ZALOGOWANIU DO APLIKACJI WYBRANIE PONOWNIE GRUPY
         // - ELIMINUJE TO KILKA BŁĘDÓW, KTÓRE BYŁY WYWOŁYWANE PRZEZ KILKUKROTNE WYWOŁYWANIE JOIN_GROUP_ROOM ( PRZEZ RE-RENDER KOMPONENTU GROUPS )
-        dispatch(resetGroups())            
+        // NIEKATYWNE ZE WZGLĘDU N DOODANIE RESETOWALNEGO ROOT REDUCERA - DO PRZETESTOWANIA!!!!
+        // dispatch(resetGroups())            
     }
     // persistor nam potrzebny do wyczyszczenia z pamięci podręcznej przegladarki danych zalogowanego użytkownika celem prawidłowego jego wylogowania i zakończenia jego sesji.
     // dalej będzie używana metoda purge obiektu persistor, która czyści dane z utrwalonego stanu w pamięci podręcznej przegladarki

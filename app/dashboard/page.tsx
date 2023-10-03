@@ -8,20 +8,26 @@ import HeaderWithAvatars from './DashBoardComponents/UserBoard/Components/BoardH
 import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
 import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/DashboardPageWrapper'
 import EmptyBoardWaterMark from './DashBoardComponents/EmptyBoardWaterMark/EmptyBoardWaterMark'
-import { useAppSelector } from '@/redux/hooks/typedHooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import MediaQuery from 'react-responsive'
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserId, getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
 import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
+import { authUserSignOut } from '../utils/AuthUserSignOut/authUserSignOut'
 
 const Dashboard = () => {
-  const chat = useAppSelector(getChat)  
-  const authUser = useAppSelector(getUserId)
+  const beforeWindowIsClosed = async () => {
+    await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId})
+    return null;
+  }
+  const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
+  const dispatch = useAppDispatch()
+  const {_id:authUser, provider:userProvider, user_friends_ids:authUserFriends} = useAppSelector(getUserObject)
   const socket = ioInstance.getActiveSocket()
   let settings = {
     speed: 500,
@@ -30,6 +36,7 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   useEffect(() => {
+    window.addEventListener("beforeunload", beforeWindowIsClosed)
     if(socket) { 
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
@@ -42,10 +49,10 @@ const Dashboard = () => {
           <UserPanel/>        
           <UserBoardWrapper>
             {
-              chat._id ?
+              groupId ?
               <>
                 <BoardHeader>
-                  <HeaderWithAvatars chat_title={chat.group_name as string} chat_description={chat.group_description as string}/>
+                  <HeaderWithAvatars chat_title={group_name as string} chat_description={group_description as string}/>
                   <ChatingWindowsWrapper/>
                 </BoardHeader>
                 <ChatPanel/>
@@ -63,10 +70,10 @@ const Dashboard = () => {
             <UserPanel/>        
             <UserBoardWrapper>
               {
-                chat._id ?
+                groupId ?
                 <>
                   <BoardHeader>
-                    <HeaderWithAvatars chat_title={chat.group_name as string} chat_description={chat.group_description as string}/>
+                    <HeaderWithAvatars chat_title={group_name as string} chat_description={group_description as string}/>
                     <ChatingWindowsWrapper/>
                   </BoardHeader>
                   <ChatPanel/>
