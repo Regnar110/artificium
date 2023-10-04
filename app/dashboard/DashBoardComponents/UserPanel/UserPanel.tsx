@@ -25,7 +25,7 @@ const UserPanel = () => {
   const {_id:authUser, user_friends_ids:authUserFriends, provider:userProvider} = useAppSelector(getUserObject)
   const logOut = async() => {
     const logoutResponse = await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId})
-    logoutResponse.status === 200 ? router.push('/login') : null
+    logoutResponse!.status === 200 ? router.push('/login') : null
     turnOnNotification({type:"USER_APP_ACCESS", response:logoutResponse})
   }
   

@@ -52,10 +52,7 @@ const Groups = () => {
   
   const beforeWindowIsClosed = async () => {
     const {_id:authUser, provider:userProvider, user_friends_ids:authUserFriends } = user
-    const beaconData =  new FormData()
-    beaconData.append('authUser', JSON.stringify(authUser))
-    const blobData = new Blob([JSON.stringify({authUser})], {type : 'application/json; charset=UTF-8'})
-    navigator.sendBeacon(`http://localhost:3001/userLogout`, beaconData)
+    navigator.sendBeacon(`http://localhost:3001/userLogout`, JSON.stringify({authUser}))
   }
   // Hook useEffect tutaj służy do tego, żeby aktualizować ten komponent w przypadku gdy zostanie dodana lub usunięta grupa.
   // Inicjalny stan grup pobietrany jest TYLKO RAZ w komponencie nadrzędnym USERPANEL.
