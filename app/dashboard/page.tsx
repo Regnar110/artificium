@@ -30,7 +30,8 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   useEffect(() => {
-
+    console.log("FASHBOARD EFFECT")
+    console.log(authUser)
     if(socket) { 
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)

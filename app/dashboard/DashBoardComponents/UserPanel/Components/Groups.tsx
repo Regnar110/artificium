@@ -17,6 +17,7 @@ import {
   unsubscribeGroupRoomListeners 
 } from '@/app/utils/SocketGroupRoomHandlers.ts/SocketGroupRoomHandlers'
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
+import { _emit_USER_IS_OFFLINE } from '@/app/utils/SocketFriendListHandlers/SocketFriendListHandlers'
 
 
 // KOMPONENT RENDERUJĄCY ZNAJOMYCH DOSTĘPNYCH W WYBRANEJ PRZEZ UZYTKOWNIKA GRUPIE.
@@ -52,7 +53,18 @@ const Groups = () => {
   
   const beforeWindowIsClosed = async () => {
     const {_id:authUser, provider:userProvider, user_friends_ids:authUserFriends } = user
-    navigator.sendBeacon(`http://localhost:3001/userLogout`, JSON.stringify({authUser}))
+    
+    if(groupId) {
+      socket.emit("LEAVE_GROUP_ROOM", groupId , authUser)
+      socket.emit("USER_IS_OFFLINE", authUser, authUserFriends)
+      // _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends, groupId!)
+      
+    } else {
+      socket.emit("USER_IS_OFFLINE", authUser, authUserFriends)
+      // _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends, groupId!)
+    }
+    
+    await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId, sendRequestWithBeaconAPI:true})
   }
   // Hook useEffect tutaj służy do tego, żeby aktualizować ten komponent w przypadku gdy zostanie dodana lub usunięta grupa.
   // Inicjalny stan grup pobietrany jest TYLKO RAZ w komponencie nadrzędnym USERPANEL.
@@ -94,6 +106,7 @@ const Groups = () => {
 
   return (
     <div className='groups_container flex flex-col gap-y-4'>
+      <button className='text-red-200' onClick={beforeWindowIsClosed}>BEacon test</button>
       <PanelHeader title='Groups'/>
       <div className='groups flex flex-col gap-y-6 max-h-[300px] max-w-[250px] overflow-y-auto overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-green-500 scrollbar-track-gray-100'>
         {

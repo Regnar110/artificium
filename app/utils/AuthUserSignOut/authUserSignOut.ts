@@ -20,37 +20,48 @@ interface Props {
     sendRequestWithBeaconAPI?:boolean
 }
 export const authUserSignOut = async ({userProvider, authUser, authUserFriends, dispatch, groupId, sendRequestWithBeaconAPI=false}:Props) => {
-    debugger;
     //DLACZEGO GDY SOCKET JEST ZDEFINIOWANY PO ZA BLOKIEM IF PONIŻEJ DZIAŁA POPRAWNIE Z EMITERAMI. A JEŻELI EJST W SRODKU IF TO WYWOŁU SIĘ TYLKO PIERWSZY NAPOTKANY EMIT??
     var socket = ioInstance.getActiveSocket()
-    _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends, groupId!)
-    if(groupId) {
-        _emit_LEAVE_GROUP_ROOM(socket, groupId, authUser)
+        _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends, groupId!)
+    if(groupId) socket.emit("LEAVE_GROUP_ROOM", groupId , authUser)
+    //  _emit_LEAVE_GROUP_ROOM(socket, groupId, authUser)
         // RESETUJEMY STAN WYBRANYCH PRZEZ UZYTKOWNIKA GRUP I OKIEN CZATÓW. MA TO NA CELU WYMUSZENIE PRZY ODŚWIEŻENIU LUB PONOWNYM ZALOGOWANIU DO APLIKACJI WYBRANIE PONOWNIE GRUPY
         // - ELIMINUJE TO KILKA BŁĘDÓW, KTÓRE BYŁY WYWOŁYWANE PRZEZ KILKUKROTNE WYWOŁYWANIE JOIN_GROUP_ROOM ( PRZEZ RE-RENDER KOMPONENTU GROUPS )
         // NIEKATYWNE ZE WZGLĘDU N DOODANIE RESETOWALNEGO ROOT REDUCERA - DO PRZETESTOWANIA!!!!
         // dispatch(resetGroups())            
-    }
     // persistor nam potrzebny do wyczyszczenia z pamięci podręcznej przegladarki danych zalogowanego użytkownika celem prawidłowego jego wylogowania i zakończenia jego sesji.
     // dalej będzie używana metoda purge obiektu persistor, która czyści dane z utrwalonego stanu w pamięci podręcznej przegladarki
     // Najpierw będziemy przywracać stan userSession do initialState a potem czyścimy pamięc podręczną.
 
     // UWAGA!!  Bez powyższego rozwiązania po przywróceniu tylko stanu do initialState przy ponownym wyrenderowaniu komponentu, który będzie powodowany
     // w trakcie realizacji funkcjonalności, userSession zostanie ponownie wypełniony danymi z pamięci podręcznej, czyli tak jak byśmy w ogóle nie wylogowali użytkownika!
-    const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser})
-    if(logoutRequest.status === 200) {
-        // jeżeli status zalogowania użytkownika w dokumencie mongoDB zmienił się na false
-        // PONIŻEJ OPERACJE PO STRONIE KLIENTA - ZMIANA STANU APLIKACJI
-        // JEŻELI UŻYTKOWNIK BYŁ W TRAKCIE WYLOGOWYWANIA W JAKIEJŚĆ GRUPIE TO ZOSTAJE Z NIEJ USUNIĘTY.
-        unsubscribeFriendListListeners(socket, authUser)
-        dispatch(signOutUser())
-        if(userProvider === "google") {
-            await signOut()
-        }
-        await persistor.purge()
-        ioInstance.closeSocketInstanceConnection()
-    }      
-    return logoutRequest  
+    switch(sendRequestWithBeaconAPI) {
+        case false: 
+            const logoutRequest = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse, {authUser:string}>("userLogout", {authUser})
+            if(logoutRequest.status === 200) {
+                // jeżeli status zalogowania użytkownika w dokumencie mongoDB zmienił się na false
+                // PONIŻEJ OPERACJE PO STRONIE KLIENTA - ZMIANA STANU APLIKACJI
+                // JEŻELI UŻYTKOWNIK BYŁ W TRAKCIE WYLOGOWYWANIA W JAKIEJŚĆ GRUPIE TO ZOSTAJE Z NIEJ USUNIĘTY.
+                unsubscribeFriendListListeners(socket, authUser)
+                dispatch(signOutUser())
+                if(userProvider === "google") {
+                    await signOut()
+                }
+                await persistor.purge()
+                ioInstance.closeSocketInstanceConnection()
+            }      
+            return logoutRequest
+        case true:
+            navigator.sendBeacon(`http://localhost:3001/userLogout`, authUser)
+            unsubscribeFriendListListeners(socket, authUser)
+            dispatch(signOutUser())
+            if(userProvider === "google") {
+                await signOut()
+            }
+            await persistor.purge()
+            ioInstance.closeSocketInstanceConnection()
+    }
+
 
 
 }        

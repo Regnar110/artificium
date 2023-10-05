@@ -6,10 +6,11 @@ import store from "@/redux/store/store";
 
 class SocketGroupRoomHandlers {
 
-    static _emit_JOIN_GROUP_ROOM = (socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedGroupId:string, user:AuthenticatedUser) => socket.emit("JOIN_GROUP_ROOM", selectedGroupId, user)
+    static _emit_JOIN_GROUP_ROOM = (socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedGroupId:string, user:AuthenticatedUser) => {
+        socket.emit("JOIN_GROUP_ROOM", selectedGroupId, user)
+    }
 
     static _emit_LEAVE_GROUP_ROOM = (socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedGroupId:string, userId:string) => {
-        console.trace("WYWOŁANO MNIE!")
         socket.emit("LEAVE_GROUP_ROOM", selectedGroupId , userId)
     }
     

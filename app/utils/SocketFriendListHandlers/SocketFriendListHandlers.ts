@@ -18,7 +18,9 @@ class SocketFriendListHandlers {
         //         break;  
         // }
     }
-    static _emit_USER_IS_ONLINE = (socket:SOCKET, authUserId:string,  friends_array:string[]) => socket.emit("USER_IS_ONLINE", authUserId, friends_array)
+    static _emit_USER_IS_ONLINE = (socket:SOCKET, authUserId:string,  friends_array:string[]) => {
+        socket.emit("USER_IS_ONLINE", authUserId, friends_array)
+    }
 
     static _on_AUTHUSER_ID_USER_IS_ONLINE = (socket:SOCKET, authUser_id:string) => socket.on(`${authUser_id}_USER_IS_ONLINE`, (...args)=> {
         console.log("ON USER ID SOCKET - FIRNED CAME ONLINE")
