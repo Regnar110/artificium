@@ -2,9 +2,6 @@ import { resetGroups } from "@/redux/slices/chattingWindows/chattingWindowsSlice
 import { OFFLINE_injectUserToFriendList, OFFLINE_removeUserFromFriendList } from "@/redux/slices/friendList/offlineFriendListSlice";
 import { ONLINE_injectUserToFriendList, ONLINE_removeUserFromFriendList } from "@/redux/slices/friendList/onlineFriendListSlice";
 import store from "@/redux/store/store";
-import { Socket } from "socket.io-client";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
-type SOCKET = Socket<DefaultEventsMap, DefaultEventsMap>
 class SocketFriendListHandlers {
     
     static _emit_USER_IS_OFFLINE = (socket:SOCKET, authUserId:string, friends_array:string[], groupId?:string,) => {

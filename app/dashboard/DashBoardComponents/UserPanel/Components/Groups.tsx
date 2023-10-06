@@ -52,19 +52,8 @@ const Groups = () => {
   }
   
   const beforeWindowIsClosed = async () => {
-    const {_id:authUser, provider:userProvider, user_friends_ids:authUserFriends } = user
-    
-    if(groupId) {
-      socket.emit("LEAVE_GROUP_ROOM", groupId , authUser)
-      socket.emit("USER_IS_OFFLINE", authUser, authUserFriends)
-      // _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends, groupId!)
-      
-    } else {
-      socket.emit("USER_IS_OFFLINE", authUser, authUserFriends)
-      // _emit_USER_IS_OFFLINE(socket, authUser, authUserFriends, groupId!)
-    }
-    
-    await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId, sendRequestWithBeaconAPI:true})
+    const {_id:authUser, provider:userProvider, user_friends_ids:authUserFriends } = user   
+    await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId, sendRequestWithBeaconAPI:false})
   }
   // Hook useEffect tutaj służy do tego, żeby aktualizować ten komponent w przypadku gdy zostanie dodana lub usunięta grupa.
   // Inicjalny stan grup pobietrany jest TYLKO RAZ w komponencie nadrzędnym USERPANEL.
@@ -77,7 +66,7 @@ const Groups = () => {
 
       if(groupId) {
         // GRUPA JEST
-        window.addEventListener("beforeunload", beforeWindowIsClosed)
+        // window.addEventListener("beforeunload", beforeWindowIsClosed)
         // window.addEventListener("beforeunload", () => _emit_LEAVE_GROUP_ROOM(socket, groupId!, user._id))
         // POWYZSZE WYWOŁYWAŁO DODATKOWY EVENT DO SOCKETA (DLA PROVIDERA - pOZOSTAŁ JEDEN DO WYKRYCIA)
 

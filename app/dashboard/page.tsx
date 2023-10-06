@@ -18,10 +18,11 @@ import "slick-carousel/slick/slick-theme.css";
 import { getUserId, getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
 import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
+import { userWindowClose } from '../utils/UserWindowClose/userWindowClose'
 
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
-  const authUser = useAppSelector(getUserId)
+  const {_id:authUser, user_friends_ids} = useAppSelector(getUserObject)
   const socket = ioInstance.getActiveSocket()
   let settings = {
     speed: 500,
@@ -30,14 +31,15 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   useEffect(() => {
-    console.log("FASHBOARD EFFECT")
+    window.addEventListener('beforeunload', () => userWindowClose(authUser, user_friends_ids, groupId))
+    console.log("DASHBOARD MOUNTED")
     console.log(authUser)
     if(socket) { 
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
       _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, authUser)
     }
-  },[])
+  },[groupId])
   return (
     <DashboardPageWrapper>
       <MediaQuery minWidth={768}>

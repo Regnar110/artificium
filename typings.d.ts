@@ -98,3 +98,8 @@ type FriendList = Friend[]
 type USER_APP_ACCESS = "USER_APP_ACCESS"
 type USER_GROUP_JOIN = "USER_GROUP_JOIN"
 type USER_GROUP_LEAVE = "USER_GROUP_LEAVE"
+
+
+//SOCKET 
+
+type SOCKET = Socket<DefaultEventsMap, DefaultEventsMap>
