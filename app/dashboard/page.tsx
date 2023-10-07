@@ -23,7 +23,6 @@ import { userWindowClose } from '../utils/UserWindowClose/userWindowClose'
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
   const {_id:authUser, user_friends_ids} = useAppSelector(getUserObject)
-  const socket = ioInstance.getActiveSocket()
   let settings = {
     speed: 500,
     Infinity:false,
@@ -31,17 +30,25 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   useEffect(() => {
-    window.addEventListener('beforeunload', () => userWindowClose(authUser, user_friends_ids, groupId))
+    const socket = ioInstance.getActiveSocket()
+    const handleBeforeUnload = () => socket.emit("USER_IS_UNACTIVE", authUser, user_friends_ids, groupId)
+    
     console.log("DASHBOARD MOUNTED")
     console.log(authUser)
-    if(socket) { 
+    console.log(socket)
+    if(socket && authUser) {
+      window.addEventListener("beforeunload", handleBeforeUnload)
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
       _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, authUser)
     }
-  },[groupId])
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  },[])
   return (
     <DashboardPageWrapper>
+      {/* <button onClick={() => socket.emit("USER_IS_UNACTIVE", authUser, user_friends_ids, groupId)}>TEST UNLOAD</button> */}
       <MediaQuery minWidth={768}>
           <UserPanel/>        
           <UserBoardWrapper>

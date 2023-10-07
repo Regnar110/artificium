@@ -18,6 +18,7 @@ import {
 } from '@/app/utils/SocketGroupRoomHandlers.ts/SocketGroupRoomHandlers'
 import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
 import { _emit_USER_IS_OFFLINE } from '@/app/utils/SocketFriendListHandlers/SocketFriendListHandlers'
+import { userWindowClose } from '@/app/utils/UserWindowClose/userWindowClose'
 
 
 // KOMPONENT RENDERUJĄCY ZNAJOMYCH DOSTĘPNYCH W WYBRANEJ PRZEZ UZYTKOWNIKA GRUPIE.
@@ -51,10 +52,6 @@ const Groups = () => {
     }
   }
   
-  const beforeWindowIsClosed = async () => {
-    const {_id:authUser, provider:userProvider, user_friends_ids:authUserFriends } = user   
-    await authUserSignOut({userProvider, authUser, authUserFriends, dispatch, groupId, sendRequestWithBeaconAPI:false})
-  }
   // Hook useEffect tutaj służy do tego, żeby aktualizować ten komponent w przypadku gdy zostanie dodana lub usunięta grupa.
   // Inicjalny stan grup pobietrany jest TYLKO RAZ w komponencie nadrzędnym USERPANEL.
   // Komponent wykonuje akcje na bazie połączenia z pokojem po stronie servera (socket room) co umożliwia połączenie "na żywo" z innymi użytkownikami grupy.
@@ -66,10 +63,6 @@ const Groups = () => {
 
       if(groupId) {
         // GRUPA JEST
-        // window.addEventListener("beforeunload", beforeWindowIsClosed)
-        // window.addEventListener("beforeunload", () => _emit_LEAVE_GROUP_ROOM(socket, groupId!, user._id))
-        // POWYZSZE WYWOŁYWAŁO DODATKOWY EVENT DO SOCKETA (DLA PROVIDERA - pOZOSTAŁ JEDEN DO WYKRYCIA)
-
         
         // PO ZMIANIE GRUPY EMITUJEMY WIADOMOŚĆ DO SERVERA ŻE DOŁĄCZYLIŚMY JAKO USER DO GRUPY O ID groupID
         
@@ -87,7 +80,6 @@ const Groups = () => {
         // jeżeli komponent zostanie odmontowany przy zmianie chat to wyłączamy poniższe listenery socketu
         // bez tego liczba listenerów przy re-renderowaniach będzie się na siebie nakładać co wywoła niepotrzebne dwojenie, trojenie itd listenerów
         unsubscribeGroupRoomListeners(socket, groupId!)
-        window.removeEventListener("beforeunload", beforeWindowIsClosed)
 
       }
     },[groupId, user, userGroups])
@@ -95,7 +87,6 @@ const Groups = () => {
 
   return (
     <div className='groups_container flex flex-col gap-y-4'>
-      <button className='text-red-200' onClick={beforeWindowIsClosed}>BEacon test</button>
       <PanelHeader title='Groups'/>
       <div className='groups flex flex-col gap-y-6 max-h-[300px] max-w-[250px] overflow-y-auto overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-green-500 scrollbar-track-gray-100'>
         {
