@@ -60,8 +60,11 @@ const Groups = () => {
     // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
       // Przy zmianie czatu emitujemy wiadomośc do socketa, że zmieniamy chat na chat._id( co jest id konkretnej grupy)
       // Wtedy na back-endzie jestśmy podłączeni do pokoju o nazwie konkretnego chatu.
-
+      const handleBeforeUnload = () => socket.emit("USER_IS_UNACTIVE", user._id, user.user_friends_ids, groupId)
+      window.addEventListener("beforeunload", handleBeforeUnload)
+    
       if(groupId) {
+
         // GRUPA JEST
         
         // PO ZMIANIE GRUPY EMITUJEMY WIADOMOŚĆ DO SERVERA ŻE DOŁĄCZYLIŚMY JAKO USER DO GRUPY O ID groupID
@@ -80,6 +83,7 @@ const Groups = () => {
         // jeżeli komponent zostanie odmontowany przy zmianie chat to wyłączamy poniższe listenery socketu
         // bez tego liczba listenerów przy re-renderowaniach będzie się na siebie nakładać co wywoła niepotrzebne dwojenie, trojenie itd listenerów
         unsubscribeGroupRoomListeners(socket, groupId!)
+        window.removeEventListener("beforeunload", handleBeforeUnload)
 
       }
     },[groupId, user, userGroups])

@@ -31,19 +31,10 @@ const Dashboard = () => {
   }
   useEffect(() => {
     const socket = ioInstance.getActiveSocket()
-    const handleBeforeUnload = () => socket.emit("USER_IS_UNACTIVE", authUser, user_friends_ids, groupId)
-    
-    console.log("DASHBOARD MOUNTED")
-    console.log(authUser)
-    console.log(socket)
     if(socket && authUser) {
-      window.addEventListener("beforeunload", handleBeforeUnload)
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
       _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, authUser)
-    }
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
     }
   },[])
   return (
