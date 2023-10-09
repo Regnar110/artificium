@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
 import { getGroup, isGroupSelected, selectGroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import { getStoredGroups } from '@/redux/slices/groups/groupsSlice'
 import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
-import { getUserObject } from '@/redux/slices/userSession/userSessionSlice'
+import { changeActivityStatus, getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { 
   _emit_JOIN_GROUP_ROOM, 
   _emit_LEAVE_GROUP_ROOM, 
@@ -51,24 +51,19 @@ const Groups = () => {
       dispatch(selectGroup(group_data)) 
     }
   }
-  
   // Hook useEffect tutaj służy do tego, żeby aktualizować ten komponent w przypadku gdy zostanie dodana lub usunięta grupa.
   // Inicjalny stan grup pobietrany jest TYLKO RAZ w komponencie nadrzędnym USERPANEL.
   // Komponent wykonuje akcje na bazie połączenia z pokojem po stronie servera (socket room) co umożliwia połączenie "na żywo" z innymi użytkownikami grupy.
 
-  useEffect(() => { 
+  useEffect(() => {
     // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
       // Przy zmianie czatu emitujemy wiadomośc do socketa, że zmieniamy chat na chat._id( co jest id konkretnej grupy)
       // Wtedy na back-endzie jestśmy podłączeni do pokoju o nazwie konkretnego chatu.
-      const handleBeforeUnload = () => socket.emit("USER_IS_UNACTIVE", user._id, user.user_friends_ids, groupId)
+      const handleBeforeUnload = () =>  socket.emit("USER_IS_UNACTIVE", user._id, user.user_friends_ids, groupId)
       window.addEventListener("beforeunload", handleBeforeUnload)
-    
       if(groupId) {
-
-        // GRUPA JEST
-        
+        // GRUPA JEST WYBRANA
         // PO ZMIANIE GRUPY EMITUJEMY WIADOMOŚĆ DO SERVERA ŻE DOŁĄCZYLIŚMY JAKO USER DO GRUPY O ID groupID
-        
         //GROU_USER_LEAVE to event który zostaje aktywowany gdy jakiś z uczestników grupy w której jest użytkownik opuści ją! W ODPOWIEDZI DOSTAJEMY ID UŻYTKOWNIKA KTÓRY OPUŚCIŁ GRUPĘ
         _on_GROUP_USER_LEAVE(socket, dispatch, group_name!)
 
@@ -79,7 +74,10 @@ const Groups = () => {
         // GDY ZMIENIMY GRUPĘ NA INNĄ DOSTAJEMY Z SERWERA AKTUALNĄ LISTĘ AKTYWNYCH UŻYTKOWNIKÓW W TEJ GRUPUIE!
         _on_CURRENT_ACTIVE_USERS(socket, dispatch)
       }
+
+
       return () => {
+        // PONIŻSZE SŁUŻY DO ZMIANY AKTYWNOŚCI UŻYTKOWNIKA. JEST TO FUNKCJONALNOŚĆ< KTÓRA BĘDZIE WYKORZYSTANA GDY  
         // jeżeli komponent zostanie odmontowany przy zmianie chat to wyłączamy poniższe listenery socketu
         // bez tego liczba listenerów przy re-renderowaniach będzie się na siebie nakładać co wywoła niepotrzebne dwojenie, trojenie itd listenerów
         unsubscribeGroupRoomListeners(socket, groupId!)

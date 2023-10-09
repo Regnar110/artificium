@@ -8,17 +8,16 @@ import HeaderWithAvatars from './DashBoardComponents/UserBoard/Components/BoardH
 import ChatPanel from './DashBoardComponents/ChatPanel/ChatPanel'
 import DashboardPageWrapper from './DashBoardComponents/DashboardPageWrapper/DashboardPageWrapper'
 import EmptyBoardWaterMark from './DashBoardComponents/EmptyBoardWaterMark/EmptyBoardWaterMark'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
+import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import MediaQuery from 'react-responsive'
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getUserId, getUserObject } from '@/redux/slices/userSession/userSessionSlice'
+import {getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
 import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
-import { userWindowClose } from '../utils/UserWindowClose/userWindowClose'
 
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
@@ -31,10 +30,12 @@ const Dashboard = () => {
   }
   useEffect(() => {
     const socket = ioInstance.getActiveSocket()
+    
     if(socket && authUser) {
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
       _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, authUser)
+      socket.emit("USER_IS_ACTIVE", authUser, user_friends_ids)
     }
   },[])
   return (

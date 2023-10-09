@@ -19,7 +19,7 @@ export const userSessionSlice = createSlice({
     }
 }) 
 
-export const { injectUser, signOutUser} = userSessionSlice.actions
+export const { injectUser, changeActivityStatus, signOutUser} = userSessionSlice.actions
 
 export default userSessionSlice.reducer
 //SELEKTORY
