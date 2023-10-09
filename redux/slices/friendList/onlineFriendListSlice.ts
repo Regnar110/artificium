@@ -16,10 +16,11 @@ export const onlineFriendListSlice = createSlice({
         },
 
         ONLINE_injectUserToFriendList: (state, action:PayloadAction<Friend>) => {
-            // TO DO: Do stanu zostaje wstrzyknięte pole obiektu isOnline. Nie jest nam ono do niczego potrzbne. Usunąć.
-            const mutable_user = structuredClone(action.payload)
-            mutable_user.isOnline = true
-            state.push(mutable_user)
+            // const mutable_user = structuredClone(action.payload)
+            // mutable_user.isOnline = true
+            // state.push(mutable_user)
+            const migrated_user = {...action.payload, isOnline:true}
+            return [...state, migrated_user]
         },
         ONLINE_removeUserFromFriendList: (state, action:PayloadAction<string>) => {
             console.log("REMOVING USER FROM FRIENDLIST")

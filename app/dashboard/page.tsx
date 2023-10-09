@@ -18,10 +18,11 @@ import "slick-carousel/slick/slick-theme.css";
 import {getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
 import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
+import { turnOnNotification } from '../AppComponents/ToastNotifications/TurnOnNotification'
 
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
-  const {_id:authUser, user_friends_ids} = useAppSelector(getUserObject)
+  const user = useAppSelector(getUserObject)
   let settings = {
     speed: 500,
     Infinity:false,
@@ -31,11 +32,11 @@ const Dashboard = () => {
   useEffect(() => {
     const socket = ioInstance.getActiveSocket()
     
-    if(socket && authUser) {
+    if(socket && user) {
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
-      _on_AUTHUSER_ID_USER_IS_ONLINE(socket, authUser)
-      _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, authUser)
-      socket.emit("USER_IS_ACTIVE", authUser, user_friends_ids)
+      _on_AUTHUSER_ID_USER_IS_ONLINE(socket, user._id)
+      _on_AUTHUSER_ID_USER_IS_OFFLINE(socket, user._id)
+      socket.emit("USER_IS_ACTIVE", user._id, user.user_friends_ids)
     }
   },[])
   return (

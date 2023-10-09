@@ -1,3 +1,4 @@
+import { turnOnNotification } from "@/app/AppComponents/ToastNotifications/TurnOnNotification";
 import { resetGroups } from "@/redux/slices/chattingWindows/chattingWindowsSlice";
 import { OFFLINE_injectUserToFriendList, OFFLINE_removeUserFromFriendList } from "@/redux/slices/friendList/offlineFriendListSlice";
 import { ONLINE_injectUserToFriendList, ONLINE_removeUserFromFriendList } from "@/redux/slices/friendList/onlineFriendListSlice";
@@ -19,21 +20,38 @@ class SocketFriendListHandlers {
         socket.emit("USER_IS_ONLINE", authUserId, friends_array)
     }
 
-    static _on_AUTHUSER_ID_USER_IS_ONLINE = (socket:SOCKET, authUser_id:string) => socket.on(`${authUser_id}_USER_IS_ONLINE`, (...args)=> {
+    static _on_AUTHUSER_ID_USER_IS_ONLINE = (socket:SOCKET, authUser_id:string) => socket.on(`${authUser_id}_USER_IS_ONLINE`, (...args:any[])=> {
+        debugger;
         console.log("ON USER ID SOCKET - FIRNED CAME ONLINE")
-        const onlineUserId = args[0] as string // TUTAJ DOSTAJEMY ID UŻYTKOWNIKA KTÓRY SIĘ ZALOGOWAŁ
-        const friend_to_migrate = store.getState().offlineFriendList.find((friend:Friend) => friend._id === onlineUserId) as Friend
+        const onlineUser = args[0] as AuthenticatedUser // TUTAJ DOSTAJEMY OBIEKT UŻYTKOWNIKA KTÓRY SIĘ ZALOGOWAŁ
+        const friend_to_migrate = store.getState().offlineFriendList.find((friend:Friend) => friend._id === onlineUser._id) as Friend
 
-        store.dispatch(OFFLINE_removeUserFromFriendList(onlineUserId)) // USUWAMY UŻYTKOWNIKA ZLISTY ONLINE
+        store.dispatch(OFFLINE_removeUserFromFriendList(onlineUser._id)) // USUWAMY UŻYTKOWNIKA ZLISTY OFFLINE
         store.dispatch(ONLINE_injectUserToFriendList(friend_to_migrate)) // DODAJEMY GO DO LISTY ONLINE
+        turnOnNotification({
+            type:"USER_IS_ONLINE", 
+            action_notification: {
+                message:`is now online`,
+                group_name:"ARTIFICIUM",
+                body:onlineUser
+            }
+        })
     })
 
-    static _on_AUTHUSER_ID_USER_IS_OFFLINE = (socket:SOCKET, authUser_id:string) => socket.on(`${authUser_id}_USER_IS_OFFLINE`, (...args)=> {
+    static _on_AUTHUSER_ID_USER_IS_OFFLINE = (socket:SOCKET, authUser_id:string) => socket.on(`${authUser_id}_USER_IS_OFFLINE`, (...args:any[])=> {
         console.log("ON USER ID SOCKET - FIRNED CAME OFFLINE")
-        const offlineUserId = args[0] as string
-        const friend_to_migrate = store.getState().onlineFriendList.find((friend:Friend) => friend._id === offlineUserId) as Friend
-        store.dispatch(ONLINE_removeUserFromFriendList(offlineUserId))
+        const offlineUser = args[0] as AuthenticatedUser
+        const friend_to_migrate = store.getState().onlineFriendList.find((friend:Friend) => friend._id === offlineUser._id) as Friend
+        store.dispatch(ONLINE_removeUserFromFriendList(offlineUser._id))
         store.dispatch(OFFLINE_injectUserToFriendList(friend_to_migrate))
+        turnOnNotification({
+            type:"USER_IS_OFFLINE", 
+            action_notification: {
+                message:`is now offline`,
+                group_name:"ARTIFICIUM",
+                body:offlineUser
+            }
+        })
     })
 
     static unsubscribeFriendListListeners = (socket:SOCKET, authUser_id:string) =>{
