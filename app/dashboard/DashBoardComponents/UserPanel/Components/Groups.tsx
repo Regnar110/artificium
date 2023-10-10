@@ -38,6 +38,7 @@ const Groups = () => {
     // SPRAWDZAMY CZY GRUPA KTÓRĄ WYBRAŁ UŻYTKOWNIK NIE JEST GRUPĄ W KTÓREJ OBECNIE PRZEBYWA
     if(isGroupSelectedBool === true) {
       if(group_data && group_data._id !== groupId) { 
+        console.log("ZMIANA GRUPY W TRAKCIE. EMITY URUCHAMIANE")
         // JEŻELI NIE JEST TO OPUSZCZAMY GRUPĘ W KTÓREJ PRZEBYWA ( BO KLIKNĄŁ INNĄ NIŻ TA  W KTÓREJ AKTUALNIE JEST) - jeżeli na odwrót to nic nie robimyu bo kliknął na grupę w której aktualnie jest
         _emit_LEAVE_GROUP_ROOM(socket, groupId!, user._id)
 
@@ -47,6 +48,7 @@ const Groups = () => {
       }
       // PONIŻEJ JEŻELI UŻYTKOWNIK NIE MA WYBRANE ŻADNEJ GRUPY
     } else {
+      console.log("DOŁACZAM DO PIERWSZEJ GRUPY")
       _emit_JOIN_GROUP_ROOM(socket, group_data._id, user)
       dispatch(selectGroup(group_data)) 
     }
