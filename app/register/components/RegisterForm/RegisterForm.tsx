@@ -1,12 +1,9 @@
 'use client'
 import React, { useState } from 'react'
-import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 import { useForm } from "react-hook-form";
-import PulseLoader from 'react-spinners/PulseLoader';
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';

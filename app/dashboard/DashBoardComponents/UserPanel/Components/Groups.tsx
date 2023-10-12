@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
 import { getGroup, isGroupSelected, selectGroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import { getStoredGroups } from '@/redux/slices/groups/groupsSlice'
 import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
-import { changeActivityStatus, getUserObject } from '@/redux/slices/userSession/userSessionSlice'
+import { getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { 
   _emit_JOIN_GROUP_ROOM, 
   _emit_LEAVE_GROUP_ROOM, 
@@ -16,10 +16,7 @@ import {
   _on_GROUP_USER_LEAVE, 
   unsubscribeGroupRoomListeners 
 } from '@/app/utils/SocketGroupRoomHandlers.ts/SocketGroupRoomHandlers'
-import { authUserSignOut } from '@/app/utils/AuthUserSignOut/authUserSignOut'
 import { _emit_USER_IS_OFFLINE } from '@/app/utils/SocketFriendListHandlers/SocketFriendListHandlers'
-import { userWindowClose } from '@/app/utils/UserWindowClose/userWindowClose'
-
 
 // KOMPONENT RENDERUJĄCY ZNAJOMYCH DOSTĘPNYCH W WYBRANEJ PRZEZ UZYTKOWNIKA GRUPIE.
 // PRZY ZAMONTOWANIU TEGO KOMPONENTU( CO DZIEJE SIĘ PO UPRZEDNIM WYBRANIU GRUPY) UŻYTKOWNIK ZOSTAJE DOŁĄCZONY PO STRONIE SERWERA

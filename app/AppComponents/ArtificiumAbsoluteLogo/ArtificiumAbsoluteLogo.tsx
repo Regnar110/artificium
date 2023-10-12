@@ -2,7 +2,6 @@
 import React from 'react'
 import Image from 'next/image'
 import artificium_logo from '../../../public/logo/artificium_logo.png'
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface Props {
@@ -11,7 +10,6 @@ interface Props {
 }
 
 const ArtificiumAbsoluteLogo = ({position, positionCordinates}:Props) => {
-  const router = useRouter()
   return (
     <div className={`artifictium_logo box-border w-fit self-start h-[100px] ${position} ${positionCordinates}`}>
         <Link href={"/"}><Image className='w-fit cursor-pointer' src={artificium_logo} alt="artificium_logo"/></Link>

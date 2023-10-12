@@ -18,20 +18,18 @@ import "slick-carousel/slick/slick-theme.css";
 import {getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
 import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
-import { turnOnNotification } from '../AppComponents/ToastNotifications/TurnOnNotification'
-
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
   const user = useAppSelector(getUserObject)
   let settings = {
     speed: 500,
     Infinity:false,
-    slidesToShow: 1,
+    slidesToShow:1,
     slidesToScroll: 1
   }
   useEffect(() => {
     const socket = ioInstance.getActiveSocket()
-    
+    console.log("PAGE MOUNT")
     if(socket && user) {
       //LISTENERY NASŁUCHUJĄCE ZA EVENTAMI OD INNYCH UŻYTKOWNIKÓW DOTYCZĄCYMI ZMIANY ICH STANU W APLIKACJI(ONLINE/OFFLINE)
       _on_AUTHUSER_ID_USER_IS_ONLINE(socket, user._id)
@@ -41,8 +39,8 @@ const Dashboard = () => {
   },[])
   return (
     <DashboardPageWrapper>
-      {/* <button onClick={() => socket.emit("USER_IS_UNACTIVE", authUser, user_friends_ids, groupId)}>TEST UNLOAD</button> */}
-      <MediaQuery minWidth={768}>
+      {/* <MediaQuery minWidth={768}> */}
+          <main className='bg-white w-[100px]'>adjdnasj</main>
           <UserPanel/>        
           <UserBoardWrapper>
             {
@@ -59,10 +57,12 @@ const Dashboard = () => {
             } 
             <div></div>
           </UserBoardWrapper>   
-      </MediaQuery>
+      {/* </MediaQuery> */}
 
       {/*Wersja ze sliderem dla wersji mobilnych poniżej 768px*/}
-      <MediaQuery maxWidth={767}>
+      {/* PROBLEM TEJ WERSJI POLEGA NA TYM ŻE KOMPONENT SLIDER POWODUJE DODATKOWE RE-RENDERY NASZYCH KOMPONENTÓW. DO ZASTĄPIENIA */}
+
+      {/* <MediaQuery maxWidth={767}>
         <Slider className=''  {...settings}>
             <UserPanel/>        
             <UserBoardWrapper>
@@ -81,7 +81,7 @@ const Dashboard = () => {
               <div></div>
               </UserBoardWrapper>   
         </Slider>
-      </MediaQuery>
+      </MediaQuery> */}
           <div className='hidden'></div>
           <div className='hidden'></div>
     </DashboardPageWrapper>

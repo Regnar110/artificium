@@ -3,8 +3,6 @@ import CurrentlyOffline from '../CurrentlyOffline/CurrentlyOffline'
 import CurrentlyOnline from '../CurrentlyOnline/CurrentlyOnline'
 import ListCategoriesOptions from '../ListCategoriesOptions/ListCategoriesOptions'
 import ListVisibilitySetter from '../ListVisiblitySetter/ListVisibilitySetter'
-import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
-import { RingLoader } from 'react-spinners'
 import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
 import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
@@ -32,7 +30,12 @@ const FriendsListWrapper = ({friendsVisible, setFriendsVisible}:Props) => {
         }
     }
     useEffect(() => {
+        console.log("FRIEND LIST WRAPPER MOUNT")
         initializeFriendList()
+
+        return () => {
+            console.log("UNMOUNT FRIEND LSIT")
+        }
     },[])
   return (
             <>

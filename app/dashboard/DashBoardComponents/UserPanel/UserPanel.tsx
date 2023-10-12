@@ -13,13 +13,11 @@ import { useRouter } from 'next/navigation'
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification'
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import { _emit_USER_IS_OFFLINE } from '@/app/utils/SocketFriendListHandlers/SocketFriendListHandlers'
-import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
 
 const UserPanel = () => {
   // przy pobraniu instancji przekazujemy {} ponieważ domyślnie jeżeli użytkownik ma dostęp do tego komponentu to jest już sprawdzony
   // i zalogowany a także nawiązał połączenie z instancją socket.io na serwerze. Dzięki temu nie musimy inicjalizowac nowej instancji z użyciem identyfikatora authUser.
   const dispatch = useAppDispatch()
-  const socket = ioInstance.getActiveSocket();
   const router = useRouter();
   const {_id:groupId} = useAppSelector(getChat)
   const {_id:authUser, user_friends_ids:authUserFriends, provider:userProvider} = useAppSelector(getUserObject)
