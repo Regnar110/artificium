@@ -31,7 +31,7 @@ const DashboardPageWrapper = ({children}:Props) => {
 
     },[userSession])
   return DOMStatus ?
-    <main className='dashboard box-border text-black bg-[#131619] w-full flex justify-center items-center gap-3 min-h-[screen] overflow-hidden'>
+    <main className='dashboard box-border text-black bg-[#131619] w-full flex justify-start items-center gap-3 min-h-[screen] overflow-hidden'>
       {children.map(el => el)}
     </main>
   :
@@ -39,3 +39,6 @@ const DashboardPageWrapper = ({children}:Props) => {
 }
 
 export default DashboardPageWrapper
+
+
+// dashboard box-border text-black bg-[#131619] w-full flex justify-center items-center gap-3 min-h-[screen] overflow-hidden - OLDD CLASSNAMES

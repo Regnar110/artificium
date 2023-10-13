@@ -18,6 +18,7 @@ import "slick-carousel/slick/slick-theme.css";
 import {getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { ioInstance } from '../utils/SocketInstance/socketInstance'
 import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from '../utils/SocketFriendListHandlers/SocketFriendListHandlers'
+import ControllerMenu from './Test_Dashboard/ControllerMenu/ControllerMenu'
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
   const user = useAppSelector(getUserObject)
@@ -40,9 +41,9 @@ const Dashboard = () => {
   return (
     <DashboardPageWrapper>
       {/* <MediaQuery minWidth={768}> */}
-          <main className='bg-white w-[100px]'>adjdnasj</main>
-          <UserPanel/>        
-          <UserBoardWrapper>
+          <ControllerMenu/>
+          {/* <UserPanel/>         */}
+          {/* <UserBoardWrapper>
             {
               groupId ?
               <>
@@ -56,8 +57,9 @@ const Dashboard = () => {
                 <EmptyBoardWaterMark/>
             } 
             <div></div>
-          </UserBoardWrapper>   
-      {/* </MediaQuery> */}
+          </UserBoardWrapper> */}
+
+      {/* </MediaQuery>
 
       {/*Wersja ze sliderem dla wersji mobilnych poniżej 768px*/}
       {/* PROBLEM TEJ WERSJI POLEGA NA TYM ŻE KOMPONENT SLIDER POWODUJE DODATKOWE RE-RENDERY NASZYCH KOMPONENTÓW. DO ZASTĄPIENIA */}

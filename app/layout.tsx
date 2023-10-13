@@ -25,7 +25,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className="overflow-hidden">
+        {/*OERFLOW HIDDEN zapobiegło rozszerzaniu się strony co b yło powowdowane przez komponent tooltip MUI*/}
         <NextAuthSessionProvider>
           <ClientBoundedProvider>
             <Suspense fallback={<PageLoader/>}>
