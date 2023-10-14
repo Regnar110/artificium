@@ -8,8 +8,8 @@ import { getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 const UserHeader = () => {
   const userObject = useAppSelector(getUserObject)
   return (
-    <div id='user_panel_header' className='user_header w-full font-plus_jakarta_sans flex justify-between items-center pb-8 border-b-[1px] border-[#131619]'>
-      <UserAvatarWithStatus size='normal' user_avatar={user_avatar} user_data={userObject} show_nick={true} account_type='FREE' reveal_mail={false} modal_action={false}/>
+    <div id='user_panel_header' className='user_header w-full font-plus_jakarta_sans flex justify-between items-center border-b-[1px] border-[#131619]'>
+      <UserAvatarWithStatus size='medium' user_avatar={user_avatar} user_data={userObject} show_nick={true} account_type='FREE' reveal_mail={false} modal_action={false}/>
         <div className='header_dropdown_icon relative w-[15px]'>
             <Image src={header_dropdown} alt='dropdown'/>
         </div>

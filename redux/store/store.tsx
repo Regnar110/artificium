@@ -4,6 +4,7 @@ import chattingWindowsReducer from '../slices/chattingWindows/chattingWindowsSli
 import groupsReducer from '../slices/groups/groupsSlice'
 import onlineFriendListReducer from '../slices/friendList/onlineFriendListSlice'
 import offlineFriendListReducer from '../slices/friendList/offlineFriendListSlice'
+import dashboardUI_controllerReducer from '../slices/dashboardUI_controller/dashboardUI_controller'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import storage from 'redux-persist/lib/storage'
 import {
@@ -27,6 +28,7 @@ import {
   // APP REDUCER I JEGO STAN JEST ZALEZNY OD RESETOWALNEGO ROOT REDUCERA I WYNIKU JEGO DZIAŁANIA.
   const appReducer = combineReducers({
     // TOP-LEVEL REDUCERY
+    dashboardUI_controller:dashboardUI_controllerReducer,
     userSession: userSessionReducer,
     chattingWindows: chattingWindowsReducer,
     groups: groupsReducer,

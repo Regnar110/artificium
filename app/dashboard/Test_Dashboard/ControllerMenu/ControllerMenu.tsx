@@ -6,16 +6,17 @@ import Image from 'next/image'
 import CreateGroup from '../ControllerGroupsWrapper/CreateGroup/CreateGroup'
 import ControllerFooter from '../ControllerFooter/ControllerFooter'
 import ControllerGroups from '../ControllerGroupsWrapper/ControllerGroupsWrapper'
-const ControllerMenu = () => {
+import ExploreGroups from '../ControllerGroupsWrapper/ExploreGroups/ExploreGroups'
+const ControllerMenu = ():React.JSX.Element => {
   return (
-    <nav id='controller_menu' className='max-w-[100px] bg-[#0D0F10] h-screen text-[#53585f] flex flex-col justify-between items-center overflow-hidden'>
-      <main className='flex flex-col gap-y-5 justify-center items-center pt-5'>
-        <Image className='w-[90px] h-[20px]' src={main_logo} alt='controller_main_logo'/>
+    <nav id='controller_menu' className='relative top-0 min-w-[100px] max-w-[100px] bg-[#0D0F10] min-h-screen text-[#53585f] overflow-hidden'>
+      <main className='relative flex flex-col gap-y-5 justify-center items-center pt-5 h-fit'>
         <ControllerUser/>
         <ControllerGroups/>
         <CreateGroup/>
+        <ExploreGroups/>
       </main>
-      <ControllerFooter/>
+      
     </nav>
   )
 }

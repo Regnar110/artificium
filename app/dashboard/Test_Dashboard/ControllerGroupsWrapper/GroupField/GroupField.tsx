@@ -1,13 +1,23 @@
 import CustomHoverTooltip from '@/app/AppComponents/CustomHoverTolltip/CustomHoverTooltip'
 import React from 'react'
 import Image from 'next/image'
-import group_icon from '../../../../../public/Dashboard/UserPanel/Groups/green.svg'
-const GroupField = () => {
+import group_icon from '../../../../../public/controller/test_group_icon.png'
+import { useAppDispatch } from '@/redux/hooks/typedHooks'
+import { UI_VIEW_CHANGE } from '@/redux/slices/dashboardUI_controller/dashboardUI_controller'
+
+interface Props {
+  group_id:string,
+  group_title:string
+}
+const GroupField = ({group_id, group_title}:Props) => {
+  const dispatch = useAppDispatch()
   return (
-    <div className='group_field flex justify-center items-center'>
-        <CustomHoverTooltip title={"Grupa Testowa 1"} placement='right'>
+    <div id={group_id} className='group_field flex justify-center items-center'
+      onClick={() => dispatch(UI_VIEW_CHANGE({UI:"controller_panel", status:true, type:"group"}))}
+    >
+        <CustomHoverTooltip title={group_title} placement='right'>
         <div className='user cursor-pointer flex justify-center items-center w-fit p-4'>
-            <Image className=' w-[30px]' src={group_icon} alt="artificium_logo"/>
+            <Image className=' w-[40px] rounded-full' src={group_icon} alt="artificium_logo"/>
         </div>   
         </CustomHoverTooltip>
     </div>
