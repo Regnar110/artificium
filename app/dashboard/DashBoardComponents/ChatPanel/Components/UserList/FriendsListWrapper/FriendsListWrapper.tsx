@@ -11,10 +11,10 @@ import { OFFLINE_initializeOfflineUsers, OFFLINE_injectUserToFriendList } from '
 
 interface Props {
     friendsVisible:boolean
-    setFriendsVisible:React.Dispatch<React.SetStateAction<boolean>>
+    // setFriendsVisible:React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const FriendsListWrapper = ({friendsVisible, setFriendsVisible}:Props) => {
+const FriendsListWrapper = ({friendsVisible}:Props) => {
     const dispatch = useAppDispatch()
     // TEN SPOSÓB INTERWAŁOWEGO ŚCIAGANIA LIST ONLINE POWODUJE PROBLEMY I SPOWOLNIENIE APLIKACJI, A NAWET ZAWIESZENIE
     const authUserId = useAppSelector(getUserId)
@@ -39,14 +39,14 @@ const FriendsListWrapper = ({friendsVisible, setFriendsVisible}:Props) => {
     },[])
   return (
             <>
-                <div id='user_list_with_statuses' className={`w-[300px] p-5 ${friendsVisible === true ? "visible" : "hidden"} overflow-hidden flex flex-col justify-between gap-4`}>
+                <div id='user_list_with_statuses' className={`w-[300px] p-5 ${friendsVisible === true ? "visible" : "hidden"} bg-[#131619]  overflow-hidden flex flex-col justify-between gap-4 h-[100vh]`}>
                     <div id='lists' className='flex flex-col overflow-scroll scrollbar scrollbar-w-[3px] scrollbar-thumb-[#0D0F10] scrollbar-track-[#131619] overflow-x-hidden gap-6 '>
                         <CurrentlyOnline/>
                         <CurrentlyOffline/>                            
                     </div>
                     <ListCategoriesOptions/>
                 </div>
-                <ListVisibilitySetter friendsVisible setFriendsVisible={setFriendsVisible}/>
+                {/* <ListVisibilitySetter friendsVisible setFriendsVisible={setFriendsVisible}/> */}
             </>
     )
 }

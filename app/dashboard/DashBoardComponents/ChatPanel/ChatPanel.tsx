@@ -7,7 +7,7 @@ const ChatPanel = () => {
   return (
     <section className='relative flex w-full h-full overflow-hidden rounded-lg mt-5'>
       <ChatWrapper friendsVisibility={friendsVisible}/>
-      <FriendsListWrapper friendsVisible setFriendsVisible={setFriendsVisible}/>
+      {/* <FriendsListWrapper friendsVisible setFriendsVisible={setFriendsVisible}/> */}
     </section>
   )
 }

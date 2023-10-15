@@ -30,8 +30,8 @@ const ChatSendForm = ({chatSendMessage}:SendFormProps) => {
       }
 
   return (
-    <form className='chat_send_form rounded-lg flex items-center gap-3 bg-[#0D0F10] px-5 '>
-        <div className='chat_panel_input_icon flex w-[80px] h-[80px] justify-center items-center p-5'> <Image width={50} style={{width:"auto"}} src={microphone} alt='send voice message'/></div>
+    <form className='chat_send_form  flex items-center gap-3 bg-[#0D0F10] px-5 '>
+        <div className='chat_panel_input_icon flex w-[80px] h-[95px] justify-center items-center p-5'> <Image width={50} style={{width:"auto"}} src={microphone} alt='send voice message'/></div>
         <ThemeProvider theme={theme}>
           <TextField onChange={(e) => setSendInputValue(e.target.value)} color='primary' sx={{input:{ height:"60px", padding:"0px" ,color:"white", background:"#0D0F10", '&::placeholder':{color:"#363A3D"}}}} placeholder='type something here' variant="filled" />          
         </ThemeProvider>

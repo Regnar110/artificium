@@ -20,18 +20,20 @@ interface UserAvatarWithStatusProps {
     modal_action:boolean
     message?:string
     hex_font_color?:string
+    width?:"full" | "fit"
 }
 
-const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_nick, account_type, reveal_mail, modal_action, message, hex_font_color}:UserAvatarWithStatusProps) => {
+const UserAvatarWithStatus = ({size, user_avatar, user_status, user_data, show_nick, account_type, reveal_mail, modal_action, message, hex_font_color, width}:UserAvatarWithStatusProps) => {
   const [ userModalIsOpen, setUserModalStatus ] = useState<boolean>(false)
   const authUserId = useAppSelector(getUserId)
   const openCloseUserModal = (new_status:boolean) => {
+    console.log(userModalIsOpen)
     setUserModalStatus(new_status)
   }
   return (
     <>
     
-    <div className={`avatar_with_status overflow-hidden flex justify-start items-start ${size === "normal" ? "gap-2": "gap-6"} w-fit h-fit`} onClick={() => openCloseUserModal(true)}>
+    <div className={`avatar_with_status overflow-hidden flex justify-start items-center ${size === "normal" ? "gap-2": "gap-6"} ${width==="fit"?"w-fit":"w-full"}`} onClick={() => openCloseUserModal(true)}>
       <div className={`avatar_wrapper relative ${size === "normal" ? "h-[40px] w-[40px]" : size === "medium" ? "h-[50px] w-[50px]" : "h-[80px] w-[80px]"} flex cursor-pointer`}>
         <Image fill style={{objectFit:"contain"}} src={user_avatar} alt='avatar_icon'/>
         {

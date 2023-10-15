@@ -21,6 +21,8 @@ import { _on_AUTHUSER_ID_USER_IS_OFFLINE, _on_AUTHUSER_ID_USER_IS_ONLINE } from 
 import ControllerMenu from './Test_Dashboard/ControllerMenu/ControllerMenu'
 import { currentUIState } from '@/redux/slices/dashboardUI_controller/dashboardUI_controller'
 import NewUserPanel from './Test_Dashboard/NewUserPanel/NewUserPanel'
+import FriendsListWrapper from './DashBoardComponents/ChatPanel/Components/UserList/FriendsListWrapper/FriendsListWrapper'
+import GroupPanel from './Test_Dashboard/GroupPanel/GroupPanel'
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
   const user = useAppSelector(getUserObject)
@@ -32,7 +34,6 @@ const Dashboard = () => {
     slidesToScroll: 1
   }
   useEffect(() => {
-    console.log(UI_TYPE)
     const socket = ioInstance.getActiveSocket()
     console.log("PAGE MOUNT")
     if(socket && user._id) {
@@ -43,20 +44,21 @@ const Dashboard = () => {
       // PONIŻSZE EMITUJE ZAPYTANIE DO SERWERA CZY UŻYTKOWNIK JEST AKTYWNY CZY NIE. JEŻELI NIE TO PRZY PONOWNYM ZAMONTOWANIU TEGO KOMPONENTU EMITUJEMY WIADOMOŚĆ DO ZNAJOMYCH ŻE JUŻ JEST AKTYWNY(ONLINE)
       socket.emit("USER_IS_ACTIVE", user._id, user.user_friends_ids)
     }
-  },[UI_TYPE])
+  },[])
   return (
     <DashboardPageWrapper>
       {/* <MediaQuery minWidth={768}> */}
           <ControllerMenu/>
           {UI_TYPE.controller_panel.type === "user" ? <NewUserPanel/>:<div className='hidden'/>}
+          {UI_TYPE.controller_panel.type === "group" ? <GroupPanel/>:<div className='hidden'/>}
           <UserBoardWrapper>
             {
               groupId ?
               <>
-                {/* <BoardHeader>
+                <BoardHeader>
                   <HeaderWithAvatars chat_title={group_name as string} chat_description={group_description as string}/>
                   <ChatingWindowsWrapper/>
-                </BoardHeader> */}
+                </BoardHeader>
                 <ChatPanel/>
               </>
                 :
@@ -64,6 +66,8 @@ const Dashboard = () => {
             } 
             <div></div>
           </UserBoardWrapper>
+          {UI_TYPE.friendList_panel === true ? <FriendsListWrapper friendsVisible={true}/>:<div className='hidden'/>}
+
 
           <div className='hidden'></div>
           <div className='hidden'></div>
