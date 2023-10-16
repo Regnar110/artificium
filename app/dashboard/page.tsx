@@ -23,6 +23,7 @@ import { currentUIState } from '@/redux/slices/dashboardUI_controller/dashboardU
 import NewUserPanel from './Test_Dashboard/NewUserPanel/NewUserPanel'
 import FriendsListWrapper from './DashBoardComponents/ChatPanel/Components/UserList/FriendsListWrapper/FriendsListWrapper'
 import GroupPanel from './Test_Dashboard/GroupPanel/GroupPanel'
+import ChatHeader from './Test_Dashboard/Chat/ChatHeader/ChatHeader'
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
   const user = useAppSelector(getUserObject)
@@ -55,10 +56,11 @@ const Dashboard = () => {
             {
               groupId ?
               <>
-                <BoardHeader>
+                <ChatHeader/>
+                {/* <BoardHeader>
                   <HeaderWithAvatars chat_title={group_name as string} chat_description={group_description as string}/>
                   <ChatingWindowsWrapper/>
-                </BoardHeader>
+                </BoardHeader> */}
                 <ChatPanel/>
               </>
                 :
