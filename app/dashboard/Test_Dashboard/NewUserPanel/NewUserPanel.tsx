@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Shoping from './Shoping/Shoping'
 import ControllerFooter from '../ControllerFooter/ControllerFooter'
 import PrivateMessages from './PrivateMessages/PrivateMessages'
+import FriendListSwitch from './FriendListSwitch/FriendListSwitch'
 
 const NewUserPanel = () => {
   const [isRevealed, setPanelReveal ] = useState<boolean>(false)
@@ -12,9 +13,10 @@ const NewUserPanel = () => {
     }
   })
   return (
-    <section className={`bg-[#131619] ${isRevealed === true ? "left-0":"left-[-280px]"} transition-all duration-300 min-w-[280px] w-full md:w-[280px] relative  flex flex-col items-center gap-y-3  h-[100vh]`}>
-      <div className='user_panel_scroll_section pt-5 px-6 overflow-hidden h-full flex flex-col gap-y-3 '>
+    <section className={`bg-[#131619] ${isRevealed === true ? "left-0":"left-[-250px]"} transition-all duration-300 min-w-[250px] w-full md:w-[250px] relative  flex flex-col items-center gap-y-3  h-[100vh]`}>
+      <div className='user_panel_scroll_section pt-5 px-6 overflow-hidden h-full flex flex-col gap-y-2'>
         <Shoping/>
+        <FriendListSwitch/>
         <PrivateMessages />
       </div>
 

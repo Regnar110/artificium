@@ -56,11 +56,7 @@ const Dashboard = () => {
             {
               groupId ?
               <>
-                <ChatHeader/>
-                {/* <BoardHeader>
-                  <HeaderWithAvatars chat_title={group_name as string} chat_description={group_description as string}/>
-                  <ChatingWindowsWrapper/>
-                </BoardHeader> */}
+                <ChatHeader group_name={group_name as string} group_description={group_description as string}/>
                 <ChatPanel/>
               </>
                 :
@@ -68,7 +64,7 @@ const Dashboard = () => {
             } 
             <div></div>
           </UserBoardWrapper>
-          {UI_TYPE.friendList_panel === true ? <FriendsListWrapper friendsVisible={true}/>:<div className='hidden'/>}
+          <FriendsListWrapper/>
 
 
           <div className='hidden'></div>

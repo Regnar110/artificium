@@ -2,7 +2,6 @@ import CustomHoverTooltip from '@/app/AppComponents/CustomHoverTolltip/CustomHov
 import React from 'react'
 import Image from 'next/image'
 import settings_wheel from '../../../../public/controller/settings_wheel.svg'
-import support_call from '../../../../public/controller/support_call.svg'
 import logout from '../../../../public/controller/logout.svg'
 import UserHeader from '../../DashBoardComponents/UserPanel/Components/UserHeader'
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification'
@@ -27,9 +26,6 @@ const ControllerFooter = () => {
         <UserHeader/>
         <CustomHoverTooltip title={"User settings"} placement='right'>
           <Image className='w-[25px] cursor-pointer' src={settings_wheel} alt='settings'/>  
-        </CustomHoverTooltip>
-        <CustomHoverTooltip title={"Support"} placement='right'>
-          <Image className='w-[25px] cursor-pointer' src={support_call} alt='support call'/>  
         </CustomHoverTooltip>
         <CustomHoverTooltip title={"Log out"} placement='right'>
           <Image className='w-[20px] cursor-pointer' src={logout} alt='support call'

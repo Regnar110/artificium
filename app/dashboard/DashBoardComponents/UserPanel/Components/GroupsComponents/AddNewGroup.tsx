@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import new_group from '../../../../../../public/Dashboard/UserPanel/Groups/new_group.svg'
-import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 import CreateGroupModal from './CreateGroupModal'
 const AddNewGroup = () => {
   const [ modalIsOpen, setIsOpen ] = useState<boolean>(false)

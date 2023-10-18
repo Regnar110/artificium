@@ -83,7 +83,7 @@ const groupSelect = (group_data:Group) => {
         window.removeEventListener("beforeunload", handleBeforeUnload)
 
       }
-  },[authUser, groupId, groups])
+  },[authUser, groupId, groups.length])
   return (
     <section id='controller_groups' className='max-h-[300px] overflow-y-auto overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-[#1A1D21] scrollbar-track-transparent'>
         {
