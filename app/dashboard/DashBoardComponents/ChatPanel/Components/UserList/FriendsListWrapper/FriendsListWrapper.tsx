@@ -16,6 +16,7 @@ const FriendsListWrapper = () => {
     // TEN SPOSÓB INTERWAŁOWEGO ŚCIAGANIA LIST ONLINE POWODUJE PROBLEMY I SPOWOLNIENIE APLIKACJI, A NAWET ZAWIESZENIE
     const authUserId = useAppSelector(getUserId)
     const initializeFriendList = async () => {
+        console.log("INICJALIZACJA FUNKCJI?")
         const allFriends = await userAccessRequest<any, any>('getUserFriends', {user_id: authUserId})
         const onlineFriends = allFriends.filter((friend:Friend) => friend.isOnline === true) as Friend[]
         const offlineFriends = allFriends.filter((friend:Friend) => friend.isOnline === false) as Friend[]
@@ -27,12 +28,13 @@ const FriendsListWrapper = () => {
         }
     }
     useEffect(() => {
+        console.log("Friends")
         initializeFriendList()
     },[])
   return (
             <>
-                <div id='user_list_with_statuses' className={` transition-all duration-300 ${friendListPanelStatus === true ? "min-w-[200px] w-[200px]":"min-w-[0px] w-[0px]"} bg-[#131619]  overflow-hidden flex flex-col justify-between gap-4 h-screen`}>
-                    <div id='lists' className='flex flex-col min-w-full p-5 overflow-scroll scrollbar scrollbar-w-[3px] scrollbar-thumb-[#0D0F10] scrollbar-track-[#131619] overflow-x-hidden gap-6 '>
+                <div id='user_list_with_statuses' className={` transition-all z-40 duration-300 ${friendListPanelStatus === true ? "min-w-[200px] w-[200px]":"min-w-[0px] shadow-inner opacity-50 w-[0px]"} bg-[#131619]  overflow-hidden flex flex-col justify-between gap-4 h-screen`}>
+                    <div id='lists' className='flex flex-col min-w-[200px] p-5 overflow-scroll scrollbar scrollbar-w-[3px] scrollbar-thumb-[#0D0F10] scrollbar-track-[#131619] overflow-x-hidden gap-6 '>
                         <CurrentlyOnline/>
                         <CurrentlyOffline/>                            
                     </div>

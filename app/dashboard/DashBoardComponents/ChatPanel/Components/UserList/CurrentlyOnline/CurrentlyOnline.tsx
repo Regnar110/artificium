@@ -6,9 +6,6 @@ import { getOnlineUsers } from '@/redux/slices/friendList/onlineFriendListSlice'
 
 const CurrentlyOnline = () => {
   const onlineUsers = useAppSelector(getOnlineUsers)
-  useEffect(() => {
-    console.log("CURRENTLY OFFLINE")
-  })
   return (
     <div id='currently_online' className='flex flex-col gap-4'>
         <h3 className='list_header text-[12px] xl:text-[14px] text-[#9B9C9E]'>Currently Online</h3>

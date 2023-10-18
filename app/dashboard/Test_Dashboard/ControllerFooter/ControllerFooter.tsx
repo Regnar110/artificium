@@ -22,7 +22,7 @@ const ControllerFooter = () => {
 }
   return (
     
-      <footer id='controller_footer' className='bg-[#0D0F10] pt-5 pb-8 px-6 cursor-pointer w-full text-[#9B9C9E] text-[20px] bottom-0 flex justify-end items-center gap-3'>
+      <footer id='controller_footer' className='bg-[#0D0F10] h-[95px] pt-5 pb-8 px-2 md:px-4 lg:px-6 cursor-pointer w-full text-[#9B9C9E] text-[20px] bottom-0 flex justify-end items-center gap-3'>
         <UserHeader/>
         <CustomHoverTooltip title={"User settings"} placement='right'>
           <Image className='w-[25px] cursor-pointer' src={settings_wheel} alt='settings'/>  

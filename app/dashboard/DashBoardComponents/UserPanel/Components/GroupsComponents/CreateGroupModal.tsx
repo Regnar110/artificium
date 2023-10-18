@@ -62,7 +62,7 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
         contentLabel="Create new group"
         className={"flex gap-8 bg-[#000000d3]  p-2 h-full justify-center items-center"}
       >
-        <div className='newGroup_modal  bg-[#000000c2] p-5 max-w-[600px] flex flex-col justify-center items-center gap-8 rounded-md'>
+        <div className='newGroup_modal z-50 bg-[#000000c2] p-5 max-w-[600px] flex flex-col justify-center items-center gap-8 rounded-md'>
           <header className='font-plus_jakarta_sans w-full flex flex-col gap-4'>
             <div className='header_and_close w-full flex justify-between items-center'>
               <h1 className='text-white text-[28px] whitespace-nowrap w-fit'>Group created successfuly</h1> 

@@ -12,7 +12,7 @@ const PrivateMessages = () => {
   return (
     <section id='user_panel_priv_msgs' className='text-[#9B9C9E] overflow-hidden'>
       <div className='header_with_add_icon flex justify-between items-center pl-2'>
-        <h3 className='text-[14px]'>PRIVATE MESSAGES</h3>
+        <h3 className='text-[10px] md:text-[12px] lg:text-[14px] whitespace-nowrap'>PRIVATE MESSAGES</h3>
         <CustomHoverTooltip title={"Create private message"} placement='right'>
             <div className='add_prv_msg_wrapper relative w-fit p-2 rounded-full hover:bg-[#363A3D] transition-all'>
                 <Image className='w-[15px] cursor-pointer' src={add_prv_msg} alt='add private chat'/>            
