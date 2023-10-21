@@ -7,7 +7,7 @@ import { getUserObject } from '@/redux/slices/userSession/userSessionSlice'
 import { getGroup, isGroupSelected, selectGroup } from '@/redux/slices/chattingWindows/chattingWindowsSlice'
 import { _emit_LEAVE_GROUP_ROOM, _emit_JOIN_GROUP_ROOM, _on_CURRENT_ACTIVE_USERS, _on_GROUP_USER_JOIN, _on_GROUP_USER_LEAVE, unsubscribeGroupRoomListeners } from '@/app/utils/SocketGroupRoomHandlers.ts/SocketGroupRoomHandlers'
 import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
-import { UI_VIEW_CHANGE } from '@/redux/slices/dashboardUI_controller/dashboardUI_controller'
+import { UI_VIEW_CHANGE, currentUIState } from '@/redux/slices/dashboardUI_controller/dashboardUI_controller'
 
 
 const ControllerGroups = () => {
@@ -19,11 +19,18 @@ const {_id:authUser} = useAppSelector(getUserObject)
 const {_id:groupId, group_name} = useAppSelector(getGroup)
 const socket = ioInstance.getActiveSocket();
 const user = useAppSelector(getUserObject)
+const {type,status} = useAppSelector(currentUIState).controller_panel
 
 const groupSelect = (group_data:Group) => {
+  // Warunkowy ciąg sprawdzajacy czy użytkownik zamyka ten sam controllerPanel zy też zmienia go na inny.
+  // Jeżeli klika na ten sam to jego status zmienia się na false /  true w zależności od bazowego statusu
+  // Jeżeli klika na inny panel grupy to sprawdzamy czy to inna grupa czy ta sama. Jeżeli ta sama to status panelu group zmieniamy na false, jeżeli natomiast
+  // inna grupa pozostawiamy go na true i zmieniamy zawartość panelu grupy
+  const thisUIStatusChangeQuery = type !== "group" && status === true ? true : type ==="group" && status===true && group_data._id === groupId ? false : true
+  dispatch(UI_VIEW_CHANGE({UI:"controller_panel", status:thisUIStatusChangeQuery, type:"group"}))
   // JEŻELI UŻYTKOWNIK JEST W JAKIEŚ GRUPIE TO:
   // SPRAWDZAMY CZY GRUPA KTÓRĄ WYBRAŁ UŻYTKOWNIK NIE JEST GRUPĄ W KTÓREJ OBECNIE PRZEBYWA
-  dispatch(UI_VIEW_CHANGE({UI:"controller_panel", status:true, type:"group"}))
+  
   if(isGroupSelectedBool === true) {
     if(group_data && group_data._id !== groupId) {
       console.log("ZMIANA GRUPY W TRAKCIE. EMITY URUCHAMIANE")

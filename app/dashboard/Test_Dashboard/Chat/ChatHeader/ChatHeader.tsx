@@ -19,14 +19,20 @@ const ChatHeader = ({group_name, group_description}:Props) => {
     const friendListPanelStatus = useAppSelector(currentUIState).friendList_panel
     const tolltipPlacement = friendListPanelStatus === true ? "right":"left"
   return (
-    <section className='w-full flex justify-between gap-x-10 items-center shadow-sm shadow-black text-[#9B9C9E] px-5 py-3 z-50'>
-        <div id='header_tittles' className=" flex items-center gap-x-3 text-[14px] overflow-hidden">
+    <section className='w-full flex justify-between items-center shadow-lg shadow-black text-[#9B9C9E] px-2 md:px-5 py-3 z-30'>
+        <div className='header_with_image flex gap-x-3 '>
             <Image className='w-[25px]' src={group_header_icon} alt='chat header icon'/>
-            <h3 className='w-fit text-white font-semibold whitespace-nowrap'>{group_name}</h3>
-            <div className='vertical_brakline w-[1px] h-[25px] bg-[#9B9C9E]'/>
-            {/* <h5 className='w-fit truncate'>{group_description}</h5> */}
+            <div id='header_tittles' className="text-[14px] overflow-hidden w-fit">
+                <div className='top_header flex items-center gap-x-3 w-fit'>
+                    <h3 className='w-fit text-white font-semibold whitespace-nowrap'>{group_name}</h3>
+                    {/* <div className='vertical_brakline w-[1px] h-[25px] bg-[#9B9C9E]'/>                 */}
+                </div>
+                <div className='bottom_header flex items-center w-fit'>
+                    <h5 className='w-fit truncate text-[12px]'>{group_description}</h5>            
+                </div>
+            </div>
         </div>
-        <div id='header_social_icons' className='w-fit flex gap-x-3 relative'>
+        <div id='header_social_icons' className='w-fit flex gap-x-3 relative right-0'>
         {/* disablePortal sprawia że rodzicem toltipa nie jest juz document.body a element nadrzędny w hierachi drzewa DOM.
         likwiduje to problem z używaniem placement props. */}
         <CustomHoverTooltip title={"Pinned messages"} PopperProps={{disablePortal:true}}  placement={tolltipPlacement}>

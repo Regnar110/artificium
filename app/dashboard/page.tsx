@@ -27,7 +27,7 @@ import ChatHeader from './Test_Dashboard/Chat/ChatHeader/ChatHeader'
 const Dashboard = () => {
   const {_id:groupId, group_name, group_description} = useAppSelector(getChat)
   const user = useAppSelector(getUserObject)
-  const UI_TYPE = useAppSelector(currentUIState)
+  const {type:UI_type, status:TYPE_status} = useAppSelector(currentUIState).controller_panel
   let settings = {
     speed: 500,
     Infinity:false,
@@ -50,8 +50,8 @@ const Dashboard = () => {
     <DashboardPageWrapper>
       {/* <MediaQuery minWidth={768}> */}
           <ControllerMenu/>
-          {UI_TYPE.controller_panel.type === "user" ? <NewUserPanel/>:<div className='hidden'/>}
-          {UI_TYPE.controller_panel.type === "group" ? <GroupPanel/>:<div className='hidden'/>}
+          {UI_type === "user" && TYPE_status === true ? <NewUserPanel/>:<div className='hidden'/>}
+          {UI_type === "group" && TYPE_status === true ? <GroupPanel/>:<div className='hidden'/>}
           <UserBoardWrapper>
             {
               groupId ?

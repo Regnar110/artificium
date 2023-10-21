@@ -17,7 +17,7 @@ const initialState:UI_CONTROLLER = {
         status:false,
         type:undefined
     },
-    friendList_panel:true,
+    friendList_panel:false,
     chat_window:false,
 }
 
