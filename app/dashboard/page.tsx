@@ -66,11 +66,7 @@ const Dashboard = () => {
             } 
             <div></div>
           </UserBoardWrapper>
-          {/* <FriendsListWrapper/> */}
 
-
-          <div className='hidden'></div>
-          <div className='hidden'></div>
     </DashboardPageWrapper>
   )
 }

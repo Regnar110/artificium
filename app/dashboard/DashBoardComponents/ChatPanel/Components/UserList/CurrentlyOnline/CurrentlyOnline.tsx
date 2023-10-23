@@ -7,7 +7,7 @@ import { getOnlineUsers } from '@/redux/slices/friendList/onlineFriendListSlice'
 const CurrentlyOnline = () => {
   const onlineUsers = useAppSelector(getOnlineUsers)
   return (
-    <div id='currently_online' className='flex flex-col gap-4'>
+    <div id='currently_online' className='flex w-full flex-col gap-4'>
         <h3 className='list_header text-[12px] xl:text-[14px] text-[#9B9C9E]'>Currently Online</h3>
         <div id='online_list' className='flex flex-col gap-3'>
           {

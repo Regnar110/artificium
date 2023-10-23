@@ -19,7 +19,7 @@ const GroupPanel = () => {
       dispatch(UI_VIEW_CHANGE({UI:"controller_panel", status:false}))
   }
   return (
-    <section className={`bg-[#131619] ${status === true && type === "group" ? "right-0 w-[80%] md:w-[200px] lg:w-[250px]":"right-full w-[0px]"} text-[#9B9C9E] font-plus_jakarta_sans transition-all duration-300  max-w-[80%] md:max-w-[200px] lg:max-w-[250px] relative  flex flex-col items-center gap-y-3  h-[100vh]`}>
+    <section className={`bg-[#131619] ${status === true && type === "group" ? "right-0 min-w-[200px]  md:w-[100%]":"right-full w-[0px]"} max-w-[70%] md:max-w-[200px] lg:max-w-[250px] text-[#9B9C9E] font-plus_jakarta_sans transition-all duration-300  relative  flex flex-col items-center gap-y-3  h-[100vh]`}>
       <div id='group_panel_chats' className=' flex flex-col gap-y-5 w-full h-fit pt-5 px-6 text-[18px] items-center'>
         <h3 className='pl-2 text-[14px]'>CHAT WINDOWS</h3>
         <div className='group_chat_choice cursor-pointer hover:text-white hover:bg-[#363A3D] transition-all p-2 rounded-sm flex items-center gap-x-3' onClick={()=> handleChatWindowSelection("chat")}>
