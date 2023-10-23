@@ -8,6 +8,7 @@ import { getGroup, isGroupSelected, selectGroup } from '@/redux/slices/chattingW
 import { _emit_LEAVE_GROUP_ROOM, _emit_JOIN_GROUP_ROOM, _on_CURRENT_ACTIVE_USERS, _on_GROUP_USER_JOIN, _on_GROUP_USER_LEAVE, unsubscribeGroupRoomListeners } from '@/app/utils/SocketGroupRoomHandlers.ts/SocketGroupRoomHandlers'
 import { ioInstance } from '@/app/utils/SocketInstance/socketInstance'
 import { UI_VIEW_CHANGE, currentUIState } from '@/redux/slices/dashboardUI_controller/dashboardUI_controller'
+import { useMediaQuery } from 'react-responsive'
 
 
 const ControllerGroups = () => {
@@ -15,11 +16,13 @@ const ControllerGroups = () => {
 const dispatch = useAppDispatch()
 const groups = useAppSelector(getStoredGroups)
 const isGroupSelectedBool = useAppSelector(isGroupSelected)
+const friendListStatus = useAppSelector(currentUIState).friendList_panel
 const {_id:authUser} = useAppSelector(getUserObject)
 const {_id:groupId, group_name} = useAppSelector(getGroup)
 const socket = ioInstance.getActiveSocket();
 const user = useAppSelector(getUserObject)
 const {type,status} = useAppSelector(currentUIState).controller_panel
+const widthQuery = useMediaQuery({ query: '(max-width: 768px)' })
 
 const groupSelect = (group_data:Group) => {
   // Warunkowy ciąg sprawdzajacy czy użytkownik zamyka ten sam controllerPanel zy też zmienia go na inny.
@@ -27,6 +30,9 @@ const groupSelect = (group_data:Group) => {
   // Jeżeli klika na inny panel grupy to sprawdzamy czy to inna grupa czy ta sama. Jeżeli ta sama to status panelu group zmieniamy na false, jeżeli natomiast
   // inna grupa pozostawiamy go na true i zmieniamy zawartość panelu grupy
   const thisUIStatusChangeQuery = type !== "group" && status === true ? true : type ==="group" && status===true && group_data._id === groupId ? false : true
+  if(widthQuery && friendListStatus) {
+    dispatch(UI_VIEW_CHANGE({UI:"friendList_panel", status:false}))
+  } 
   dispatch(UI_VIEW_CHANGE({UI:"controller_panel", status:thisUIStatusChangeQuery, type:"group"}))
   // JEŻELI UŻYTKOWNIK JEST W JAKIEŚ GRUPIE TO:
   // SPRAWDZAMY CZY GRUPA KTÓRĄ WYBRAŁ UŻYTKOWNIK NIE JEST GRUPĄ W KTÓREJ OBECNIE PRZEBYWA

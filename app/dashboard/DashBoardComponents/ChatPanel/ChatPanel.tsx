@@ -7,13 +7,11 @@ import { currentUIState } from '@/redux/slices/dashboardUI_controller/dashboardU
 const ChatPanel = () => {
   const friendListPanelStatus:boolean = useAppSelector(currentUIState).friendList_panel
   return (
-    <section className='relative flex w-full h-[100vh] overflow-hidden rounded-lg '>
+    <section className='relative flex w-full h-[100vh] overflow-hidden rounded-lg'>
       <div className={`chat_and_friends relative transition-all ${friendListPanelStatus === true ? "right-full md:right-[200px]":"right-0"} h-full flex w-full`}>
         <ChatWrapper />
         <FriendsListWrapper/>        
       </div>
-
-      {/* <FriendsListWrapper friendsVisible setFriendsVisible={setFriendsVisible}/> */}
     </section>
   )
 }

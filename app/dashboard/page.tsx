@@ -50,8 +50,10 @@ const Dashboard = () => {
     <DashboardPageWrapper>
       {/* <MediaQuery minWidth={768}> */}
           <ControllerMenu/>
-          {UI_type === "user" && TYPE_status === true ? <NewUserPanel/>:<div className='hidden'/>}
-          {UI_type === "group" && TYPE_status === true ? <GroupPanel/>:<div className='hidden'/>}
+          {/* {UI_type === "user" && TYPE_status === true ? <NewUserPanel/>:<div className='hidden'/>} */}
+          <NewUserPanel/>
+          {/* {UI_type === "group" && TYPE_status === true ? <GroupPanel/>:<div className='hidden'/>} */}
+          <GroupPanel/>
           <UserBoardWrapper>
             {
               groupId ?
