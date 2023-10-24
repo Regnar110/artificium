@@ -4,7 +4,7 @@ import chat_category_friends from '../../../../../../../public/chatpanel/chat.sv
 import friends_category from '../../../../../../../public/chatpanel/friends.svg'
 const ListCategoriesOptions = () => {
   return (
-    <div id='user_list_categories' className='w-full flex justify-between items-center'>
+    <div id='user_list_categories' className='w-full h-[95px] bg-[#0D0F10] flex justify-between items-center'>
         <div className='category flex gap-2 justify-center items-center'>
         <div className='category_image relative w-[20px] h-[20px]'>
             <Image fill={true} style={{objectFit:"contain"}} src={chat_category_friends} alt='chat'/>

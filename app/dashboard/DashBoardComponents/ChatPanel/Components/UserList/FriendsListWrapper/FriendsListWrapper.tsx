@@ -33,7 +33,7 @@ const FriendsListWrapper = () => {
     },[])
   return (
             <>
-                <div id='user_list_with_statuses' className={` transition-all z-40 duration-300 ${friendListPanelStatus === true ? "absolute right-0 opacity-100":"opacity-30 right-full md:right-0"} absolute md:relative min-w-full w-full md:min-w-[200px] md:w-[200px] bg-[#131619]  overflow-hidden flex flex-col justify-between gap-4 h-screen shadow-2xl shadow-black`}>
+                <div id='user_list_with_statuses' className={` transition-all z-40 duration-300 ${friendListPanelStatus === true ? "absolute right-0 opacity-100":"opacity-30 right-full md:right-0"} absolute md:relative min-w-full w-full md:min-w-[200px] md:w-[200px] bg-[#131619]  overflow-hidden flex flex-col justify-between gap-4 h-full shadow-2xl shadow-black`}>
                     <div id='lists' className='flex flex-col min-w-[200px] p-5 overflow-scroll scrollbar scrollbar-w-[3px] scrollbar-thumb-[#0D0F10] scrollbar-track-[#131619] overflow-x-hidden gap-6 '>
                         <CurrentlyOnline/>
                         <CurrentlyOffline/>                            
