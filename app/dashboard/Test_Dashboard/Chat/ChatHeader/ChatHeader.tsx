@@ -27,7 +27,7 @@ const ChatHeader = ({group_name, group_description}:Props) => {
       dispatch(UI_VIEW_CHANGE({UI:"friendList_panel", status:!currentFriendPanelStatus}))
     }
   return (
-    <section className='w-full flex justify-between items-center shadow-lg shadow-black text-[#9B9C9E] px-2 md:px-5 py-3 z-30 '>
+    <section className='w-full flex justify-between items-center shadow-lg shadow-black text-[#9B9C9E] px-2 md:px-5 py-3 '>
         <div className='header_with_image flex gap-x-3 '>
             <Image className=' min-w-[20px] max-w-[20px]' src={group_header_icon} alt='chat header icon'/>
             <div id='header_tittles' className="text-[14px] overflow-hidden w-fit">

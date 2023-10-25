@@ -11,7 +11,7 @@ import main_logo from '../../../../../../public/home/mainlogo.svg'
 import { useForm } from 'react-hook-form';
 import SubmitButton from '@/app/AppComponents/CustomSubmitButton/SubmitButton';
 import { turnOnNotification } from '@/app/AppComponents/ToastNotifications/TurnOnNotification';
-import { addNewGroup, injectGroups } from '@/redux/slices/groups/groupsSlice';
+import { addNewGroup } from '@/redux/slices/groups/groupsSlice';
 
 interface ModalProps {
     modalIsOpen:boolean;
@@ -41,9 +41,6 @@ const CreateGroupModal = ({modalIsOpen, setModalStatus}:ModalProps) => {
             // Dzięki temu część stanu aplikacji aktualizuje się. Co wywołuje re-renderowanie się komponentu Groups, który wyświetla dzięki
             // temu najświeższą wersję grup            
             response.status===200 ? Promise.resolve([setModalStatus(false), dispatch(addNewGroup(response.body.inserted_group as Group))]) : null
-
-
-            
         }
         responseLoading(false)
     }

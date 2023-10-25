@@ -13,6 +13,7 @@ import { getChat, selectWindow } from '@/redux/slices/chattingWindows/chattingWi
 import PanelOptions from '../PanelOptions/PanelOptions'
 import SingleOption from '../PanelOptions/SingleOption'
 import ScrollPanelList from '../ScrollPanelList/ScrollPanelList'
+import ManageGroupModal from '../Modals/ManageGroupModal/ManageGroupModal'
 const GroupPanel = () => {
   const {type, status} = useAppSelector(currentUIState).controller_panel
   const userObject = useAppSelector(getUserObject)
@@ -25,14 +26,14 @@ const GroupPanel = () => {
   return (
     <section className={`bg-[#131619] ${status === true && type === "group" ? "right-0 min-w-[200px]  md:w-[100%]":"right-full w-[0px]"} max-w-[70%] md:max-w-[200px] lg:max-w-[250px] text-[#9B9C9E] font-plus_jakarta_sans transition-all duration-300  relative  flex flex-col items-center gap-y-3  h-[100vh]`}>
       <PanelOptions header='CHAT WINDOWS'>
-        <SingleOption text='Chat' icon={chat} callback={() => handleChatWindowSelection("chat")}/>
+        <SingleOption text='Chat' icon={chat} onClickCallback={() => handleChatWindowSelection("chat")}/>
         <SingleOption text='Artificium' icon={artificium_icon}/>
         <SingleOption text='Library' icon={library}/>
       </PanelOptions>
       {
         group_admin === userObject._id &&
         <PanelOptions header='Mange Group'>
-          <SingleOption text='Manage' icon={admin_panel}/>
+          <SingleOption text='Manage' icon={admin_panel} modal={true} modalType='groupManage'/>
           <div/>
         </PanelOptions>
       }

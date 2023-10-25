@@ -44,8 +44,8 @@ const UserModal = ({modalIsOpen, user_data, setModal}:UserModalProps) => {
     <Modal        
         ariaHideApp={false}
         isOpen={modalIsOpen}
-        contentLabel="Create new group"
-        className={"flex flex-col gap-8 bg-[#000000d3]  p-2 h-full justify-center items-center"}>
+        contentLabel="User modal"
+        className={"flex flex-col gap-8 bg-[#000000d3]  p-2 h-full justify-center items-center z-50"}>
         <div className='bg-[#000000c2] p-5 max-w-[600px] flex flex-col justify-center items-center gap-8 rounded-md font-plus_jakarta_sans'>
           <header className='header_and_close w-full flex justify-between items-center pb-6'>
             <div className='heder_with_icon flex items-center gap-3'>
