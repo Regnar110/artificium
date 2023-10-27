@@ -1,6 +1,6 @@
 import React from 'react'
-import SingleGroup from '../../UserPanel/Components/GroupsComponents/SingleGroup'
-import green from '../../../../../public/Dashboard/UserPanel/Groups/green.svg'
+import SingleGroup from '../../../../../DashBoardComponents/UserPanel/Components/GroupsComponents/SingleGroup'
+import green from '../../../../../../../public/Dashboard/UserPanel/Groups/green.svg'
 
 interface CommonGroupsProps {
     groups: Group[]

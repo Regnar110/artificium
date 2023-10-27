@@ -43,7 +43,7 @@ const ModalScrollUserList = ({list_users}:Props) => {
                 {
                     filtered_users.map(user => (
                         <div className='group_manage_scroll_user_item relative flex items-center w-full rounded-md hover:bg-[#ffffff13] px-4 py-2 cursor-pointer'>
-                            <UserAvatarWithStatus user_data={user} user_status={{status:user.isOnline ? "ONLINE" : "OFFLINE"}} size='medium' show_nick={true} modal_action={true} reveal_mail={true} user_avatar={avatar}/>
+                            <UserAvatarWithStatus user_data={user} user_status={{status:user.isOnline ? "ONLINE" : "OFFLINE", with_dot:true}} size='medium' show_nick={true} modal_action={true} reveal_mail={true} user_avatar={avatar}/>
                             <div className='button_with_action flex justify-between items-center pl-3 gap-x-3 w-fit relative'>
                                 {
                                     group_admin === user._id || group_users?.includes(user._id) ? (

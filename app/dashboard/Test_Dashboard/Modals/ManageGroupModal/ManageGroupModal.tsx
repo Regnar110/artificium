@@ -1,12 +1,14 @@
 import Modal from 'react-modal';
 import React, { useEffect, useState } from 'react'
 import ModalHeader from '../Components/ModalHeader';
-import ModalScrollUserList from '../Components/GroupManage/ModalScrollUserList';
-import InviteStringGenerator from '../Components/GroupManage/InviteStringGenerator';
+import ModalScrollUserList from './GroupManage/ModalScrollUserList';
+import InviteStringGenerator from './GroupManage/InviteStringGenerator';
 import { useAppSelector } from '@/redux/hooks/typedHooks';
 import { getUserObject } from '@/redux/slices/userSession/userSessionSlice';
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice';
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
+import ModalFooter from '../Components/ModalFooter';
+import ModalGlassContainer from '../Components/ModalGlassContainer';
 
 interface Props {
     modalIsOpen:boolean,
@@ -35,17 +37,19 @@ const ManageGroupModal = ({modalIsOpen, setModal}:Props) => {
         isOpen={modalIsOpen}
         contentLabel="User modal"
         style={{content:{background:"transparent"}, overlay:{background:"#0004", zIndex:"50"}}}
-        className={"flex flex-col backdrop-blur-lg backdrop-opacity-100 h-full justify-center items-center z-50"}>
-        <section className={`bg-[#ffffff13] backdrop-blur-md bg-opacity-20 drop-shadow-lg p-5 max-w-[600px] flex flex-col justify-center items-center gap-8 rounded-md font-plus_jakarta_sans z-5`}>
-          <ModalHeader 
-            top_title='Manage this group' 
-            subtitle='Add or remove group users. Manage its visibility status' 
-            setModal={setModal} 
-            modalIsOpen={modalIsOpen}
-          />
-          {scrollListUsers && <ModalScrollUserList list_users={scrollListUsers!}/>}
-          <InviteStringGenerator/>
-        </section>
+        className={"flex flex-col backdrop-blur-lg backdrop-opacity-100 h-full justify-center items-center"}>
+          <ModalGlassContainer>
+            <ModalHeader 
+              top_title='Manage this group' 
+              subtitle='Add or remove group users. Manage its visibility status' 
+              setModal={setModal} 
+              modalIsOpen={modalIsOpen}
+            />
+            {scrollListUsers ? <ModalScrollUserList list_users={scrollListUsers!}/> : <div className='hidden'/>}
+            <InviteStringGenerator/>
+            <ModalFooter/>
+        </ModalGlassContainer>
+
     </Modal>
   )
 }
