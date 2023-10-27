@@ -55,17 +55,18 @@ const groupSelect = (group_data:Group) => {
   }
 }
 
-  useEffect(() => {
-    const getGroups = async () => {
-      const response = await userAccessRequest<Group[] | UserAccessErrorResponse, any>('getUserGroups', {user_id: authUser})
+  const getGroups = async () => {
+    const response = await userAccessRequest<Group[] | UserAccessErrorResponse, any>('getUserGroups', {user_id: authUser})
+    console.log(response)
+    if('status' in response && response.status) {
       console.log(response)
-      if('status' in response && response.status) {
-        console.log(response)
-      } else {
-        dispatch(injectInitialGroups(response as Group[]))
-      }
-      return response
+    } else {
+      dispatch(injectInitialGroups(response as Group[]))
     }
+    return response
+  }
+  useEffect(() => {
+
     getGroups()
 
         // Re-render komponentu jest zależy od grupy jaką wybrailiśmy,
@@ -96,7 +97,7 @@ const groupSelect = (group_data:Group) => {
         window.removeEventListener("beforeunload", handleBeforeUnload)
 
       }
-  },[authUser, groupId, groups.length])
+  },[authUser, groups.length])
   return (
     <section id='controller_groups' className='max-h-[300px] overflow-y-auto overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-[#1A1D21] scrollbar-track-transparent'>
         {
