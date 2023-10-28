@@ -1,17 +1,17 @@
 import UserAvatarWithStatus from '@/app/AppComponents/UserAvatarWithStatus/UserAvatarWithStatus';
 import React, { useEffect, useState } from 'react'
 import Image from "next/image"
-import artifiucium_logo from '../../../../../../public/home/mainlogo.svg'
+import artifiucium_logo from '../../../../../public/home/mainlogo.svg'
 import Modal from 'react-modal';
-import user_avatar from '../../../../../../public/Dashboard/UserPanel/UserHeader/Avatar.png'
+import user_avatar from '../../../../../public/Dashboard/UserPanel/UserHeader/Avatar.png'
 import InviteButton from '@/app/AppComponents/InviteButton/InviteButton';
 import CommonFriends from './Components/CommonFriends';
 import CommonGroups from './Components/CommonGroups';
 import { useAppSelector } from '@/redux/hooks/typedHooks';
 import { getUserObject } from '@/redux/slices/userSession/userSessionSlice';
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
-import ModalGlassContainer from '../ModalGlassContainer';
-import ModalHeader from '../ModalHeader';
+import ModalGlassContainer from '../Components/ModalGlassContainer';
+import ModalHeader from '../Components/ModalHeader';
 
 interface UserModalProps {
   modalIsOpen:boolean;

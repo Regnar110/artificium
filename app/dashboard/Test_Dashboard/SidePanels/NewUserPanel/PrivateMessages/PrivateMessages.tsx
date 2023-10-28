@@ -1,13 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
-import add_prv_msg from '../../../../../public/controller/add_prv_msg.svg'
+import add_prv_msg from '../../../../../../public/controller/add_prv_msg.svg'
 import CustomHoverTooltip from '@/app/AppComponents/CustomHoverTolltip/CustomHoverTooltip'
 import UserAvatarWithStatus from '@/app/AppComponents/UserAvatarWithStatus/UserAvatarWithStatus'
 import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { getUserObject } from '@/redux/slices/userSession/userSessionSlice'
-import user_avatar from '../../../../../public/Dashboard/UserBoard/user_avatar.png'
-import del_prv_msg_chat from '../../../../../public/controller/del_prv_msg_chat.svg'
-import ScrollPrivMsgFriendList from '../../ScrollPanelList/ScrollPrivMsgFriendList'
+import user_avatar from '../../../../../../public/Dashboard/UserBoard/user_avatar.png'
+import del_prv_msg_chat from '../../../../../../public/controller/del_prv_msg_chat.svg'
+import ScrollPrivMsgFriendList from '../../../ScrollPanelList/ScrollPrivMsgFriendList'
 const PrivateMessages = () => {
     const userObject = useAppSelector(getUserObject)
   return (

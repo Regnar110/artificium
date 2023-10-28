@@ -20,11 +20,11 @@ const GroupMembersPanelList = ({header, className}:Props) => {
       }
     useEffect(() => {
         // jeżeli group_users są dostępne. Tzn jeżeli jeżeli grupa została wybrana dopiero wysyłamy żądanie o obiekty członków grupy
-        // Montowanie nowego GroupPanel następuje jedynie gdy zmieni się groupId
+        // Montowanie nowego GroupPanel następuje jedynie gdy zmieni się groupId lub zmieni się lista znajomych online użytkownika
         group_users  && getGroupMembers()
       },[groupId, currentlyOnlineUsers])
   return (
-    <div className={`scroll_panel_list h-full flex flex-col overflow-hidden pt-5 px-6 ${className && className}`}>
+    <div className={`scroll_panel_list h-full flex flex-col overflow-hidden px-6 ${className && className}`}>
         <h3 className='scroll_list_header pl-2 text-[14px]'>{header.toUpperCase()}</h3>
         <div className='scrollable_elements_wrapper overflow-y-auto overflow-x-hidden scrollbar scrollbar-w-1 scrollbar-thumb-[#0D0F10] scrollbar-track-transparent'>
             {groupMembers && groupMembers.map(member => (

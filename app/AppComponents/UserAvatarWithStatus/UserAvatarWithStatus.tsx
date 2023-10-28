@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Image, { StaticImageData } from 'next/image'
-import UserModal from '@/app/dashboard/Test_Dashboard/Modals/Components/UserModal/UserModal'
+import UserModal from '@/app/dashboard/Test_Dashboard/Modals/UserModal/UserModal'
 import { useAppSelector } from '@/redux/hooks/typedHooks'
 import { getUserId } from '@/redux/slices/userSession/userSessionSlice'
 
