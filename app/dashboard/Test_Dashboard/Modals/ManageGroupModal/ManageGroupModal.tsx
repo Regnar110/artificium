@@ -1,6 +1,4 @@
-import Modal from 'react-modal';
 import React, { useEffect, useState } from 'react'
-import ModalHeader from '../Components/ModalHeader';
 import ModalScrollUserList from './GroupManage/ModalScrollUserList';
 import InviteStringGenerator from './GroupManage/InviteStringGenerator';
 import { useAppSelector } from '@/redux/hooks/typedHooks';
@@ -8,7 +6,7 @@ import { getUserObject } from '@/redux/slices/userSession/userSessionSlice';
 import { getChat } from '@/redux/slices/chattingWindows/chattingWindowsSlice';
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 import ModalFooter from '../Components/ModalFooter';
-import ModalGlassContainer from '../Components/ModalGlassContainer';
+import GlassModal from '../GlassModal/GlassModal';
 
 interface Props {
     modalIsOpen:boolean,
@@ -32,25 +30,11 @@ const ManageGroupModal = ({modalIsOpen, setModal}:Props) => {
       modalIsOpen && getUsers()
     })
   return (
-    <Modal
-        ariaHideApp={false}
-        isOpen={modalIsOpen}
-        contentLabel="User modal"
-        style={{content:{background:"transparent"}, overlay:{background:"#0004", zIndex:"50"}}}
-        className={"flex flex-col backdrop-blur-lg backdrop-opacity-100 h-full justify-center items-center"}>
-          <ModalGlassContainer>
-            <ModalHeader 
-              top_title='Manage this group' 
-              subtitle='Add or remove group users. Manage its visibility status' 
-              setModal={setModal} 
-              modalIsOpen={modalIsOpen}
-            />
-            {scrollListUsers ? <ModalScrollUserList list_users={scrollListUsers!}/> : <div className='hidden'/>}
-            <InviteStringGenerator/>
-            <ModalFooter/>
-        </ModalGlassContainer>
-
-    </Modal>
+    <GlassModal modalIsOpen={modalIsOpen} setModal={setModal} header_title='Mange this group' header_subtitle='Add or remove group users. Manage its visibility status.'>
+        {scrollListUsers ? <ModalScrollUserList list_users={scrollListUsers!}/> : <div className='hidden'/>}
+        <InviteStringGenerator/>
+        <ModalFooter/>
+    </GlassModal>
   )
 }
 
