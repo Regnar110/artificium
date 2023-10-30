@@ -7,6 +7,7 @@ const CustomHoverTooltip = styled(({ className, ...props }: TooltipProps) => (
 
   ))({
     [`& .${tooltipClasses.tooltip}`]: {
+      position:"absolute",
         zIndex:"50",
         padding:"10px 20px",
         borderRadius:"10px",
