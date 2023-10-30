@@ -7,6 +7,7 @@ interface Props {
     setModal: (new_status: boolean) => void
 }
 const ModalHeader = ({top_title, subtitle, modalIsOpen, setModal}:Props) => {
+  console.log(modalIsOpen)
   return (
     <header className='header_and_close w-full flex flex-col'>
         <div className='header_text_with_button flex justify-between'>
