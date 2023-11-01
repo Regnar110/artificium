@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import delete_red from '../../../../../public/controller/delete_red.svg'
 import { ThemeProvider } from '@emotion/react';
@@ -8,11 +8,149 @@ import ModalScrollContainer from '../Components/ModalScrollContainer';
 import MailBoxScrollForm from '../Components/MailBoxScrollForm';
 import MailItem from './components/MailItem';
 import { Checkbox, createTheme, TextField } from '@mui/material';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 interface Props {
     modalIsOpen:boolean;
     setModal:(new_status: boolean) => void
 }
+
+const dummyMailItemsArr = [
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W1",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W2",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W3",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W4",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W5",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W6",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W7",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W8",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W9",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W10",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W11",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W12",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W13",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W14",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W15",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W16",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W17",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W18",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W19",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  
+]
 
 const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
 
@@ -47,6 +185,29 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
             }
         }
     })
+
+    const [items, setItems] = useState(dummyMailItemsArr.slice(0, 11))
+    const [hasMoreItems, setHasMoreItems] = useState<boolean>(true)
+    const fakeApiCall = () => {
+      console.log("FAKE API CALL")
+      const currentItemsEndPosition = items.length
+      setTimeout(() => {
+        const itemsToAdd = dummyMailItemsArr.filter((el,i) => {
+          if(i > currentItemsEndPosition && i < currentItemsEndPosition +11) {
+            return el
+          } else return
+        })
+        itemsToAdd.length ? setItems([...items, ...itemsToAdd]) : setHasMoreItems(false)
+        setItems([...items, ...itemsToAdd])
+        console.log(itemsToAdd)
+      },1500)
+
+    }
+      // console.log(items.length)
+      // const newItems = items.concat(Array.from({length:20}))
+      // setTimeout(() => {
+      //   setItems(newItems)
+      // },1500)
   return (
     <GlassModal modalIsOpen={modalIsOpen} header_title='MailBox' header_subtitle='Coś tam coś tam coś tam' setModal={setModal}>
       <ThemeProvider theme={theme}>
@@ -61,39 +222,22 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
       </ThemeProvider>
       <ModalScrollContainer stickyHeader='Mailbox' scrollActive={false}>
         <MailBoxScrollForm>
-          <MailItem 
-            sender='Mateusz W2'
-            topic='Friend Request'
-            content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
-          />
-          <MailItem 
-            sender='Mateusz W'
-            topic='Friend Request'
-            content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
-          />
-
-          <MailItem 
-            sender='Mateusz W'
-            topic='Friend Request'
-            content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
-          />
-          <MailItem 
-            sender='Mateusz W'
-            topic='Friend Request'
-            content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
-          />
-          <MailItem 
-            sender='Mateusz W'
-            topic='Friend Request'
-            content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
-          />
-
-          <MailItem 
-            sender='Mateusz W'
-            topic='Friend Request'
-            content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
-          />
-                    
+          <InfiniteScroll
+                scrollableTarget={"MailBoxScrollForm"}
+            dataLength={items.length}
+            next={fakeApiCall}
+            hasMore={hasMoreItems}
+            loader={<h4 className='text-white'>Loading...</h4>}
+            endMessage={<h4 className='text-white'>There is no more mails for u</h4>}
+          >
+            {items.map((i, index) => (
+              <MailItem 
+                sender={i.from}
+                topic={i.topic}
+                content={i.content}
+              />
+            ))}
+          </InfiniteScroll>
         </MailBoxScrollForm>
         <form className='mailbox_operations relative flex justify-between items-center text-[#fff] bg-[#0D0F10]'>
           <div className='check_all flex gap-x-1 justify-center items-center relative'>
@@ -114,3 +258,36 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
 }
 
 export default MailBoxModal
+          // <MailItem 
+          //   sender='Mateusz W2'
+          //   topic='Friend Request'
+          //   content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
+          // />
+          // <MailItem 
+          //   sender='Mateusz W'
+          //   topic='Friend Request'
+          //   content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
+          // />
+
+          // <MailItem 
+          //   sender='Mateusz W'
+          //   topic='Friend Request'
+          //   content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
+          // />
+          // <MailItem 
+          //   sender='Mateusz W'
+          //   topic='Friend Request'
+          //   content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
+          // />
+          // <MailItem 
+          //   sender='Mateusz W'
+          //   topic='Friend Request'
+          //   content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
+          // />
+
+          // <MailItem 
+          //   sender='Mateusz W'
+          //   topic='Friend Request'
+          //   content=' z częścią wiadomosćiadsasdasdasdasdasdasdasdasdsdasdassafdasdasdasdasdasdasdasda'
+          // />
+             
