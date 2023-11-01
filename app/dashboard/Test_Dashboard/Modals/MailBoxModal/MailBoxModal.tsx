@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import delete_red from '../../../../../public/controller/delete_red.svg'
 import { ThemeProvider } from '@emotion/react';
@@ -185,33 +185,55 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
             }
         }
     })
-
+    const [searchInputField, setSearchInput] = useState<string>("")
     const [items, setItems] = useState(dummyMailItemsArr.slice(0, 11))
+    const [activeFiltered, setActiveFiltered ] = useState<any>([])
     const [hasMoreItems, setHasMoreItems] = useState<boolean>(true)
-    const fakeApiCall = () => {
-      console.log("FAKE API CALL")
-      const currentItemsEndPosition = items.length
-      setTimeout(() => {
-        const itemsToAdd = dummyMailItemsArr.filter((el,i) => {
-          if(i > currentItemsEndPosition && i < currentItemsEndPosition +11) {
-            return el
-          } else return
-        })
-        itemsToAdd.length ? setItems([...items, ...itemsToAdd]) : setHasMoreItems(false)
-        setItems([...items, ...itemsToAdd])
-        console.log(itemsToAdd)
-      },1500)
 
+    const getMoreItems = (input:string) =>{
+      if(input) {
+
+
+
+        // JEŻELI SCROLLUJEMY W DÓŁ Z WYPEŁNIONYM SEARCH FIELDEM
+        // PRZY ŚCIĄGANIU ELEMENTÓW UWZGLĘDNIAMY WYPEŁNIONY SEARCH FIELD
+        
+        //filtr bazowych itemów ( filtrujemy też to co mamy)
+        // aktualna pozycja końcowa
+      
+        
+        // ściągamy nowe maile z uwzględnieniem filtra
+        const itemsFromDummyArrWIthFilter = dummyMailItemsArr.filter((el,i) => el.from.toLocaleLowerCase().includes(input.toLocaleLowerCase()))
+        console.log(itemsFromDummyArrWIthFilter)
+        const mixedArr = [...items, ...itemsFromDummyArrWIthFilter].filter((element,index, self) => self.indexOf(element) === index)
+        setItems(itemsFromDummyArrWIthFilter)
+      
+      
+      
+      } else {
+        // SCROLL W DÓŁ BEZ WYPEŁNIONEGO SEARCH FIELDA   
+        setTimeout(() => {
+          const currentItemsEndPosition = items.length
+          const itemsToAdd = dummyMailItemsArr.filter((el,i) => {
+                if(i > currentItemsEndPosition && i < currentItemsEndPosition +11) {
+                  return el
+                } else return
+              })
+          itemsToAdd.length ? setItems([...items, ...itemsToAdd]) : setHasMoreItems(false)
+          setItems([...items, ...itemsToAdd])
+          console.log(itemsToAdd)          
+        },1500)         
+
+      }
     }
-      // console.log(items.length)
-      // const newItems = items.concat(Array.from({length:20}))
-      // setTimeout(() => {
-      //   setItems(newItems)
-      // },1500)
+    useEffect(() => {
+      searchInputField&& getMoreItems(searchInputField)
+    },[searchInputField])
   return (
     <GlassModal modalIsOpen={modalIsOpen} header_title='MailBox' header_subtitle='Coś tam coś tam coś tam' setModal={setModal}>
       <ThemeProvider theme={theme}>
           <TextField
+          onChange={(e) => setSearchInput(e.target.value)}
               color="primary"
               id="outlined-basic" 
               label="Search the box" 
@@ -223,34 +245,37 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
       <ModalScrollContainer stickyHeader='Mailbox' scrollActive={false}>
         <MailBoxScrollForm>
           <InfiniteScroll
-                scrollableTarget={"MailBoxScrollForm"}
+            scrollableTarget={"MailBoxScrollForm"}
             dataLength={items.length}
-            next={fakeApiCall}
+            next={()=>getMoreItems(searchInputField)}
             hasMore={hasMoreItems}
             loader={<h4 className='text-white'>Loading...</h4>}
             endMessage={<h4 className='text-white'>There is no more mails for u</h4>}
           >
-            {items.map((i, index) => (
-              <MailItem 
-                sender={i.from}
-                topic={i.topic}
-                content={i.content}
-              />
-            ))}
+            {
+              searchInputField ? 
+              activeFiltered.map((i, index) => (
+                <MailItem 
+                  sender={i.from}
+                  topic={i.topic}
+                  content={i.content}
+                />
+              ))
+              :
+              items.map((i, index) => (
+                <MailItem 
+                  sender={i.from}
+                  topic={i.topic}
+                  content={i.content}
+                />
+              ))
+            }
           </InfiniteScroll>
         </MailBoxScrollForm>
-        <form className='mailbox_operations relative flex justify-between items-center text-[#fff] bg-[#0D0F10]'>
-          <div className='check_all flex gap-x-1 justify-center items-center relative'>
-            <ThemeProvider theme={theme2}>
-              <Checkbox size='medium' className='w-fit' color='primary'/> 
-            </ThemeProvider>
-            <span className='font-semibold'>Check all</span>
-          </div>
-          <button className='delete_all flex items-center justify-center gap-x-2 rounded-md px-6 py-2 w-fit bg-[#363A3D]'>
-            <Image src={delete_red} className='w-[20px]' alt='delete all mails'/>
-            <span className='w-fit font-semibold whitespace-nowrap'>Clear</span>
-          </button>
-        </form>
+        <button className='delete_all flex items-center justify-center gap-x-2 rounded-md px-6 py-2 w-fit bg-[#363A3D]'>
+          <Image src={delete_red} className='w-[20px]' alt='delete all mails'/>
+          <span className='w-fit font-normal whitespace-nowrap text-white'>Clear</span>
+        </button>
       </ModalScrollContainer>
       <ModalFooter/>
     </GlassModal>

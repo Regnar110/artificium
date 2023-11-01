@@ -51,9 +51,6 @@ const MailItem = ({sender, topic, content}:Props) => {
                 <CustomHoverTooltip title="Delete" placement='right'>
                     <Image src={red_cross} className='w-[15px]' alt='delete mail'/>
                 </CustomHoverTooltip>
-                <ThemeProvider theme={theme}>
-                    <Checkbox className='p-0 m-0' color='primary' size='small'/>            
-                </ThemeProvider>
             </div>
 
             <div className='col-span-3 text-[#B6F09C] font-medium text-[16px] '>{sender}</div>
