@@ -149,6 +149,27 @@ const dummyMailItemsArr = [
     topic:"Friend request",
     content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
   },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W111",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W112",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
+  {
+    _mailId:"asdnjansdn2noi3jieo21394n",
+    type:"friend_request",
+    from: "Mateusz W113",
+    topic:"Friend request",
+    content:"coskasnkdalnsdlkasldkakjsdbnakjsfjab sfkja bsfkjabsfklabsfklafnlansflkansflansflkaknsflkansflkansflkansflaknsflkasfn"
+  },
   
 ]
 
@@ -190,33 +211,18 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
     const [activeFiltered, setActiveFiltered ] = useState<any>([])
     const [hasMoreItems, setHasMoreItems] = useState<boolean>(true)
 
+    const filterCurrentItem = (input:string)=> {
+      const newItems = items.filter(mail => mail.from.toLocaleLowerCase().includes(input.toLocaleLowerCase()))
+      setItems(newItems)
+    }
+
     const getMoreItems = (input:string) =>{
-      if(input) {
-
-
-
-        // JEŻELI SCROLLUJEMY W DÓŁ Z WYPEŁNIONYM SEARCH FIELDEM
-        // PRZY ŚCIĄGANIU ELEMENTÓW UWZGLĘDNIAMY WYPEŁNIONY SEARCH FIELD
-        
-        //filtr bazowych itemów ( filtrujemy też to co mamy)
-        // aktualna pozycja końcowa
-      
-        
-        // ściągamy nowe maile z uwzględnieniem filtra
-        const itemsFromDummyArrWIthFilter = dummyMailItemsArr.filter((el,i) => el.from.toLocaleLowerCase().includes(input.toLocaleLowerCase()))
-        console.log(itemsFromDummyArrWIthFilter)
-        const mixedArr = [...items, ...itemsFromDummyArrWIthFilter].filter((element,index, self) => self.indexOf(element) === index)
-        setItems(itemsFromDummyArrWIthFilter)
-      
-      
-      
-      } else {
         // SCROLL W DÓŁ BEZ WYPEŁNIONEGO SEARCH FIELDA   
         setTimeout(() => {
           const currentItemsEndPosition = items.length
           const itemsToAdd = dummyMailItemsArr.filter((el,i) => {
                 if(i > currentItemsEndPosition && i < currentItemsEndPosition +11) {
-                  return el
+                  return el.from.toLocaleLowerCase().includes(input.toLocaleLowerCase())
                 } else return
               })
           itemsToAdd.length ? setItems([...items, ...itemsToAdd]) : setHasMoreItems(false)
@@ -225,15 +231,11 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
         },1500)         
 
       }
-    }
-    useEffect(() => {
-      searchInputField&& getMoreItems(searchInputField)
-    },[searchInputField])
   return (
     <GlassModal modalIsOpen={modalIsOpen} header_title='MailBox' header_subtitle='Coś tam coś tam coś tam' setModal={setModal}>
       <ThemeProvider theme={theme}>
           <TextField
-          onChange={(e) => setSearchInput(e.target.value)}
+          onChange={(e) => getMoreItems(e.target.value)}
               color="primary"
               id="outlined-basic" 
               label="Search the box" 
@@ -253,15 +255,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
             endMessage={<h4 className='text-white'>There is no more mails for u</h4>}
           >
             {
-              searchInputField ? 
-              activeFiltered.map((i, index) => (
-                <MailItem 
-                  sender={i.from}
-                  topic={i.topic}
-                  content={i.content}
-                />
-              ))
-              :
+              
               items.map((i, index) => (
                 <MailItem 
                   sender={i.from}
