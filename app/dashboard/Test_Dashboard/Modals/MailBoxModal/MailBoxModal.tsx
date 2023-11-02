@@ -7,8 +7,10 @@ import GlassModal from '../GlassModal/GlassModal';
 import ModalScrollContainer from '../Components/ModalScrollContainer';
 import MailBoxScrollForm from '../Components/MailBoxScrollForm';
 import MailItem from './components/MailItem';
-import { Checkbox, createTheme, TextField } from '@mui/material';
+import { Button, Checkbox, IconButton, TextField, createTheme } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { resolve } from 'path';
 
 interface Props {
     modalIsOpen:boolean;
@@ -182,7 +184,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           }
         }
       })
-      const theme2 = createTheme({
+    const theme2 = createTheme({
         palette:{
             primary:{
                 main:"#B6F09C"
@@ -206,42 +208,64 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
             }
         }
     })
+
     const [searchInputField, setSearchInput] = useState<string>("")
-    const [items, setItems] = useState(dummyMailItemsArr.slice(0, 11))
+    const [mailFnType, setMailFnType] = useState<"getMoreItems"| "searchForMails">()
     const [activeFiltered, setActiveFiltered ] = useState<any>([])
+    const [items, setItems] = useState([])
+    
     const [hasMoreItems, setHasMoreItems] = useState<boolean>(true)
 
-    const filterCurrentItem = (input:string)=> {
-      const newItems = items.filter(mail => mail.from.toLocaleLowerCase().includes(input.toLocaleLowerCase()))
-      setItems(newItems)
+    const searchForMails = async () => {
+      // jeżeli poprzednie było wywołane zbieranie maili z db przez getMoreItems to czyścimy stan items i zbieramy nowe filtrowane dane 
+      mailFnType ==="getMoreItems" && await new Promise(resolve => setItems([]))
+      setMailFnType("searchForMails")
+      console.log("searchForMails")
+      console.log(items)
+      setTimeout(() => {
+        const currentItemsEndPosition = items.length
+        const itemsToAdd = dummyMailItemsArr.filter((el,i) => {
+              if(i > currentItemsEndPosition && i < currentItemsEndPosition +11) {
+                  return el
+                } else return 
+            })
+        itemsToAdd.length ? setItems([...items, ...itemsToAdd]) : setHasMoreItems(false)         
+      },1500)   
+      // TUTAJ BĘDZIEMY ŚCIĄGAĆ MAILE TYLKO KTÓRE ODPOWIADAJĄ WYSZUKIWANIU
     }
 
-    const getMoreItems = (input:string) =>{
+    const getMoreItems = (searchValue?:string) =>{
+      setMailFnType("getMoreItems")
+      console.log('getMoreItems')
         // SCROLL W DÓŁ BEZ WYPEŁNIONEGO SEARCH FIELDA   
         setTimeout(() => {
           const currentItemsEndPosition = items.length
           const itemsToAdd = dummyMailItemsArr.filter((el,i) => {
                 if(i > currentItemsEndPosition && i < currentItemsEndPosition +11) {
-                  return el.from.toLocaleLowerCase().includes(input.toLocaleLowerCase())
-                } else return
+                    return el
+                  } else return 
               })
-          itemsToAdd.length ? setItems([...items, ...itemsToAdd]) : setHasMoreItems(false)
-          setItems([...items, ...itemsToAdd])
-          console.log(itemsToAdd)          
+          itemsToAdd.length ? setItems([...items, ...itemsToAdd]) : setHasMoreItems(false)         
         },1500)         
-
       }
+      useEffect(() => {
+        items.length === 0 && getMoreItems()
+      })
   return (
     <GlassModal modalIsOpen={modalIsOpen} header_title='MailBox' header_subtitle='Coś tam coś tam coś tam' setModal={setModal}>
       <ThemeProvider theme={theme}>
           <TextField
-          onChange={(e) => getMoreItems(e.target.value)}
+          onChange={(e) => setSearchInput(e.target.value)}
               color="primary"
               id="outlined-basic" 
               label="Search the box" 
               variant="filled" 
-              sx={{input: {color:"#fff", background:"#131619", border:"1px solid #363A3D", borderRadius:"10px", margin:"0px", cursor:"pointer"}}}
+              sx={{input: {color:"#fff", background:"#131619", borderRadius:"10px 0 0 10px", margin:"0px", cursor:"pointer"}}}
               InputLabelProps={{style:{color:"white"}}} 
+              InputProps={{endAdornment: <button onClick={e => {
+                e.preventDefault()
+                searchForMails()
+              }} className='absolute right-0 h-full w-[60px] bg-[#0D0F10] rounded-r-[10px]'><SearchIcon color='primary'/></button>}}
           />            
       </ThemeProvider>
       <ModalScrollContainer stickyHeader='Mailbox' scrollActive={false}>
@@ -249,7 +273,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           <InfiniteScroll
             scrollableTarget={"MailBoxScrollForm"}
             dataLength={items.length}
-            next={()=>getMoreItems(searchInputField)}
+            next={!searchInputField ? getMoreItems : searchForMails}
             hasMore={hasMoreItems}
             loader={<h4 className='text-white'>Loading...</h4>}
             endMessage={<h4 className='text-white'>There is no more mails for u</h4>}
