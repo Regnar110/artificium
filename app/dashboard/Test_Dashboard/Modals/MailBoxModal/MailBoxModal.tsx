@@ -7,10 +7,9 @@ import GlassModal from '../GlassModal/GlassModal';
 import ModalScrollContainer from '../Components/ModalScrollContainer';
 import MailBoxScrollForm from '../Components/MailBoxScrollForm';
 import MailItem from './components/MailItem';
-import { Button, Checkbox, IconButton, TextField, createTheme } from '@mui/material';
+import { TextField, createTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { resolve } from 'path';
+import ReactPaginate from 'react-paginate';
 
 interface Props {
     modalIsOpen:boolean;
@@ -211,6 +210,47 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
 
   const [searchInputField, setSearchInput] = useState<string>("")
 
+  const [mails, setMails] = useState<{_mailId:string, type:String, from:string, topic:string, content:string}[]>([])
+  const [totalMailsCount, setTotalMailsCount] = useState<number>(0)
+  const [itemOffset, setItemOffset] = useState(0);
+  
+    let itemsPerPage = 10
+    
+    
+    const pageCount = Math.ceil(dummyMailItemsArr.length / itemsPerPage);
+
+    const handlePageClick = (event) => {
+      // TUTAJ Będziemy ściągać kolejne itemy dla każdej kolejnej strony.
+        
+        
+        const newItemOffset = event.selected *10
+        const endOffset = newItemOffset + itemsPerPage;
+        console.log(`previous offset is ${itemOffset}`)
+        console.log(`Loading items from ${newItemOffset} to ${endOffset}`);
+        
+        // current items będzie hitem do endpointa API
+        const currentItems = dummyMailItemsArr.slice(newItemOffset, endOffset);
+        
+        console.log(currentItems)
+        setMails(currentItems)
+
+        //OK
+        const newOffset = (event.selected * itemsPerPage) % totalMailsCount;
+
+        console.log(
+          `User requested page number ${event.selected}, which is offset ${newOffset}`
+        );
+        setItemOffset(newOffset);
+
+    };
+    useEffect(() => {
+      // Tutaj będziemy inicjalizować pierwsze 10 maili w skrzynce 
+      const initialTenMail = dummyMailItemsArr.slice(itemOffset, itemsPerPage)
+      setMails(initialTenMail)
+
+      // plus ściągniemy informacje na temat całkowitej ilości maili zawartych w skrzynce
+      setTotalMailsCount(dummyMailItemsArr.length)
+    },[])
 
   return (
     <GlassModal modalIsOpen={modalIsOpen} header_title='MailBox' header_subtitle='Coś tam coś tam coś tam' setModal={setModal}>
@@ -229,31 +269,32 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           />            
       </ThemeProvider>
       <ModalScrollContainer stickyHeader='Mailbox' scrollActive={false}>
-        <MailBoxScrollForm>
-          {/* <InfiniteScroll
-            scrollableTarget={"MailBoxScrollForm"}
-            dataLength={1}
-            next={getMoreItems}
-            hasMore={hasMoreItems}
-            loader={<h4 className='text-white'>Loading...</h4>}
-            endMessage={<h4 className='text-white'>There is no more mails for u</h4>}
-          >
-            {
-              
-              items.map((i, index) => (
-                <MailItem 
-                  sender={i.from}
-                  topic={i.topic}
-                  content={i.content}
-                />
-              ))
-            }
-          </InfiniteScroll> */}
-        </MailBoxScrollForm>
-        <button className='delete_all flex items-center justify-center gap-x-2 rounded-md px-6 py-2 w-fit bg-[#363A3D]'>
-          <Image src={delete_red} className='w-[20px]' alt='delete all mails'/>
-          <span className='w-fit font-normal whitespace-nowrap text-white'>Clear</span>
-        </button>
+          <MailBoxScrollForm>
+            {mails && mails.map(mail => (
+              <MailItem
+                sender={mail.from}
+                topic={mail.topic}
+                content={mail.content}
+              />
+            ))}    
+          </MailBoxScrollForm>
+
+          <div className='mail_scroll options flex items-center justify-between'>
+            <ReactPaginate
+            className='text-white flex w-fit gap-2'
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="<"
+                renderOnZeroPageCount={null}
+            />      
+            <button className='delete_all flex items-center justify-center gap-x-2 rounded-md px-6 py-2 w-fit bg-[#363A3D]'>
+              <Image src={delete_red} className='w-[20px]' alt='delete all mails'/>
+              <span className='w-fit font-normal whitespace-nowrap text-white'>Clear</span>
+            </button>    
+          </div>
       </ModalScrollContainer>
       <ModalFooter/>
     </GlassModal>
