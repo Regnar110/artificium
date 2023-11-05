@@ -10,6 +10,8 @@ import MailItem from './components/MailItem';
 import { TextField, createTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ReactPaginate from 'react-paginate';
+import PageLoader from '@/app/AppComponents/PageLoader/PageLoader';
+import MailBoxLoader from './components/MailBoxLoader';
 
 interface Props {
     modalIsOpen:boolean;
@@ -221,26 +223,28 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
 
     const handlePageClick = (event) => {
       // TUTAJ Będziemy ściągać kolejne itemy dla każdej kolejnej strony.
-        
-        
-        const newItemOffset = event.selected *10
-        const endOffset = newItemOffset + itemsPerPage;
-        console.log(`previous offset is ${itemOffset}`)
-        console.log(`Loading items from ${newItemOffset} to ${endOffset}`);
-        
-        // current items będzie hitem do endpointa API
-        const currentItems = dummyMailItemsArr.slice(newItemOffset, endOffset);
-        
-        console.log(currentItems)
-        setMails(currentItems)
+        setMails([])
+        setTimeout(() => {
+          const newItemOffset = event.selected *10
+          const endOffset = newItemOffset + itemsPerPage;
+          console.log(`previous offset is ${itemOffset}`)
+          console.log(`Loading items from ${newItemOffset} to ${endOffset}`);
+          
+          // current items będzie hitem do endpointa API
+          const currentItems = dummyMailItemsArr.slice(newItemOffset, endOffset);
+          
+          console.log(currentItems)
+          setMails(currentItems)
 
-        //OK
-        const newOffset = (event.selected * itemsPerPage) % totalMailsCount;
+          //OK
+          const newOffset = (event.selected * itemsPerPage) % totalMailsCount;
 
-        console.log(
-          `User requested page number ${event.selected}, which is offset ${newOffset}`
-        );
-        setItemOffset(newOffset);
+          console.log(
+            `User requested page number ${event.selected}, which is offset ${newOffset}`
+          );
+          setItemOffset(newOffset);          
+        },1500)
+
 
     };
     useEffect(() => {
@@ -270,13 +274,17 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
       </ThemeProvider>
       <ModalScrollContainer stickyHeader='Mailbox' scrollActive={false}>
           <MailBoxScrollForm>
-            {mails && mails.map(mail => (
-              <MailItem
-                sender={mail.from}
-                topic={mail.topic}
-                content={mail.content}
-              />
-            ))}    
+            {mails.length > 0 ? mails.map(mail => (
+                <MailItem
+                  sender={mail.from}
+                  topic={mail.topic}
+                  content={mail.content}
+                />
+              ))
+              :
+              <MailBoxLoader/>
+
+            }    
           </MailBoxScrollForm>
 
           <div className='mail_scroll options flex items-center justify-between'>

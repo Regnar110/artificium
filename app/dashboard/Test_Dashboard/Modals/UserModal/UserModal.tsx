@@ -46,7 +46,7 @@ const UserModal = ({modalIsOpen, user_data, setModal}:UserModalProps) => {
     <GlassModal modalIsOpen={modalIsOpen} setModal={setModal} header_title='User panel' header_subtitle='Check who this user is. Invite him as a friend or be neutral.' >
         <section className='user_avatar flex items-center justify-between'>
           <UserAvatarWithStatus size='large' modal_action={false} user_data={user_data} user_avatar={user_avatar} show_nick={true} user_status={{with_dot:true, with_text:false, status:user_data.isOnline ? "ONLINE" : "OFFLINE"}} reveal_mail={true}/>
-          <InviteButton text='Invite' isAlreadyFriend={isUserFriend}/>
+          <InviteButton text='Invite' isAlreadyFriend={isUserFriend} modalUserId={user_data._id}/>
         </section>
         <CommonFriends user_avatar={user_avatar} friends={commonFriends!}/>
         <CommonGroups groups={commonGroups!}/>
