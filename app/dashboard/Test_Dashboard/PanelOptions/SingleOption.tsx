@@ -39,7 +39,7 @@ const SingleOption = ({text, icon, onClickCallback, modal=false, modalType}:Prop
           <span className='font-semibold w-fit hover:text-white transition-all '>{text}</span>         
       </div>    
       {
-        renderModal()
+        modalIsOpen && renderModal()
       }
     </>
 

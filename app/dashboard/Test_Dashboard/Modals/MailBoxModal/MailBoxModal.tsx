@@ -248,12 +248,16 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
 
     };
     useEffect(() => {
-      // Tutaj będziemy inicjalizować pierwsze 10 maili w skrzynce 
+      console.log("Mailbox mount")
+      // Tutaj będziemy inicjalizować pierwsze 10 maili w skrzynce przy montowaniu modalu
       const initialTenMail = dummyMailItemsArr.slice(itemOffset, itemsPerPage)
       setMails(initialTenMail)
 
       // plus ściągniemy informacje na temat całkowitej ilości maili zawartych w skrzynce
       setTotalMailsCount(dummyMailItemsArr.length)
+      return () => {
+        console.log("mailbox unmount")
+      }
     },[])
 
   return (

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ControllerFooter from '../../ControllerFooter/ControllerFooter'
 import PrivateMessages from './PrivateMessages/PrivateMessages'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks'
@@ -10,6 +10,8 @@ import SingleOption from '../../PanelOptions/SingleOption'
 import { useMediaQuery } from 'react-responsive'
 import PanelOptions from '../../PanelOptions/PanelOptions'
 import PanelSection from '../PanelSection'
+import { _on_INCOMING_FRIEND_REQUEST, unsubscribeFriendRequestListeners } from '@/app/utils/SocketFriendRequestHandlers/SocketFriendRequestHandlers'
+import { userAccessRequest } from '@/app/utils/UserAccessRequest'
 const NewUserPanel = () => {
   const {type, status} = useAppSelector(currentUIState).controller_panel
   const dispatch = useAppDispatch()
@@ -22,6 +24,19 @@ const NewUserPanel = () => {
     }
     dispatch(UI_VIEW_CHANGE({UI:"friendList_panel", status:!currentFriendPanelStatus}))
   }
+
+  const fetchCurrentMailboxContent = async () => {
+
+  }
+
+  useEffect(() => {
+    // listenery na akcje między userami - FRiend requesty , maile itd.
+      _on_INCOMING_FRIEND_REQUEST()
+    return() => {
+      unsubscribeFriendRequestListeners()
+    }
+  },[]) 
+
   return (
     <PanelSection status={type ==="user" && status ? true : false}>
       <PanelOptions>
