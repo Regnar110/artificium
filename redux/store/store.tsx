@@ -5,6 +5,7 @@ import groupsReducer from '../slices/groups/groupsSlice'
 import onlineFriendListReducer from '../slices/friendList/onlineFriendListSlice'
 import offlineFriendListReducer from '../slices/friendList/offlineFriendListSlice'
 import dashboardUI_controllerReducer from '../slices/dashboardUI_controller/dashboardUI_controller'
+import mailBoxReducer from '../slices/mailBox/mailBoxSlice'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import storage from 'redux-persist/lib/storage'
 import {
@@ -33,7 +34,8 @@ import {
     chattingWindows: chattingWindowsReducer,
     groups: groupsReducer,
     onlineFriendList: onlineFriendListReducer,
-    offlineFriendList: offlineFriendListReducer
+    offlineFriendList: offlineFriendListReducer,
+    mailBox: mailBoxReducer
   })
 
   // RESETOWALNY ROOT REDUCER, KTÓRY PRZY WOWAŁNIU AKCJI WYLOGOWYWANIA UŻYTKOWNIKA PRZYWRACA CAŁY STAN APLIKACJI DO UNDEFINED (CZYLI RESETUJE GO)

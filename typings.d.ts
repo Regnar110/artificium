@@ -105,3 +105,13 @@ type USER_IS_OFFLINE = "USER_IS_OFFLINE"
 //SOCKET 
 
 type SOCKET = Socket<DefaultEventsMap, DefaultEventsMap>
+
+
+//MAILBOX
+
+interface Mail {
+    fromId:string,
+    system_type: "friend_request",
+    topic: string,
+    content:string,
+}

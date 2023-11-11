@@ -17,7 +17,7 @@ const RegisterForm = () => {
         setResponseLoading(true)
         delete data.register_password_repeat
         const userAccessResponse = await userAccessRequest<UserAccesSuccessResponse | UserAccessErrorResponse , RegisterFormData>('register', data)
-        console.log(userAccessResponse)
+        
         if(userAccessResponse.status!==500) {
             turnOnNotification({type:"USER_APP_ACCESS", response:userAccessResponse})
         }
