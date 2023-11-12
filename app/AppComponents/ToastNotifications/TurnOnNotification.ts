@@ -1,8 +1,9 @@
 import toast from "react-hot-toast"
 import { renderGroupActionToast } from "./Custom/GroupActionToast"
+import { renderMailboxActionToast } from "./Custom/MailBoxActionToast"
 
 interface Props {
-    type: USER_APP_ACCESS | USER_GROUP_JOIN | USER_GROUP_LEAVE | USER_IS_ONLINE | USER_IS_OFFLINE
+    type: USER_APP_ACCESS | USER_GROUP_JOIN | USER_GROUP_LEAVE | USER_IS_ONLINE | USER_IS_OFFLINE | INCOMING_FRIEND_REQUEST
     response?: any
     action_notification?: {
         message:string,
@@ -40,6 +41,19 @@ export const turnOnNotification = ({type, response, action_notification}:Props) 
                 animation: "ease-in-out"
             }
         })
+    } 
+    else if(type === "INCOMING_FRIEND_REQUEST" && response) {
+        const {client_message, body} = response
+        switch(response.status) {
+            case 200:
+                toast.custom(renderMailboxActionToast(client_message, body.fromNickName, body.topic), {
+                    position:"bottom-right",
+                    duration:3000,
+                    style:{
+                        animation: "ease-in-out"
+                    }
+                })
+        }
     }
 
 }

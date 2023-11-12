@@ -39,3 +39,5 @@ export const getUserProvider = (state:RootState):"artificium"|"google" => {
 export const getUserId = (state:RootState):string => {
     return state.userSession._id!
 }
+
+export const getUserNickName = (state:RootState):string => state.userSession.nickname as string

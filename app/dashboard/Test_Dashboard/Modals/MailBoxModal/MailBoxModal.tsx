@@ -15,7 +15,8 @@ import MailBoxLoader from './components/MailBoxLoader';
 import { userAccessRequest } from '@/app/utils/UserAccessRequest';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/typedHooks';
 import { getUserId } from '@/redux/slices/userSession/userSessionSlice';
-import { getMailBoxState, injectMails } from '@/redux/slices/mailBox/mailBoxSlice';
+import { getMailBoxState, getMails, getMailsPageCount, getTotalMails, injectMails } from '@/redux/slices/mailBox/mailBoxSlice';
+import { initializeMailBox } from './utils/initializeMailBox';
 
 interface Props {
     modalIsOpen:boolean;
@@ -216,18 +217,18 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
 
   const [searchInputField, setSearchInput] = useState<string>("")
   const userId = useAppSelector(getUserId)
-  const mailbox = useAppSelector(getMailBoxState)
+  const mails = useAppSelector(getMails)
+  const mailboxPageCount = useAppSelector(getMailsPageCount)
+  const totalMails = useAppSelector(getTotalMails)
+
+
   const dispatch = useAppDispatch()
-  const [mails, setMails] = useState<{_mailId:string, type:String, from:string, topic:string, content:string}[]>([])
-  const [totalMailsCount, setTotalMailsCount] = useState<number>(0)
   const [itemOffset, setItemOffset] = useState(0);
   
     let itemsPerPage = 10
-    const pageCount = Math.ceil(dummyMailItemsArr.length / itemsPerPage);
 
     const handlePageClick = async (event) => {
       // TUTAJ Będziemy ściągać kolejne itemy dla każdej kolejnej strony.
-        setMails([])
 
           const newMailsOffset = event.selected *10
           const endOffset = newMailsOffset + itemsPerPage;
@@ -235,14 +236,11 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           console.log(`Loading items from ${newMailsOffset} to ${endOffset}`);
           
           // current items będzie hitem do endpointa API
-          const currentItems2 = await userAccessRequest<Mail[], {userId:String, newMailsOffset:number, endOffset:number}>('getUserMails',{userId, newMailsOffset, endOffset})
-          const currentItems = dummyMailItemsArr.slice(newMailsOffset, endOffset);
-          
-          console.log(currentItems)
-          setMails(currentItems)
+          const currentItems = await userAccessRequest<ServerGetMailsResponse, {userId:String, newMailsOffset:number, endOffset:number}>('getUserMails',{userId, newMailsOffset, endOffset})
+          dispatch(injectMails(currentItems))
 
           //OK
-          const newOffset = (event.selected * itemsPerPage) % totalMailsCount;
+          const newOffset = (event.selected * itemsPerPage) % totalMails;
 
           console.log(
             `User requested page number ${event.selected}, which is offset ${newOffset}`
@@ -252,21 +250,17 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
 
     };
 
-    const initializeMailbox = async () => {
-      const mails = await userAccessRequest<any, {userId:String, newMailsOffset:number, endOffset:number}>('getUserMails', {userId, newMailsOffset:0, endOffset:10})
-      dispatch(injectMails(mails))
-    }
+    // const initializeMailbox = async () => {
+    //   const mails = await userAccessRequest<any, {userId:String, newMailsOffset:number, endOffset:number}>('getUserMails', {userId, newMailsOffset:0, endOffset:10}) as ServerGetMailsResponse
+    //   dispatch(injectMails(mails))
+    // }
 
     useEffect(() => {
       console.log("Mailbox mount")
-      userId && initializeMailbox()
+      userId && initializeMailBox(userId, 0, 10)
       // Tutaj będziemy inicjalizować pierwsze 10 maili w skrzynce przy montowaniu modalu
       // TU TEŻ DODAMY LISTENER NASŁUCHUJĄCY ZA NOWYMI MAILAMI
-      const initialTenMail = dummyMailItemsArr.slice(itemOffset, itemsPerPage)
-      setMails(initialTenMail)
-
       // plus ściągniemy informacje na temat całkowitej ilości maili zawartych w skrzynce
-      setTotalMailsCount(dummyMailItemsArr.length)
       return () => {
         console.log("mailbox unmount")
       }
@@ -290,9 +284,9 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
       </ThemeProvider>
       <ModalScrollContainer stickyHeader='Mailbox' scrollActive={false}>
           <MailBoxScrollForm>
-            {mails.length > 0 ? mails.map(mail => (
+            {mails && mails.length > 0 ? mails.map(mail => (
                 <MailItem
-                  sender={mail.from}
+                  sender={mail.fromNickName}
                   topic={mail.topic}
                   content={mail.content}
                 />
@@ -310,7 +304,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
                 nextLabel=">"
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
-                pageCount={pageCount}
+                pageCount={mailboxPageCount}
                 previousLabel="<"
                 renderOnZeroPageCount={null}
             />      

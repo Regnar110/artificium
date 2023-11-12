@@ -101,6 +101,7 @@ type USER_GROUP_JOIN = "USER_GROUP_JOIN"
 type USER_GROUP_LEAVE = "USER_GROUP_LEAVE"
 type USER_IS_ONLINE = "USER_IS_ONLINE"
 type USER_IS_OFFLINE = "USER_IS_OFFLINE"
+type INCOMING_FRIEND_REQUEST ="INCOMING_FRIEND_REQUEST"
 
 //SOCKET 
 
@@ -109,8 +110,15 @@ type SOCKET = Socket<DefaultEventsMap, DefaultEventsMap>
 
 //MAILBOX
 
+interface ServerGetMailsResponse {
+    mails: Mail[]
+    pageCount:number
+    totalMails:number
+}
+
 interface Mail {
     fromId:string,
+    fromNickName:string
     system_type: "friend_request",
     topic: string,
     content:string,
