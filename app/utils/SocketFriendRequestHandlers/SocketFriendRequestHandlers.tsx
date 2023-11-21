@@ -20,6 +20,13 @@ class SocketFriendRequestHandlers {
         })
     }
 
+    static _emit_ACCEPT_REQUEST = (fromId:string, fromUserNick:string, toId:string) => {
+        const socket = ioInstance.getActiveSocket()
+    }
+
+    static _emit_REJECT_REQUEST = (fromId:string, fromUserNick:string, toId:string) => {
+        const socket = ioInstance.getActiveSocket();
+    }
 
     static unsubscribeFriendRequestListeners = () => {
         const socket = ioInstance.getActiveSocket()
@@ -27,4 +34,4 @@ class SocketFriendRequestHandlers {
     }
 }
 
-export const {_emit_SEND_FRIEND_REQUEST, _on_INCOMING_FRIEND_REQUEST, unsubscribeFriendRequestListeners} = SocketFriendRequestHandlers
+export const {_emit_SEND_FRIEND_REQUEST, _on_INCOMING_FRIEND_REQUEST, _emit_ACCEPT_REQUEST, _emit_REJECT_REQUEST, unsubscribeFriendRequestListeners} = SocketFriendRequestHandlers

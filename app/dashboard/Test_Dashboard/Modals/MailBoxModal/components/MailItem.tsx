@@ -7,12 +7,13 @@ import CustomHoverTooltip from '@/app/AppComponents/CustomHoverTolltip/CustomHov
 import FriendRequestModal from '../../FriendRequestModal/FriendRequestModal'
 interface Props {
     sender:string,
-    email:string
+    email:string,
+    fromId:string,
     topic:string,
     content:string
 }
 
-const MailItem = ({sender, email, topic, content}:Props) => {
+const MailItem = ({sender, email, fromId, topic, content}:Props) => {
     
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
     const modalOpenCloseHandler = (new_status:boolean) => setModalIsOpen(new_status)
@@ -44,7 +45,7 @@ const MailItem = ({sender, email, topic, content}:Props) => {
 
     console.log(sender)
 
-  const renderModal = () => modalIsOpen === true ? <FriendRequestModal sender={sender} email={email} modalIsOpen={modalIsOpen} setModal={modalOpenCloseHandler}/> : null
+  const renderModal = () => modalIsOpen === true ? <FriendRequestModal sender={sender} email={email} fromId={fromId} modalIsOpen={modalIsOpen} setModal={modalOpenCloseHandler}/> : null
   
 
   return (

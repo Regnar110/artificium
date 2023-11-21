@@ -289,6 +289,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
                 <MailItem
                   sender={mail.fromNickName}
                   email={mail.email}
+                  fromId={mail.fromId}
                   topic={mail.topic}
                   content={mail.content}
                 />

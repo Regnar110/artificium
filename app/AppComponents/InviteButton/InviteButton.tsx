@@ -12,10 +12,7 @@ interface InviteBtnProps {
     modalUserId:string
 }
 const InviteButton = ({text,isAlreadyFriend, modalUserId}:InviteBtnProps) => {
-  console.log(isAlreadyFriend)
-  const {nickname:appUserId, email} = useAppSelector(getUserObject)
-  const fromUserNick = useAppSelector(getUserNickName)
-
+  const {_id:appUserId, nickname:fromUserNick, email} = useAppSelector(getUserObject)
   const testFriendRequest = () => {
     _emit_SEND_FRIEND_REQUEST(appUserId, fromUserNick, email, modalUserId)
   }
