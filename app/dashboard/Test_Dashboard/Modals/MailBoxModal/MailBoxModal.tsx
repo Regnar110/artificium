@@ -237,6 +237,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           
           // current items będzie hitem do endpointa API
           const currentItems = await userAccessRequest<ServerGetMailsResponse, {userId:String, newMailsOffset:number, endOffset:number}>('getUserMails',{userId, newMailsOffset, endOffset})
+          
           dispatch(injectMails(currentItems))
 
           //OK
@@ -287,6 +288,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
             {mails && mails.length > 0 ? mails.map(mail => (
                 <MailItem
                   sender={mail.fromNickName}
+                  email={mail.email}
                   topic={mail.topic}
                   content={mail.content}
                 />
@@ -315,7 +317,6 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           </div>
       </ModalScrollContainer>
       <ModalFooter/>
-      <div className='text-white' onClick={() => console.log(mailbox)}> SPRAWDX</div>
     </GlassModal>
   )
 }

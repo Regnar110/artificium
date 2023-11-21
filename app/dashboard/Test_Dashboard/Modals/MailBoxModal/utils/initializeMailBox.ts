@@ -4,5 +4,6 @@ import store from "@/redux/store/store"
 
 export const initializeMailBox = async (userId:String, newMailsOffset:number, endOffset:number) => {
     const mails = await userAccessRequest<any, {userId:String, newMailsOffset:number, endOffset:number}>('getUserMails', {userId, newMailsOffset, endOffset}) as ServerGetMailsResponse
+    console.log(mails)
     store.dispatch(injectMails(mails))
 }

@@ -118,7 +118,8 @@ interface ServerGetMailsResponse {
 
 interface Mail {
     fromId:string,
-    fromNickName:string
+    fromNickName:string,
+    email:string;
     system_type: "friend_request",
     topic: string,
     content:string,

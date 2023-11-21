@@ -4,9 +4,9 @@ import { turnOnNotification } from "@/app/AppComponents/ToastNotifications/TurnO
 class SocketFriendRequestHandlers {
     
 
-    static  _emit_SEND_FRIEND_REQUEST =(fromId:string, fromUserNick:string, toId:String) => {
+    static  _emit_SEND_FRIEND_REQUEST =(fromId:string, fromUserNick:string, email:string, toId:String) => {
         const socket = ioInstance.getActiveSocket()
-        socket.emit("SEND_FRIEND_REQUEST", fromId, fromUserNick, toId)
+        socket.emit("SEND_FRIEND_REQUEST", fromId, fromUserNick, email, toId)
     }
 
     static _on_INCOMING_FRIEND_REQUEST = () => {
