@@ -237,7 +237,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           
           // current items będzie hitem do endpointa API
           const currentItems = await userAccessRequest<ServerGetMailsResponse, {userId:String, newMailsOffset:number, endOffset:number}>('getUserMails',{userId, newMailsOffset, endOffset})
-          
+          console.log(currentItems)
           dispatch(injectMails(currentItems))
 
           //OK
@@ -287,6 +287,7 @@ const MailBoxModal = ({modalIsOpen, setModal}:Props) => {
           <MailBoxScrollForm>
             {mails && mails.length > 0 ? mails.map(mail => (
                 <MailItem
+                  mail_id={mail.mail_id.toString()}
                   sender={mail.fromNickName}
                   email={mail.email}
                   fromId={mail.fromId}

@@ -20,12 +20,30 @@ class SocketFriendRequestHandlers {
         })
     }
 
-    static _emit_ACCEPT_REQUEST = (fromId:string, fromUserNick:string, toId:string) => {
+    static _emit_ACCEPT_REQUEST = (mail_id:string, resSenderId:string, fromUserNick:string, toId:string) => {
         const socket = ioInstance.getActiveSocket()
+        socket.emit("INCOMING_ACCEPT_FR", mail_id, resSenderId, fromUserNick, toId)
     }
 
-    static _emit_REJECT_REQUEST = (fromId:string, fromUserNick:string, toId:string) => {
+    static _emit_REJECT_REQUEST = (mail_id:string, resSenderId:string, fromUserNick:string, toId:string) => {
         const socket = ioInstance.getActiveSocket();
+        socket.emit("INCOMING_REJECT_FR", mail_id, resSenderId, fromUserNick, toId)
+    }
+
+    static _on_INCOMING_REJECTED_FR = () => {
+        const socket = ioInstance.getActiveSocket();
+        socket.on("INCOMING_REJECTED_FR", (...args) => {
+            console.log("REJECTED_FR")
+            console.log(args)
+        })
+    }
+
+    static _on_INCOMING_ACCEPTED_FR = () => {
+        const socket = ioInstance.getActiveSocket();
+        socket.on("INCOMING_ACCEPTED_FR", (...args) => {
+            console.log("ACCEPTED FR")
+            console.log(args)
+        })
     }
 
     static unsubscribeFriendRequestListeners = () => {

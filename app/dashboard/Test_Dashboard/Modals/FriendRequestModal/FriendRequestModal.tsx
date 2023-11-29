@@ -8,18 +8,15 @@ import { _emit_ACCEPT_REQUEST, _emit_REJECT_REQUEST } from '@/app/utils/SocketFr
 import { useAppSelector } from '@/redux/hooks/typedHooks';
 import { getUserId, getUserObject } from '@/redux/slices/userSession/userSessionSlice';
 interface Props {
+    mail_id:string,
     modalIsOpen:boolean;
     setModal:(new_status: boolean) => void
     sender:string;
     email:string,
     fromId:string,
 }
-const FriendRequestModal = ({modalIsOpen, setModal, sender, email, fromId}:Props) => {
-  const {_id, nickname} = useAppSelector(getUserObject)
-  const handleRequestResponseToUser = (type: "accept" | "reject") => {
-    type==="accept" ? _emit_ACCEPT_REQUEST(_id, nickname, fromId) : _emit_REJECT_REQUEST(_id, nickname, fromId);
-  }
-
+const FriendRequestModal = ({mail_id, modalIsOpen, setModal, sender, email, fromId}:Props) => {
+  const {_id:resSenderId, nickname} = useAppSelector(getUserObject)
 
   return (
     <GlassModal modalIsOpen={modalIsOpen} header_title='Answer friend request' header_subtitle='Someone wants to contact you. Consider his request!' setModal={setModal}>
@@ -30,8 +27,8 @@ const FriendRequestModal = ({modalIsOpen, setModal, sender, email, fromId}:Props
               Hello <span className='text-[#B6F09C]'>{sender}</span>. I would like you to join my group of friends. This would make it easier for us to establish and maintain contact. Consider my request.
             </div>
             <div className='accept_reject_buttons flex gap-2'>
-              <FRresponseButtons type='Accept' callback={()=>_emit_ACCEPT_REQUEST(_id, nickname, fromId)}/>
-              <FRresponseButtons type='Reject' callback={()=>_emit_REJECT_REQUEST(_id, nickname, fromId)}/>
+              <FRresponseButtons type='Accept' callback={()=>_emit_ACCEPT_REQUEST(mail_id, fromId, sender, resSenderId)}/>
+              <FRresponseButtons type='Reject' callback={()=>_emit_REJECT_REQUEST(mail_id, fromId, sender, resSenderId)}/>
             </div>
           </article>
         </section>

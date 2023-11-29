@@ -6,6 +6,7 @@ import Image from 'next/image'
 import CustomHoverTooltip from '@/app/AppComponents/CustomHoverTolltip/CustomHoverTooltip'
 import FriendRequestModal from '../../FriendRequestModal/FriendRequestModal'
 interface Props {
+    mail_id:string,
     sender:string,
     email:string,
     fromId:string,
@@ -13,7 +14,7 @@ interface Props {
     content:string
 }
 
-const MailItem = ({sender, email, fromId, topic, content}:Props) => {
+const MailItem = ({mail_id, sender, email, fromId, topic, content}:Props) => {
     
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
     const modalOpenCloseHandler = (new_status:boolean) => setModalIsOpen(new_status)
@@ -45,7 +46,7 @@ const MailItem = ({sender, email, fromId, topic, content}:Props) => {
 
     console.log(sender)
 
-  const renderModal = () => modalIsOpen === true ? <FriendRequestModal sender={sender} email={email} fromId={fromId} modalIsOpen={modalIsOpen} setModal={modalOpenCloseHandler}/> : null
+  const renderModal = () => modalIsOpen === true ? <FriendRequestModal mail_id={mail_id} sender={sender} email={email} fromId={fromId} modalIsOpen={modalIsOpen} setModal={modalOpenCloseHandler}/> : null
   
 
   return (

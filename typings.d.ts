@@ -115,8 +115,8 @@ interface ServerGetMailsResponse {
     pageCount:number
     totalMails:number
 }
-
 interface Mail {
+    mail_id:string,
     fromId:string,
     fromNickName:string,
     email:string;
