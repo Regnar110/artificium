@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RegisterForm component should render 1`] = `
+<div>
+  <form
+    class="register_form flex flex-col md:grid md:grid-cols-2 gap-5 h-fit md:row-span-2 w-full"
+  >
+    <div
+      class="register_input flex flex-col gap-y-4"
+    >
+      <span
+        class="text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium"
+      >
+        E-mail
+      </span>
+      <div
+        class="MuiFormControl-root MuiTextField-root css-skn84n-MuiFormControl-root-MuiTextField-root"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-2tudcr-MuiFormLabel-root-MuiInputLabel-root"
+          data-shrink="false"
+          for="outlined-basic_email"
+          id="outlined-basic_email-label"
+          style="color: rgb(155, 156, 158);"
+        >
+          E-mail
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl css-d7oyt7-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            id="outlined-basic_email"
+            name="email"
+            type="email"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-yjsfm1"
+            >
+              <span>
+                E-mail
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      class="register_input flex flex-col gap-y-4"
+    >
+      <span
+        class="text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium"
+      >
+        Nickname
+      </span>
+      <div
+        class="MuiFormControl-root MuiTextField-root css-skn84n-MuiFormControl-root-MuiTextField-root"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-2tudcr-MuiFormLabel-root-MuiInputLabel-root"
+          data-shrink="false"
+          for="outlined-basic_nickname"
+          id="outlined-basic_nickname-label"
+          style="color: rgb(155, 156, 158);"
+        >
+          Nickname
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl css-d7oyt7-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            id="outlined-basic_nickname"
+            name="nickname"
+            type="text"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-yjsfm1"
+            >
+              <span>
+                Nickname
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      class="register_input flex flex-col gap-y-4"
+    >
+      <span
+        class="text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium"
+      >
+        Password
+      </span>
+      <div
+        class="MuiFormControl-root MuiTextField-root css-skn84n-MuiFormControl-root-MuiTextField-root"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-2tudcr-MuiFormLabel-root-MuiInputLabel-root"
+          data-shrink="false"
+          for="outlined-basic_password"
+          id="outlined-basic_password-label"
+          style="color: rgb(155, 156, 158);"
+        >
+          Password
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl css-d7oyt7-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            id="outlined-basic_password"
+            name="register_password"
+            type="password"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-yjsfm1"
+            >
+              <span>
+                Password
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      class="register_input flex flex-col gap-y-4"
+    >
+      <span
+        class="text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium"
+      >
+        Repeat password
+      </span>
+      <div
+        class="MuiFormControl-root MuiTextField-root css-skn84n-MuiFormControl-root-MuiTextField-root"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-2tudcr-MuiFormLabel-root-MuiInputLabel-root"
+          data-shrink="false"
+          for="outlined-basic_password_repeat"
+          id="outlined-basic_password_repeat-label"
+          style="color: rgb(155, 156, 158);"
+        >
+          Repeat password
+        </label>
+        <div
+          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl css-d7oyt7-MuiInputBase-root-MuiOutlinedInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+            id="outlined-basic_password_repeat"
+            name="register_password_repeat"
+            type="password"
+            value=""
+          />
+          <fieldset
+            aria-hidden="true"
+            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+          >
+            <legend
+              class="css-yjsfm1"
+            >
+              <span>
+                Repeat password
+              </span>
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-[#d32f2f] font-plus_jakarta_sans"
+    />
+    <div
+      class="terms_conditions_checkbox flex gap-x-2 text-white font-plus_jakarta_sans items-center col-span-2"
+    >
+      <span
+        aria-label="terms_conditions"
+        class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium w-fit css-1501mf5-MuiButtonBase-root-MuiCheckbox-root"
+      >
+        <input
+          class="PrivateSwitchBase-input css-1m9pwf3"
+          data-indeterminate="false"
+          name="register_terms"
+          required=""
+          type="checkbox"
+        />
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          data-testid="CheckBoxOutlineBlankIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+          />
+        </svg>
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </span>
+      <span
+        class="text-[16px] w-fit"
+      >
+        I agree with 
+        <span
+          class="font-plus_jakarta_sans text-[16px] font-bold text-transparent bg-clip-text gradient_dayblue_blue_green500"
+        >
+          Terms and conditions
+        </span>
+      </span>
+    </div>
+    \\       
+    <button
+      class="w-full col-span-2 bg-[#B6F09C] min-h-[36.5px] flex justify-center items-center rounded-md"
+      type="submit"
+    >
+      Register
+    </button>
+  </form>
+</div>
+`;
