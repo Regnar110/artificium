@@ -36,7 +36,7 @@ const RegisterForm = () => {
       })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit as any)}  className='register_form flex flex-col md:grid md:grid-cols-2 gap-5 h-fit md:row-span-2 w-full'>
+    <form role='register-form-element' onSubmit={handleSubmit(onSubmit as any)}  className='register_form flex flex-col md:grid md:grid-cols-2 gap-5 h-fit md:row-span-2 w-full'>
         <ThemeProvider theme={theme}>
             <div className='register_input flex flex-col gap-y-4'>
                 <span className='text-[14px] font-plus_jakarta_sans text-[#9B9C9E] font-medium'>E-mail</span>
@@ -151,6 +151,7 @@ const RegisterForm = () => {
                 className='w-fit' 
                 size='medium' 
                 aria-label='terms_conditions' 
+                role='conditions_checkbox'
                 sx={{color:"#363A3D", '&.Mui-checked': {color:"#B6F09C"}}} 
                 defaultChecked={false}
             />

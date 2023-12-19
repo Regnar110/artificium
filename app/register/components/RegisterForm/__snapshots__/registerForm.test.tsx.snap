@@ -4,6 +4,7 @@ exports[`RegisterForm component should render 1`] = `
 <div>
   <form
     class="register_form flex flex-col md:grid md:grid-cols-2 gap-5 h-fit md:row-span-2 w-full"
+    role="register-form-element"
   >
     <div
       class="register_input flex flex-col gap-y-4"
@@ -198,6 +199,7 @@ exports[`RegisterForm component should render 1`] = `
       <span
         aria-label="terms_conditions"
         class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium w-fit css-1501mf5-MuiButtonBase-root-MuiCheckbox-root"
+        role="conditions_checkbox"
       >
         <input
           class="PrivateSwitchBase-input css-1m9pwf3"
@@ -235,6 +237,7 @@ exports[`RegisterForm component should render 1`] = `
     \\       
     <button
       class="w-full col-span-2 bg-[#B6F09C] min-h-[36.5px] flex justify-center items-center rounded-md"
+      data-testid="Register"
       type="submit"
     >
       Register
