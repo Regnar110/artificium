@@ -1,15 +1,16 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import RegisterForm from '../RegisterForm'
 import userEvent from '@testing-library/user-event'
 import { mock_REGISTER_FAILED_RESPONSE, mock_REGISTER_FORM_DATA, mock_REGISTER_SUCCESS_RESPONSE } from '../__mocks__/registerFormData'
+import { registerDataGenerator } from '../testUtils/randomRegisterData';
+
 jest.mock('../__mocks__/registerFormData.ts');
 const mocked_RegisterFormData = mock_REGISTER_FORM_DATA as jest.Mocked<RegisterFormData>
 
 const mocked_RegisterSuccessResponse = mock_REGISTER_SUCCESS_RESPONSE as jest.Mocked<UserAccesSuccessResponse>
 const mocked_RegisterFailureResponse = mock_REGISTER_FAILED_RESPONSE as jest.Mocked<UserAccessErrorResponse>
 
-const mock_FORM_SUBMIT_FN = jest.fn()
-const mock_FORM_SUBMIT_FN_WITH_REQUEST = jest.fn(async (registerData:RegisterFormData) => {
+const mock_FORM_SUBMIT_FN = jest.fn(async (registerData:RegisterFormData) => {
   if(registerData.nickname) {
     return await Promise.resolve({
       body:{},
@@ -17,7 +18,7 @@ const mock_FORM_SUBMIT_FN_WITH_REQUEST = jest.fn(async (registerData:RegisterFor
       status:200
     })
   } else {
-    return await Promise.resolve({
+    return await Promise.reject({
       error_message:"ERROR 500",
       client_message:"ERROR 500 ",
       status: 500
@@ -26,7 +27,10 @@ const mock_FORM_SUBMIT_FN_WITH_REQUEST = jest.fn(async (registerData:RegisterFor
 });
 
 const renderTestedComponent = () => render(<RegisterForm/>)
-renderTestedComponent.
+
+beforeEach(() => {
+  renderTestedComponent()
+})
 
 beforeAll(()=> {
   userEvent.setup()
@@ -40,7 +44,6 @@ describe('RegisterForm component', () => {
   })
 
   it('should render form fields', () => {
-    renderTestedComponent()
     expect(screen.getByRole('register-form-element')).toBeTruthy();
     expect(screen.getByLabelText('E-mail')).toBeTruthy();
     expect(screen.getByLabelText('Nickname')).toBeTruthy();
@@ -50,18 +53,12 @@ describe('RegisterForm component', () => {
     expect(screen.getByTestId('Register')).toBeTruthy();
   })
 
-  it('submit button should call onSubmit method', async () => {
-    renderTestedComponent();
-    screen.getByRole('register-form-element').addEventListener('submit', mock_FORM_SUBMIT_FN)
-    expect(userEvent.click(screen.getByTestId('Register'))).toHaveBeenCalled
-  })
-
   it('form element onSubmit method should be executed with correct props', () => {
-    renderTestedComponent();
-    screen.getByRole('register-form-element').addEventListener('submit', mock_FORM_SUBMIT_FN(mocked_RegisterFormData))
-
-    expect(userEvent.click(screen.getByTestId('Register'))).toHaveBeenCalled;
-    expect(mock_FORM_SUBMIT_FN).toHaveBeenCalledWith(mocked_RegisterFormData)
+    const data = registerDataGenerator.next().value
+    fireEvent.submit(screen.getByTestId('Register'), mock_FORM_SUBMIT_FN(data));
+    expect(mock_FORM_SUBMIT_FN).toHaveBeenCalled();
+    expect(mock_FORM_SUBMIT_FN).toHaveBeenCalledWith(data);
+    
     expect(typeof mocked_RegisterFormData.email).toBe('string');
     expect(typeof mocked_RegisterFormData.nickname).toBe('string');
     expect(typeof mocked_RegisterFormData.register_password).toBe('string');
@@ -70,14 +67,15 @@ describe('RegisterForm component', () => {
   })
 
   it('form element onSubmit method should return correct response data when promise is RESOLVED', async () => {
-    expect(await mock_FORM_SUBMIT_FN_WITH_REQUEST(mocked_RegisterFormData)).not.toEqual(mocked_RegisterFailureResponse)
-    expect(await mock_FORM_SUBMIT_FN_WITH_REQUEST(mocked_RegisterFormData)).toEqual(mocked_RegisterSuccessResponse)
-    expect(mock_FORM_SUBMIT_FN_WITH_REQUEST).toHaveBeenCalledWith(mocked_RegisterFormData);
+    expect.assertions(2);
+    const data = registerDataGenerator.next().value
+    await expect(mock_FORM_SUBMIT_FN(data)).resolves.toEqual(mocked_RegisterSuccessResponse);
+    expect(mock_FORM_SUBMIT_FN).toHaveBeenCalledWith(data);
     })
 
-    it('form element onSubmit method should return correct response data when promise is EESOLVED WITH ERROR', async () => {
-      expect(await mock_FORM_SUBMIT_FN_WITH_REQUEST({})).not.toEqual(mocked_RegisterSuccessResponse)
-      expect(await mock_FORM_SUBMIT_FN_WITH_REQUEST({})).toEqual(mocked_RegisterFailureResponse)
-      expect(mock_FORM_SUBMIT_FN_WITH_REQUEST).toHaveBeenCalledWith(mocked_RegisterFormData) 
+    it('form element onSubmit method should return correct response data when promise is REJECTED WITH ERROR', async () => {
+      expect.assertions(2);
+      await expect(mock_FORM_SUBMIT_FN({})).rejects.toEqual(mocked_RegisterFailureResponse);
+      expect(mock_FORM_SUBMIT_FN).toHaveBeenCalledWith({}) ;
     })
   })
